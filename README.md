@@ -101,9 +101,45 @@ npm run format      # Format code with Prettier
 
 ---
 
-## Contributing
+## Merge Notes (this pass)
 
-See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the full guide on:
-- Branch and PR workflow
-- Code style conventions
-- How to report issues
+This pass ported all content pages from the previous static-HTML rebuild into
+this project's Tailwind/`src` structure, following the Navbar's existing route
+map and design system (dark `#001A23` header, yellow-400 accents):
+
+- **Pages added:** `/about`, `/research/themes` (+ 4 detail pages under
+  `/research/themes/{human-robotics,soft-bio-robotics,field-robotics,cross-cutting}`),
+  `/research/facilities`, `/people`, `/academics/mtech`, `/academics/minor`,
+  `/academics/admissions`, `/events`, `/contact`
+- **`src/components/ui/`**: `PageHeading`, `SectionHeading`, `Card`, `Pill`,
+  `Tag`, `Accordion`, `AnnouncementModal`
+- **`src/components/sections/`**: `Hero`, `ResearchDomains`,
+  `NewsAndAnnouncements`, `Collaborators`, `VerticalPage` + `ProjectAccordion`
+  (research field pages), `ResearchLabs`, `PeopleDirectory`, `EventsAccordion`,
+  `ContactForm`, `AdmissionAnnouncements`
+- **`src/types/`**: `announcement.ts` and `person.ts`, both shaped to match
+  `docs/DATABASE.md` exactly so swapping in real Supabase queries later is a
+  drop-in change rather than a rewrite.
+- **`src/lib/announcements.ts`** and **`src/lib/people-data.ts`**: seed/adapter
+  data. `announcements.ts` currently adapts the same public Gist JSON the old
+  site used into the `announcements` table shape — there's a `TODO(supabase)`
+  comment marking exactly where to swap in a real query.  `people-data.ts` is
+  static seed data (55 people) ported from the old site, shaped to match the
+  `people` table.
+
+### Known gaps / next steps
+- Supabase isn't wired up yet (per your message, that's the next phase). The
+  `announcements` and `people` data already match the DB schema shape, so
+  `src/lib/supabase/queries.ts` should be able to replace `announcements.ts`
+  and `people-data.ts` without touching any components.
+- `hero_settings`/`hero_slides` are still hardcoded in `Hero.tsx` — same story,
+  shaped to match the table so it's a straightforward swap.
+- `labs`/`lab_images`/`lab_announcements` aren't wired to Supabase yet either;
+  `ResearchLabs.tsx` has static seed data.
+- Font: this repo uses `next/font/google` (Inter), which needs to reach
+  `fonts.googleapis.com` at build time — that's blocked in the sandbox this was
+  built in, so the build here was verified with the font import temporarily
+  stripped. It's restored in the delivered code; run `npm run build` locally to
+  confirm (should just work with normal internet access).
+- I left `src/components/layout/Navbar.tsx` and `Footer.tsx` as you had them —
+  didn't touch your existing work there.
