@@ -1,7 +1,7 @@
 import Hero from "@/components/sections/Hero";
 import ResearchDomains from "@/components/sections/ResearchDomains";
 import NewsAndAnnouncements from "@/components/sections/NewsAndAnnouncements";
-import Collaborators from "@/components/sections/Collaborators";
+import IndustryConnect from "@/components/sections/IndustryConnect";
 
 export default function Home() {
   return (
@@ -9,7 +9,7 @@ export default function Home() {
       <Hero />
       <ResearchDomains />
       <NewsAndAnnouncements />
-      <Collaborators />
+      <IndustryConnect />
     </>
   );
 }

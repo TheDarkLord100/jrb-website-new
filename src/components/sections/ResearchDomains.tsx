@@ -1,97 +1,94 @@
-import Image from "next/image";
 import Link from "next/link";
 import SectionHeading from "@/components/ui/SectionHeading";
 
-const researchCards = [
+const verticals = [
   {
     href: "/research/themes/human-robotics",
-    img: "/Assets/research_images/humanoid.jpg",
     title: "Human-Centred and Assistive Robotics",
-    description: "Assistive systems, wearable robotics, and human–robot interaction.",
+    description:
+      "Robotic systems designed to operate safely and effectively alongside people. Work spans wearable and assistive devices, rehabilitation robotics, and collaborative manipulation, with an emphasis on physical human–robot interaction and interfaces that adapt to individual users.",
   },
   {
     href: "/research/themes/soft-bio-robotics",
-    img: "/Assets/research_images/soft.png",
     title: "Soft & Bio-Inspired Robotics",
-    description: "Compliant mechanisms, soft robots, and bio-inspired design.",
+    description:
+      "Robotic systems built from compliant materials and mechanisms inspired by biological structures. Research covers soft actuators, adaptive morphology, and locomotion strategies suited to unstructured environments where rigid robots struggle.",
   },
   {
     href: "/research/themes/field-robotics",
-    img: "/Assets/research_images/field.jpg",
     title: "Autonomous Field Robotics",
-    description: "Robust perception, navigation, and decision-making in real-world environments.",
+    description:
+      "Robotic systems that sense, navigate, and make decisions without human intervention in outdoor and semi-structured environments. Work spans perception under uncertainty, terrain-aware navigation, and multi-robot coordination.",
   },
 ];
 
+const crossCutting = {
+  href: "/research/themes/cross-cutting",
+  title: "Embodied Intelligence, Learning & Control",
+  description:
+    "A shared foundation beneath all three verticals — how perception, learning, and control integrate directly with a robot's physical embodiment. This includes reinforcement learning for robotic control, adaptive control under uncertainty, and the co-design of algorithms and hardware.",
+};
+
 export default function ResearchDomains() {
   return (
-    <>
-      <section className="bg-white py-16">
-        <div className="mx-auto max-w-[75rem] px-5">
-          <SectionHeading title="Research Domains" />
+    <section className="bg-white py-20">
+      <div className="mx-auto max-w-[75rem] px-5">
+        <SectionHeading eyebrow="Research" title="Research Domains" />
 
-          <p className="mx-auto mb-10 max-w-3xl text-center text-gray-600">
-            The Centre of Excellence on Biologically Inspired Robots and Drones (CoE-BIRD) at IIT
-            Delhi is an interdisciplinary research centre that aims to advance bio-inspired robotics
-            for real-world autonomy. We design intelligent robotic systems, from assistive wearables
-            to field-deployed drones, that operate reliably in complex, unstructured environments.
-          </p>
+        <p className="mx-auto mb-14 max-w-2xl text-center text-gray-600">
+          The Centre of Excellence on Biologically Inspired Robots and Drones (CoE-BIRD) 
+          at IIT Delhi is an interdisciplinary research centre that aims to advance robotics for real-world autonomy.
+          We design intelligent robotic systems, from assistive wearables to field-deployed drones, 
+          that operate reliably in complex, unstructured environments.
+        </p>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {researchCards.map((card) => (
+        <div className="relative">
+          {/* Three verticals */}
+          <div className="grid gap-6 sm:grid-cols-3">
+            {verticals.map((v) => (
               <Link
-                href={card.href}
-                key={card.href}
-                className="group overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-shadow hover:shadow-lg"
+                href={v.href}
+                key={v.href}
+                className="group flex flex-col border-t-2 border-amber-400 bg-white p-6 shadow-sm ring-1 ring-gray-100 transition-shadow hover:shadow-md"
               >
-                <div className="relative h-48 w-full overflow-hidden">
-                  <Image
-                    src={card.img}
-                    alt={card.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                </div>
-                <div className="p-5">
-                  <h3 className="font-semibold text-[#001A23]">{card.title}</h3>
-                  <p className="mt-2 text-sm text-gray-600">{card.description}</p>
-                </div>
+                <h3 className="font-serif text-lg font-bold text-[#001A23]">{v.title}</h3>
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-gray-600">
+                  {v.description}
+                </p>
+                <span className="mt-5 text-sm font-medium text-amber-700 group-hover:underline">
+                  View Research →
+                </span>
               </Link>
             ))}
           </div>
-        </div>
-      </section>
 
-      <section className="bg-gray-50 py-16">
-        <div className="mx-auto max-w-[75rem] px-5">
+          {/* Connectors down to the cross-cutting band — desktop only */}
+          <div className="hidden sm:grid sm:grid-cols-3">
+            {verticals.map((v) => (
+              <div key={v.href} className="mx-auto h-8 w-px bg-amber-300" />
+            ))}
+          </div>
+
+          {/* Cross-cutting theme: spans beneath all three verticals */}
           <Link
-            href="/research/themes/cross-cutting"
-            className="group relative block overflow-hidden rounded-xl shadow-md"
+            href={crossCutting.href}
+            className="group block border-2 border-amber-300 bg-amber-50/60 p-6 text-center transition-colors hover:bg-amber-50 sm:p-8"
           >
-            <div className="relative h-72 w-full sm:h-80">
-              <Image
-                src="/Assets/research_images/cross.jpg"
-                alt="Embodied Intelligence"
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
-            </div>
-            <div className="absolute bottom-0 left-0 max-w-xl p-8 text-white">
-              <span className="text-xs font-semibold tracking-widest text-yellow-400 uppercase">
-                Cross-Cutting Theme
-              </span>
-              <h3 className="mt-2 text-xl font-bold sm:text-2xl">
-                Embodied Intelligence, Learning &amp; Control
-              </h3>
-              <p className="mt-3 text-sm text-white/85 sm:text-base">
-                Reinforcement learning, adaptive control, and co-design of algorithms and hardware
-                for intelligent robotic behaviour.
-              </p>
-            </div>
+            <span className="text-xs font-semibold tracking-[0.2em] text-amber-700 uppercase">
+              Cross-Cutting Theme
+            </span>
+            <h3 className="font-serif mt-2 text-xl font-bold text-[#001A23] sm:text-2xl">
+              {crossCutting.title}
+            </h3>
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-gray-600 sm:text-base">
+              {crossCutting.description}
+            </p>
+            <span className="mt-4 inline-block text-sm font-medium text-amber-700 group-hover:underline">
+              View Research →
+            </span>
           </Link>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

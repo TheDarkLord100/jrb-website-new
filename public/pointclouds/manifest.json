@@ -1,0 +1,70 @@
+{
+  "count": 10000,
+  "floats_per_point": 4,
+  "layout": [
+    "x",
+    "y",
+    "z",
+    "jitter"
+  ],
+  "target_size": 9.5,
+  "shapes": [
+    {
+      "name": "amr",
+      "count": 10000,
+      "original_min": [
+        -59.90459549692474,
+        -1.9645157397506938,
+        -66.25986262140063
+      ],
+      "original_max": [
+        59.819647697150515,
+        69.42550385149961,
+        66.31680951759964
+      ],
+      "original_diagonal": 192.37204396971288,
+      "scale_applied": 0.07165664853949348,
+      "bin_file": "amr.bin",
+      "bin_bytes": 160000,
+      "preview_file": "amr_preview.png"
+    },
+    {
+      "name": "drone",
+      "count": 10000,
+      "original_min": [
+        -77.64302530214879,
+        -22.077616135264144,
+        -77.5424266004001
+      ],
+      "original_max": [
+        77.9160721276156,
+        2.810988938144576,
+        77.09865411518916
+      ],
+      "original_diagonal": 220.75311843901196,
+      "scale_applied": 0.06107003805604678,
+      "bin_file": "drone.bin",
+      "bin_bytes": 160000,
+      "preview_file": "drone_preview.png"
+    },
+    {
+      "name": "kuka",
+      "count": 10000,
+      "original_min": [
+        37.39415575389323,
+        500.27486300281214,
+        195.4327392958893
+      ],
+      "original_max": [
+        3518.644399103695,
+        2740.6083557595966,
+        1243.0141111610358
+      ],
+      "original_diagonal": 4270.318974768716,
+      "scale_applied": 0.0027289046566381595,
+      "bin_file": "kuka.bin",
+      "bin_bytes": 160000,
+      "preview_file": "kuka_preview.png"
+    }
+  ]
+}
