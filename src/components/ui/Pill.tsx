@@ -11,8 +11,8 @@ export function Pill({
       className={clsx(
         "cursor-pointer rounded-full border px-4 py-1.5 text-sm font-medium transition-colors",
         active
-          ? "border-[#001A23] bg-[#001A23] text-white"
-          : "border-gray-300 bg-white text-gray-700 hover:border-[#001A23]",
+          ? "border-amber-400 bg-amber-50 text-amber-800"
+          : "border-gray-300 bg-white text-gray-600 hover:border-amber-300",
         className
       )}
       {...props}
@@ -22,7 +22,7 @@ export function Pill({
 
 export function Tag({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-block rounded-full bg-yellow-50 px-3 py-1 text-xs font-semibold tracking-wide text-yellow-700 uppercase">
+    <span className="inline-block rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold tracking-wide text-amber-700 uppercase">
       {children}
     </span>
   );
