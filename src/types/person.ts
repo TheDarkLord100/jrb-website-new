@@ -10,8 +10,9 @@ export type Person = {
   role: PersonRole;
   year: string | null; // student, postdoc, alumni
   department: string | null; // faculty
-  department_category: string | null; // faculty — used for the sidebar filter
   office_contact: string | null; // faculty
   research_interest: string | null; // faculty
   focus: string[]; // faculty — search keywords, not displayed publicly
+  priority?: number | null; // lower shows first; null/missing sorts last
+  special_designation?: string | null; // e.g. "Coordinator, CoE-BIRD"
 };

@@ -45,6 +45,17 @@ const ALUMNI_BATCHES = [
   { key: '2024-26', label: '2024–26' },
 ];
 
+// Lower priority number shows first; people with no priority set sort to
+// the end (ties broken alphabetically by name).
+function sortByPriority(list: Person[]): Person[] {
+  return [...list].sort((a, b) => {
+    const pa = a.priority ?? Infinity;
+    const pb = b.priority ?? Infinity;
+    if (pa !== pb) return pa - pb;
+    return a.name.localeCompare(b.name);
+  });
+}
+
 function ContactIcons({
   webmail,
   office_contact,
@@ -90,6 +101,9 @@ function MemberCard({ p }: { p: Person }) {
         <Image src={p.image_url} alt={p.name} fill className="object-cover" />
       </div>
       <h3 className="mt-3 font-serif font-semibold text-[#001A23]">{p.name}</h3>
+      {p.special_designation && (
+        <p className="mt-0.5 text-xs font-semibold text-amber-600">{p.special_designation}</p>
+      )}
       <p className="mt-1 text-xs text-gray-500">
         {p.role === 'student' || p.role === 'alumni' ? `M.Tech Robotics (${p.year})` : p.year}
       </p>
@@ -121,7 +135,7 @@ export default function PeopleDirectory() {
   const faculty = useMemo(() => {
     if (!people) return [];
     const q = search.toLowerCase().trim();
-    return people
+    const filtered = people
       .filter((p) => p.role === 'faculty')
       .filter((p) => {
         const focusText = p.focus.join(' ').toLowerCase();
@@ -130,22 +144,25 @@ export default function PeopleDirectory() {
         const matchesDept = dept === 'all' || p.department === dept;
         return matchesSearch && matchesTag && matchesDept;
       });
+    return sortByPriority(filtered);
   }, [people, search, tag, dept]);
 
   const students = useMemo(() => {
     if (!people) return [];
-    return people
+    const filtered = people
       .filter((p) => p.role === 'student')
       .filter((p) => batch === 'all' || p.year === batch);
+    return sortByPriority(filtered);
   }, [people, batch]);
 
-  const postdocs = people?.filter((p) => p.role === 'postdoc') ?? [];
+  const postdocs = sortByPriority(people?.filter((p) => p.role === 'postdoc') ?? []);
 
   const alumni = useMemo(() => {
     if (!people) return [];
-    return people
+    const filtered = people
       .filter((p) => p.role === 'alumni')
       .filter((p) => alumniBatch === 'all' || p.year === alumniBatch);
+    return sortByPriority(filtered);
   }, [people, alumniBatch]);
   return (
     <div>
@@ -241,9 +258,7 @@ export default function PeopleDirectory() {
                         </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-start justify-between gap-2">
-                            <h3 className="truncate font-serif font-semibold text-[#001A23]">
-                              {p.name}
-                            </h3>
+                            <h3 className="font-serif font-semibold text-[#001A23]">{p.name}</h3>
                             {p.research_interest && (
                               <ChevronDown
                                 size={16}
@@ -253,6 +268,11 @@ export default function PeopleDirectory() {
                               />
                             )}
                           </div>
+                          {p.special_designation && (
+                            <p className="mt-0.5 text-xs font-semibold text-amber-600">
+                              {p.special_designation}
+                            </p>
+                          )}
                           {p.research_interest && (
                             <p className="mt-1 text-xs text-gray-500">{p.department}</p>
                           )}
