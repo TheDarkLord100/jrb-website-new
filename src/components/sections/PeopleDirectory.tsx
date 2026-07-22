@@ -118,7 +118,16 @@ export default function PeopleDirectory() {
   const [tab, setTab] = useState<(typeof TABS)[number]['key']>('faculty');
   const [dept, setDept] = useState('all');
   const [tag, setTag] = useState('');
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(() => {
+    if (typeof window === 'undefined') return '';
+    // One-time handoff from a research theme page's faculty link -- read
+    // once and clear immediately, so refreshing (or visiting /people
+    // directly) always starts from the full list, and the URL never
+    // carries this as a param.
+    const prefill = sessionStorage.getItem('peopleSearchPrefill');
+    if (prefill) sessionStorage.removeItem('peopleSearchPrefill');
+    return prefill ?? '';
+  });
   const [batch, setBatch] = useState('all');
   const [alumniBatch, setAlumniBatch] = useState('all');
   const [expandedFaculty, setExpandedFaculty] = useState<Set<string>>(new Set());
@@ -134,12 +143,17 @@ export default function PeopleDirectory() {
 
   const faculty = useMemo(() => {
     if (!people) return [];
+
     const q = search.toLowerCase().trim();
     const filtered = people
       .filter((p) => p.role === 'faculty')
       .filter((p) => {
         const focusText = p.focus.join(' ').toLowerCase();
-        const matchesSearch = q ? focusText.includes(q) : true;
+        const nameText = p.name.toLowerCase();
+        const interestText = (p.research_interest ?? '').toLowerCase();
+        const matchesSearch = q
+          ? nameText.includes(q) || interestText.includes(q) || focusText.includes(q)
+          : true;
         const matchesTag = tag ? focusText.includes(tag) : true;
         const matchesDept = dept === 'all' || p.department === dept;
         return matchesSearch && matchesTag && matchesDept;
@@ -220,7 +234,7 @@ export default function PeopleDirectory() {
                   type="text"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search by research interest..."
+                  placeholder="Search by name or research interest..."
                   className="w-full border border-gray-300 px-4 py-2 text-sm focus:border-amber-400 focus:outline-none"
                 />
 

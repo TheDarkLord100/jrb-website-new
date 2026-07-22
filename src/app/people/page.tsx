@@ -7,7 +7,7 @@ export default function PeoplePage() {
   return (
     <div>
       <PageHeading eyebrow="People" title="Members" />
-      <div className="mx-auto max-w-[75rem] px-5 pb-16">
+      <div className="mx-auto max-w-[90rem] px-5 pb-16">
         <PeopleDirectory />
       </div>
     </div>
