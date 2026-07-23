@@ -1,17 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getAllAnnouncements } from "@/lib/supabase/queries";
+import { getAnnouncementsByType } from "@/lib/supabase/queries";
 import type { Announcement } from "@/types/announcement";
 
-export function useAnnouncements() {
+export function useAnnouncementsByType(type: Announcement["type"]) {
   const [items, setItems] = useState<Announcement[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
+    setItems(null);
+    setError(null);
 
-    getAllAnnouncements()
+    getAnnouncementsByType(type)
       .then((data) => {
         if (!cancelled) setItems(data);
       })
@@ -22,7 +24,7 @@ export function useAnnouncements() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [type]);
 
   return { items, error };
 }

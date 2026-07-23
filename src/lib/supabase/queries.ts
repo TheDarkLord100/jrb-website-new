@@ -1,6 +1,8 @@
 import { supabase } from "@/lib/supabase/client";
 import type { Person } from "@/types/person";
 import type { Lab, LabImage, LabAnnouncement } from "@/types/lab";
+import type { AdmissionSection, AdmissionLink } from "@/types/admissions";
+import type { Announcement } from "@/types/announcement";
 
 export async function getPeople(): Promise<Person[]> {
   if (!supabase) {
@@ -154,4 +156,91 @@ export async function getThemeLabs(themeSlug: string): Promise<Lab[]> {
   return ((data ?? []) as unknown as ThemeLabRow[])
     .map((row) => row.labs)
     .filter((l): l is Lab => l !== null);
+}
+
+export async function getAdmissionSections(): Promise<AdmissionSection[]> {
+  if (!supabase) {
+    console.error(
+      "Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY."
+    );
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from("admission_sections")
+    .select("*")
+    .order("display_order", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching admission sections:", error);
+    return [];
+  }
+
+  return (data ?? []) as AdmissionSection[];
+}
+
+export async function getAdmissionLinks(): Promise<AdmissionLink[]> {
+  if (!supabase) {
+    console.error(
+      "Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY."
+    );
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from("admission_links")
+    .select("*")
+    .order("display_order", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching admission links:", error);
+    return [];
+  }
+
+  return (data ?? []) as AdmissionLink[];
+}
+
+export async function getAnnouncementsByType(
+  type: Announcement["type"]
+): Promise<Announcement[]> {
+  if (!supabase) {
+    console.error(
+      "Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY."
+    );
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from("announcements")
+    .select("*")
+    .eq("type", type)
+    .order("date", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching announcements:", error);
+    return [];
+  }
+
+  return (data ?? []) as Announcement[];
+}
+
+export async function getAllAnnouncements(): Promise<Announcement[]> {
+  if (!supabase) {
+    console.error(
+      "Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY."
+    );
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from("announcements")
+    .select("*")
+    .order("date", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching announcements:", error);
+    return [];
+  }
+
+  return (data ?? []) as Announcement[];
 }
