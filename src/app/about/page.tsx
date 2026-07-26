@@ -36,8 +36,8 @@ export default function AboutPage() {
     <div>
       <PageHeading eyebrow="About" title="About CoE-BIRD" />
 
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-20 pb-20">
-        <Card>
+<div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 pb-20 sm:px-20">
+          <Card>
           <p className="leading-relaxed text-gray-700">
             Twenty years ago, a group of IIT Delhi students built a robot for a competition.
             Today, that same restless curiosity has grown into an interdisciplinary centre of

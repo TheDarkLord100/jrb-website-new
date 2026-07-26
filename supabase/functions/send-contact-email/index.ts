@@ -2,7 +2,9 @@
 //
 // Receives a contact-form submission and emails it to CONTACT_RECIPIENT_EMAIL
 // via Resend, with reply_to set to the visitor's own email so replying goes
-// straight to them.
+// straight to them. Shared by the general /contact form and the Industry
+// page's collaboration form -- organization/phone/collaborationType are
+// optional and only included in the email body when present.
 //
 // Required secrets (set via Edge Functions -> Secrets in the dashboard):
 //   RESEND_API_KEY          - from resend.com dashboard -> API Keys
@@ -47,7 +49,15 @@ Deno.serve(async (req: Request) => {
     return jsonResponse({ error: "Contact form is not configured. Please email us directly." }, 500);
   }
 
-  let body: { name?: string; email?: string; subject?: string; message?: string };
+  let body: {
+    name?: string;
+    email?: string;
+    subject?: string;
+    message?: string;
+    organization?: string;
+    phone?: string;
+    collaborationType?: string;
+  };
   try {
     body = await req.json();
   } catch {
@@ -58,12 +68,15 @@ Deno.serve(async (req: Request) => {
   const email = (body.email ?? "").trim();
   const subject = (body.subject ?? "").trim() || "Contact from Website";
   const message = (body.message ?? "").trim();
+  const organization = (body.organization ?? "").trim();
+  const phone = (body.phone ?? "").trim();
+  const collaborationType = (body.collaborationType ?? "").trim();
 
   if (!name || !email || !message) {
     return jsonResponse({ error: "Name, email, and message are required." }, 400);
   }
-  if (name.length > 200 || subject.length > 200) {
-    return jsonResponse({ error: "Name/subject is too long." }, 400);
+  if (name.length > 200 || subject.length > 200 || organization.length > 200) {
+    return jsonResponse({ error: "One of the fields is too long." }, 400);
   }
   if (message.length > 5000) {
     return jsonResponse({ error: "Message is too long (5000 character limit)." }, 400);
@@ -72,10 +85,16 @@ Deno.serve(async (req: Request) => {
     return jsonResponse({ error: "Please provide a valid email address." }, 400);
   }
 
+  const extraLines = [
+    organization && `Organization: ${organization}`,
+    phone && `Phone: ${phone}`,
+    collaborationType && `Type of Collaboration: ${collaborationType}`,
+  ].filter(Boolean);
+
   const emailText = `New message from the CoE-BIRD website contact form.
 
 Name: ${name}
-Email: ${email}
+Email: ${email}${extraLines.length > 0 ? "\n" + extraLines.join("\n") : ""}
 
 Message:
 ${message}`;

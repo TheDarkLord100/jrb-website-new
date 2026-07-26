@@ -57,7 +57,7 @@ export default function Footer() {
         <div className="flex items-center gap-5">
           <a
             href="mailto:robotics@iitd.ac.in"
-            className="text-white/80 hover:text-yellow-400 transition-colors"
+            className="text-white/80 hover:text-amber-400 transition-colors"
             aria-label="Email"
           >
             <Mail size={22} />
@@ -66,7 +66,7 @@ export default function Footer() {
             href="https://www.linkedin.com/company/center-of-excellence-bird-robotics-drones-iitd"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white/80 hover:text-yellow-400 transition-colors"
+            className="text-white/80 hover:text-amber-400 transition-colors"
             aria-label="LinkedIn"
           >
             <LinkedInIcon />

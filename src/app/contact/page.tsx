@@ -2,6 +2,7 @@ import Image from "next/image";
 import { MapPin, Mail } from "lucide-react";
 import PageHeading from "@/components/ui/PageHeading";
 import ContactForm from "@/components/sections/ContactForm";
+import Card from "@/components/ui/Card";
 
 export const metadata = { title: "Contact Us" };
 
@@ -49,9 +50,9 @@ export default function ContactPage() {
           </ul>
         </div>
 
-        <div className="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
+        <Card>
           <ContactForm />
-        </div>
+        </Card>
       </div>
     </div>
   );

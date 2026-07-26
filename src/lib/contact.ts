@@ -3,8 +3,11 @@ import { supabase } from "@/lib/supabase/client";
 export type ContactFormInput = {
   name: string;
   email: string;
-  subject: string;
+  subject?: string;
   message: string;
+  organization?: string;
+  phone?: string;
+  collaborationType?: string;
 };
 
 export type SendResult = { ok: true } | { ok: false; error: string };
