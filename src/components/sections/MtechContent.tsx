@@ -1,11 +1,13 @@
 "use client";
 
 import Accordion from "@/components/ui/Accordion";
+import { SectionTitle, TextSkeleton, TableSkeleton } from "@/components/ui/ContentBlocks";
 import Markdown from "@/components/ui/Markdown";
 import TocNav, { type TocSection } from "@/components/ui/TocNav";
 import { useMtechContent } from "@/lib/useMtechContent";
 import { getLucideIcon } from "@/lib/lucideIconMap";
 import type { MtechCourse } from "@/types/mtech";
+
 
 const SECTIONS: TocSection[] = [
   { id: "overview", label: "Overview" },
@@ -27,39 +29,6 @@ const SEMESTER_ORDER = [
   "Semester III",
   "Semester IV",
 ];
-
-function SectionTitle({ children }: { children: string }) {
-  return (
-    <>
-      <h2 className="font-serif text-2xl font-bold text-[#001A23]">{children}</h2>
-      <div className="mt-2 h-0.5 w-12 bg-amber-400" />
-    </>
-  );
-}
-
-function TextSkeleton({ lines = 3 }: { lines?: number }) {
-  return (
-    <div className="mt-5 animate-pulse space-y-2">
-      {Array.from({ length: lines }).map((_, i) => (
-        <div
-          key={i}
-          className={`h-3 rounded bg-gray-100 ${i === lines - 1 ? "w-2/3" : "w-full"}`}
-        />
-      ))}
-    </div>
-  );
-}
-
-function TableSkeleton() {
-  return (
-    <div className="mt-5 animate-pulse space-y-2">
-      <div className="h-8 w-full rounded bg-gray-100" />
-      <div className="h-6 w-full rounded bg-gray-50" />
-      <div className="h-6 w-full rounded bg-gray-50" />
-      <div className="h-6 w-3/4 rounded bg-gray-50" />
-    </div>
-  );
-}
 
 function CourseTable({
   rows,
