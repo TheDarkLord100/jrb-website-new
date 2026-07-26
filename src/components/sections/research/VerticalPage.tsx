@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { User, FlaskConical } from 'lucide-react';
 import PageHeading from '@/components/ui/PageHeading';
-import { useThemeAssociations } from '@/lib/useThemeAssociations';
+import { useThemeAssociations } from '@/lib/hooks/useThemeAssociations';
 
 function ChipsSkeleton() {
   return (

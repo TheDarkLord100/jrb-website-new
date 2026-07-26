@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import PageHeading from '@/components/ui/PageHeading';
 import SectionHeading from '@/components/ui/SectionHeading';
-import StaticPointCloud from '@/components/sections/StaticPointCloud';
+import StaticPointCloud from '@/components/sections/research/StaticPointCloud';
 import FeaturedProjectsCarousel from '@/components/sections/FeaturedProjectsCarousel';
 
 export const metadata = { title: 'Research Themes' };

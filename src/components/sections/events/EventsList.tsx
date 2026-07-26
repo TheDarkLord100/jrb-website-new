@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { useAnnouncementsByType } from '@/lib/useAnnouncementsByType';
+import { useAnnouncementsByType } from '@/lib/hooks/useAnnouncementsByType';
 import { formatAnnouncementDate } from '@/lib/announcements';
 import { stripMarkdownPreview } from '@/lib/stripMarkdown';
 import AnnouncementModal from '@/components/ui/AnnouncementModal';

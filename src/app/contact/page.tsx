@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { MapPin, Mail } from 'lucide-react';
 import PageHeading from '@/components/ui/PageHeading';
-import ContactForm from '@/components/sections/ContactForm';
+import ContactForm from '@/components/sections/contact/ContactForm';
 import Card from '@/components/ui/Card';
 
 export const metadata = { title: 'Contact Us' };

@@ -4,7 +4,7 @@ import { FileText, BookOpen } from 'lucide-react';
 import Markdown from '@/components/ui/Markdown';
 import TocNav, { type TocSection } from '@/components/ui/TocNav';
 import { SectionTitle, TextSkeleton, TableSkeleton } from '@/components/ui/ContentBlocks';
-import { useIdsrContent } from '@/lib/useIdsrContent';
+import { useIdsrContent } from '@/lib/hooks/useIdsrContent';
 
 const SECTIONS: TocSection[] = [
   { id: 'overview', label: 'Overview' },

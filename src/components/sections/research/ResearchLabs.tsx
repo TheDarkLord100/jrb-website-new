@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
-import { useLabs } from '@/lib/useLabs';
+import { useLabs } from '@/lib/hooks/useLabs';
 import type { LabCategory } from '@/types/lab';
 
 const CATEGORIES: { key: LabCategory; label: string }[] = [

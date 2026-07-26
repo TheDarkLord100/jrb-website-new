@@ -1,5 +1,5 @@
 import PageHeading from '@/components/ui/PageHeading';
-import IdsrContent from '@/components/sections/IdsrContent';
+import IdsrContent from '@/components/sections/academics/IdsrContent';
 
 export const metadata = { title: 'Minor Degree in Robotics' };
 

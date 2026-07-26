@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { MapPin, User, Users, ExternalLink, ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { useLab } from '@/lib/useLab';
-import LabDetailSkeleton from '@/components/sections/LabDetailSkeleton';
+import { useLab } from '@/lib/hooks/useLab';
+import LabDetailSkeleton from '@/components/sections/research/LabDetailSkeleton';
 
 function GalleryLightbox({
   images,

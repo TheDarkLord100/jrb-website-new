@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useAnnouncementsByType } from '@/lib/useAnnouncementsByType';
+import { useAnnouncementsByType } from '@/lib/hooks/useAnnouncementsByType';
 import { formatAnnouncementDate } from '@/lib/announcements';
 import { stripMarkdownPreview } from '@/lib/stripMarkdown';
 import AnnouncementModal from '@/components/ui/AnnouncementModal';

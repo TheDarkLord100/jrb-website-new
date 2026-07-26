@@ -3,7 +3,7 @@
 import { ExternalLink } from 'lucide-react';
 import Card from '@/components/ui/Card';
 import Markdown from '@/components/ui/Markdown';
-import { useAdmissions } from '@/lib/useAdmission';
+import { useAdmissions } from '@/lib/hooks/useAdmission';
 
 function formatLastUpdated(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('en-IN', {

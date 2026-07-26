@@ -2,9 +2,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Mail } from 'lucide-react';
 import { Handshake, FlaskConical, GraduationCap } from 'lucide-react';
-import Collaborators from '@/components/sections/Collaborators';
-import IndustryTiers from '@/components/sections/IndustryTiers';
-import IndustryContactForm from '@/components/sections/IndustryContactForm';
+import Collaborators from '@/components/sections/home/Collaborators';
+import IndustryTiers from '@/components/sections/industry/IndustryTiers';
+import IndustryContactForm from '@/components/sections/industry/IndustryContactForm';
 
 export const metadata = { title: 'Industry & Partnerships' };
 

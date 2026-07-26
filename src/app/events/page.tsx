@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import PageHeading from '@/components/ui/PageHeading';
 import SectionHeading from '@/components/ui/SectionHeading';
-import EventsList from '@/components/sections/EventsList';
-import AnnouncementSidebar from '@/components/sections/AnnouncementSidebar';
+import EventsList from '@/components/sections/events/EventsList';
+import AnnouncementSidebar from '@/components/sections/events/AnnouncementSidebar';
 
 export const metadata = { title: 'Events' };
 

@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import SectionHeading from '@/components/ui/SectionHeading';
-import { useCollaborators } from '@/lib/useCollaborators';
+import { useCollaborators } from '@/lib/hooks/useCollaborators';
 
 function LogosSkeleton() {
   return (

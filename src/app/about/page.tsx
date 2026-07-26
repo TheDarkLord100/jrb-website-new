@@ -1,6 +1,6 @@
 import PageHeading from '@/components/ui/PageHeading';
 import Card from '@/components/ui/Card';
-import AboutGallery from '@/components/sections/AboutGallery';
+import AboutGallery from '@/components/sections/about/AboutGallery';
 
 export const metadata = { title: 'About' };
 

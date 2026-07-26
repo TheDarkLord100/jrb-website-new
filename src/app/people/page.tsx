@@ -1,5 +1,5 @@
 import PageHeading from '@/components/ui/PageHeading';
-import PeopleDirectory from '@/components/sections/PeopleDirectory';
+import PeopleDirectory from '@/components/sections/people/PeopleDirectory';
 
 export const metadata = { title: 'People' };
 

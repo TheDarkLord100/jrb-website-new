@@ -1,5 +1,5 @@
 import PageHeading from '@/components/ui/PageHeading';
-import ResearchLabs from '@/components/sections/ResearchLabs';
+import ResearchLabs from '@/components/sections/research/ResearchLabs';
 
 export const metadata = { title: 'Research Facilities' };
 

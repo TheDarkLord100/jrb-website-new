@@ -3,9 +3,9 @@
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
 import { Mail, Phone, Link as LinkIcon, ChevronDown } from 'lucide-react';
-import { usePeople } from '@/lib/usePeople';
+import { usePeople } from '@/lib/hooks/usePeople';
 import { Pill } from '@/components/ui/Pill';
-import PeopleSkeleton from '@/components/sections/PeopleSkeleton';
+import PeopleSkeleton from '@/components/sections/people/PeopleSkeleton';
 import type { Person } from '@/types/person';
 
 const TABS = [

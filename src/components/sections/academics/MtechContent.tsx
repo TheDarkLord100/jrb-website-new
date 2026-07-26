@@ -4,7 +4,7 @@ import Accordion from '@/components/ui/Accordion';
 import { SectionTitle, TextSkeleton, TableSkeleton } from '@/components/ui/ContentBlocks';
 import Markdown from '@/components/ui/Markdown';
 import TocNav, { type TocSection } from '@/components/ui/TocNav';
-import { useMtechContent } from '@/lib/useMtechContent';
+import { useMtechContent } from '@/lib/hooks/useMtechContent';
 import { getLucideIcon } from '@/lib/lucideIconMap';
 import type { MtechCourse } from '@/types/mtech';
 

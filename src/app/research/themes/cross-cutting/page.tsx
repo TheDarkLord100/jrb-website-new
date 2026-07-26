@@ -1,4 +1,4 @@
-import VerticalPage from '@/components/sections/VerticalPage';
+import VerticalPage from '@/components/sections/research/VerticalPage';
 
 export const metadata = { title: 'Embodied Intelligence, Learning and Control' };
 

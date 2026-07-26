@@ -3,7 +3,7 @@
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { useState } from 'react';
-import { usePointCloudShapes } from '@/lib/usePointCloudShapes';
+import { usePointCloudShapes } from '@/lib/hooks/usePointCloudShapes';
 import PointCloudField from '@/components/sections/hero/PointCloudField';
 import GridFloor from '@/components/sections/hero/GridFloor';
 

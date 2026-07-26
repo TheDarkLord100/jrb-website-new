@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useAnnouncements } from '@/lib/useAnnouncements';
+import { useAnnouncements } from '@/lib/hooks/useAnnouncements';
 import { formatAnnouncementDate } from '@/lib/announcements';
 import { stripMarkdownPreview } from '@/lib/stripMarkdown';
 import AnnouncementModal from '@/components/ui/AnnouncementModal';

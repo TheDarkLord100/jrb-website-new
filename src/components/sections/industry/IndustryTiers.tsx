@@ -1,6 +1,6 @@
 'use client';
 
-import { useIndustryTiers } from '@/lib/useIndustryTiers';
+import { useIndustryTiers } from '@/lib/hooks/useIndustryTiers';
 import { getLucideIcon } from '@/lib/lucideIconMap';
 
 function TiersSkeleton() {

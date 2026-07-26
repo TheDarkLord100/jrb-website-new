@@ -1,5 +1,5 @@
 import { getLabSlugs, getLabBySlug } from '@/lib/supabase/queries';
-import LabDetail from '@/components/sections/LabDetail';
+import LabDetail from '@/components/sections/research/LabDetail';
 
 // Static export: every lab's URL must be known when `next build` runs. A
 // lab added after the last build/deploy won't have a routable page until

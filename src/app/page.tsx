@@ -1,7 +1,7 @@
-import Hero from '@/components/sections/Hero';
-import ResearchDomains from '@/components/sections/ResearchDomains';
-import NewsAndAnnouncements from '@/components/sections/NewsAndAnnouncements';
-import IndustryConnect from '@/components/sections/IndustryConnect';
+import Hero from '@/components/sections/home/Hero';
+import ResearchDomains from '@/components/sections/research/ResearchDomains';
+import NewsAndAnnouncements from '@/components/sections/home/NewsAndAnnouncements';
+import IndustryConnect from '@/components/sections/home/IndustryConnect';
 
 export default function Home() {
   return (

@@ -1,5 +1,5 @@
 import PageHeading from '@/components/ui/PageHeading';
-import MtechContent from '@/components/sections/MtechContent';
+import MtechContent from '@/components/sections/academics/MtechContent';
 
 export const metadata = { title: 'M.Tech. in Robotics' };
 

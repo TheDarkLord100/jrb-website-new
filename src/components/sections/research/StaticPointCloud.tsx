@@ -4,7 +4,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { useEffect, useMemo, useRef } from 'react';
 import * as THREE from 'three';
-import { usePointCloudShapes } from '@/lib/usePointCloudShapes';
+import { usePointCloudShapes } from '@/lib/hooks/usePointCloudShapes';
 
 const VERTEX_SHADER = /* glsl */ `
   attribute float aSize;
