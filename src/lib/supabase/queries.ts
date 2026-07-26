@@ -1,29 +1,24 @@
-import { supabase } from "@/lib/supabase/client";
-import type { Person } from "@/types/person";
-import type { Lab, LabImage, LabAnnouncement } from "@/types/lab";
-import type { AdmissionSection, AdmissionLink } from "@/types/admissions";
-import type { Announcement } from "@/types/announcement";
-import type {
-  MtechSection,
-  MtechCreditCategory,
-  MtechCourse,
-  MtechCard,
-} from "@/types/mtech";
-import type { IdsrSection, IdsrCurriculumRow, IdsrCoreCourse, IdsrElective } from "@/types/idsr";
-import type { IndustryTier, Collaborator } from "@/types/industry";
+import { supabase } from '@/lib/supabase/client';
+import type { Person } from '@/types/person';
+import type { Lab, LabImage, LabAnnouncement } from '@/types/lab';
+import type { AdmissionSection, AdmissionLink } from '@/types/admissions';
+import type { Announcement } from '@/types/announcement';
+import type { MtechSection, MtechCreditCategory, MtechCourse, MtechCard } from '@/types/mtech';
+import type { IdsrSection, IdsrCurriculumRow, IdsrCoreCourse, IdsrElective } from '@/types/idsr';
+import type { IndustryTier, Collaborator } from '@/types/industry';
 
 export async function getPeople(): Promise<Person[]> {
   if (!supabase) {
     console.error(
-      "Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY."
+      'Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.'
     );
     return [];
   }
 
-  const { data, error } = await supabase.from("people").select("*").order("name");
+  const { data, error } = await supabase.from('people').select('*').order('name');
 
   if (error) {
-    console.error("Error fetching people:", error);
+    console.error('Error fetching people:', error);
     return [];
   }
 
@@ -33,15 +28,15 @@ export async function getPeople(): Promise<Person[]> {
 export async function getLabs(): Promise<Lab[]> {
   if (!supabase) {
     console.error(
-      "Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY."
+      'Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.'
     );
     return [];
   }
 
-  const { data, error } = await supabase.from("labs").select("*").order("name");
+  const { data, error } = await supabase.from('labs').select('*').order('name');
 
   if (error) {
-    console.error("Error fetching labs:", error);
+    console.error('Error fetching labs:', error);
     return [];
   }
 
@@ -55,15 +50,15 @@ export async function getLabs(): Promise<Lab[]> {
 export async function getLabSlugs(): Promise<string[]> {
   if (!supabase) {
     console.error(
-      "Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY."
+      'Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.'
     );
     return [];
   }
 
-  const { data, error } = await supabase.from("labs").select("slug");
+  const { data, error } = await supabase.from('labs').select('slug');
 
   if (error) {
-    console.error("Error fetching lab slugs:", error);
+    console.error('Error fetching lab slugs:', error);
     return [];
   }
 
@@ -73,15 +68,15 @@ export async function getLabSlugs(): Promise<string[]> {
 export async function getLabBySlug(slug: string): Promise<Lab | null> {
   if (!supabase) {
     console.error(
-      "Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY."
+      'Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.'
     );
     return null;
   }
 
-  const { data, error } = await supabase.from("labs").select("*").eq("slug", slug).maybeSingle();
+  const { data, error } = await supabase.from('labs').select('*').eq('slug', slug).maybeSingle();
 
   if (error) {
-    console.error("Error fetching lab:", error);
+    console.error('Error fetching lab:', error);
     return null;
   }
 
@@ -92,13 +87,13 @@ export async function getLabImages(labId: string): Promise<LabImage[]> {
   if (!supabase) return [];
 
   const { data, error } = await supabase
-    .from("lab_images")
-    .select("*")
-    .eq("lab_id", labId)
-    .order("display_order", { ascending: true });
+    .from('lab_images')
+    .select('*')
+    .eq('lab_id', labId)
+    .order('display_order', { ascending: true });
 
   if (error) {
-    console.error("Error fetching lab images:", error);
+    console.error('Error fetching lab images:', error);
     return [];
   }
 
@@ -109,13 +104,13 @@ export async function getLabAnnouncements(labId: string): Promise<LabAnnouncemen
   if (!supabase) return [];
 
   const { data, error } = await supabase
-    .from("lab_announcements")
-    .select("*")
-    .eq("lab_id", labId)
-    .order("date", { ascending: false });
+    .from('lab_announcements')
+    .select('*')
+    .eq('lab_id', labId)
+    .order('date', { ascending: false });
 
   if (error) {
-    console.error("Error fetching lab announcements:", error);
+    console.error('Error fetching lab announcements:', error);
     return [];
   }
 
@@ -131,12 +126,12 @@ export async function getThemeFaculty(themeSlug: string): Promise<Person[]> {
   if (!supabase) return [];
 
   const { data, error } = await supabase
-    .from("theme_faculty")
-    .select("people(*)")
-    .eq("theme_slug", themeSlug);
+    .from('theme_faculty')
+    .select('people(*)')
+    .eq('theme_slug', themeSlug);
 
   if (error) {
-    console.error("Error fetching theme faculty:", error);
+    console.error('Error fetching theme faculty:', error);
     return [];
   }
 
@@ -152,12 +147,12 @@ export async function getThemeLabs(themeSlug: string): Promise<Lab[]> {
   if (!supabase) return [];
 
   const { data, error } = await supabase
-    .from("theme_labs")
-    .select("labs(*)")
-    .eq("theme_slug", themeSlug);
+    .from('theme_labs')
+    .select('labs(*)')
+    .eq('theme_slug', themeSlug);
 
   if (error) {
-    console.error("Error fetching theme labs:", error);
+    console.error('Error fetching theme labs:', error);
     return [];
   }
 
@@ -169,18 +164,18 @@ export async function getThemeLabs(themeSlug: string): Promise<Lab[]> {
 export async function getAdmissionSections(): Promise<AdmissionSection[]> {
   if (!supabase) {
     console.error(
-      "Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY."
+      'Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.'
     );
     return [];
   }
 
   const { data, error } = await supabase
-    .from("admission_sections")
-    .select("*")
-    .order("display_order", { ascending: true });
+    .from('admission_sections')
+    .select('*')
+    .order('display_order', { ascending: true });
 
   if (error) {
-    console.error("Error fetching admission sections:", error);
+    console.error('Error fetching admission sections:', error);
     return [];
   }
 
@@ -190,42 +185,40 @@ export async function getAdmissionSections(): Promise<AdmissionSection[]> {
 export async function getAdmissionLinks(): Promise<AdmissionLink[]> {
   if (!supabase) {
     console.error(
-      "Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY."
+      'Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.'
     );
     return [];
   }
 
   const { data, error } = await supabase
-    .from("admission_links")
-    .select("*")
-    .order("display_order", { ascending: true });
+    .from('admission_links')
+    .select('*')
+    .order('display_order', { ascending: true });
 
   if (error) {
-    console.error("Error fetching admission links:", error);
+    console.error('Error fetching admission links:', error);
     return [];
   }
 
   return (data ?? []) as AdmissionLink[];
 }
 
-export async function getAnnouncementsByType(
-  type: Announcement["type"]
-): Promise<Announcement[]> {
+export async function getAnnouncementsByType(type: Announcement['type']): Promise<Announcement[]> {
   if (!supabase) {
     console.error(
-      "Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY."
+      'Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.'
     );
     return [];
   }
 
   const { data, error } = await supabase
-    .from("announcements")
-    .select("*")
-    .eq("type", type)
-    .order("date", { ascending: false });
+    .from('announcements')
+    .select('*')
+    .eq('type', type)
+    .order('date', { ascending: false });
 
   if (error) {
-    console.error("Error fetching announcements:", error);
+    console.error('Error fetching announcements:', error);
     return [];
   }
 
@@ -235,18 +228,18 @@ export async function getAnnouncementsByType(
 export async function getAllAnnouncements(): Promise<Announcement[]> {
   if (!supabase) {
     console.error(
-      "Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY."
+      'Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.'
     );
     return [];
   }
 
   const { data, error } = await supabase
-    .from("announcements")
-    .select("*")
-    .order("date", { ascending: false });
+    .from('announcements')
+    .select('*')
+    .order('date', { ascending: false });
 
   if (error) {
-    console.error("Error fetching announcements:", error);
+    console.error('Error fetching announcements:', error);
     return [];
   }
 
@@ -256,11 +249,11 @@ export async function getAllAnnouncements(): Promise<Announcement[]> {
 export async function getMtechSections(): Promise<MtechSection[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
-    .from("mtech_sections")
-    .select("*")
-    .order("display_order", { ascending: true });
+    .from('mtech_sections')
+    .select('*')
+    .order('display_order', { ascending: true });
   if (error) {
-    console.error("Error fetching mtech sections:", error);
+    console.error('Error fetching mtech sections:', error);
     return [];
   }
   return (data ?? []) as MtechSection[];
@@ -269,11 +262,11 @@ export async function getMtechSections(): Promise<MtechSection[]> {
 export async function getMtechCreditCategories(): Promise<MtechCreditCategory[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
-    .from("mtech_credit_categories")
-    .select("*")
-    .order("display_order", { ascending: true });
+    .from('mtech_credit_categories')
+    .select('*')
+    .order('display_order', { ascending: true });
   if (error) {
-    console.error("Error fetching mtech credit categories:", error);
+    console.error('Error fetching mtech credit categories:', error);
     return [];
   }
   return (data ?? []) as MtechCreditCategory[];
@@ -282,11 +275,11 @@ export async function getMtechCreditCategories(): Promise<MtechCreditCategory[]>
 export async function getMtechCourses(): Promise<MtechCourse[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
-    .from("mtech_courses")
-    .select("*")
-    .order("display_order", { ascending: true });
+    .from('mtech_courses')
+    .select('*')
+    .order('display_order', { ascending: true });
   if (error) {
-    console.error("Error fetching mtech courses:", error);
+    console.error('Error fetching mtech courses:', error);
     return [];
   }
   return (data ?? []) as MtechCourse[];
@@ -295,11 +288,11 @@ export async function getMtechCourses(): Promise<MtechCourse[]> {
 export async function getMtechSpecializations(): Promise<MtechCard[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
-    .from("mtech_specializations")
-    .select("*")
-    .order("display_order", { ascending: true });
+    .from('mtech_specializations')
+    .select('*')
+    .order('display_order', { ascending: true });
   if (error) {
-    console.error("Error fetching mtech specializations:", error);
+    console.error('Error fetching mtech specializations:', error);
     return [];
   }
   return (data ?? []) as MtechCard[];
@@ -308,11 +301,11 @@ export async function getMtechSpecializations(): Promise<MtechCard[]> {
 export async function getIdsrSections(): Promise<IdsrSection[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
-    .from("idsr_sections")
-    .select("*")
-    .order("display_order", { ascending: true });
+    .from('idsr_sections')
+    .select('*')
+    .order('display_order', { ascending: true });
   if (error) {
-    console.error("Error fetching IDSR sections:", error);
+    console.error('Error fetching IDSR sections:', error);
     return [];
   }
   return (data ?? []) as IdsrSection[];
@@ -321,11 +314,11 @@ export async function getIdsrSections(): Promise<IdsrSection[]> {
 export async function getIdsrCurriculumStructure(): Promise<IdsrCurriculumRow[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
-    .from("idsr_curriculum_structure")
-    .select("*")
-    .order("display_order", { ascending: true });
+    .from('idsr_curriculum_structure')
+    .select('*')
+    .order('display_order', { ascending: true });
   if (error) {
-    console.error("Error fetching IDSR curriculum structure:", error);
+    console.error('Error fetching IDSR curriculum structure:', error);
     return [];
   }
   return (data ?? []) as IdsrCurriculumRow[];
@@ -334,11 +327,11 @@ export async function getIdsrCurriculumStructure(): Promise<IdsrCurriculumRow[]>
 export async function getIdsrCoreCourses(): Promise<IdsrCoreCourse[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
-    .from("idsr_core_courses")
-    .select("*")
-    .order("display_order", { ascending: true });
+    .from('idsr_core_courses')
+    .select('*')
+    .order('display_order', { ascending: true });
   if (error) {
-    console.error("Error fetching IDSR core courses:", error);
+    console.error('Error fetching IDSR core courses:', error);
     return [];
   }
   return (data ?? []) as IdsrCoreCourse[];
@@ -347,25 +340,24 @@ export async function getIdsrCoreCourses(): Promise<IdsrCoreCourse[]> {
 export async function getIdsrElectives(): Promise<IdsrElective[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
-    .from("idsr_electives")
-    .select("*")
-    .order("display_order", { ascending: true });
+    .from('idsr_electives')
+    .select('*')
+    .order('display_order', { ascending: true });
   if (error) {
-    console.error("Error fetching IDSR electives:", error);
+    console.error('Error fetching IDSR electives:', error);
     return [];
   }
   return (data ?? []) as IdsrElective[];
 }
 
-
 export async function getIndustryTiers(): Promise<IndustryTier[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
-    .from("industry_tiers")
-    .select("*")
-    .order("display_order", { ascending: true });
+    .from('industry_tiers')
+    .select('*')
+    .order('display_order', { ascending: true });
   if (error) {
-    console.error("Error fetching industry tiers:", error);
+    console.error('Error fetching industry tiers:', error);
     return [];
   }
   return (data ?? []) as IndustryTier[];
@@ -374,11 +366,11 @@ export async function getIndustryTiers(): Promise<IndustryTier[]> {
 export async function getCollaborators(): Promise<Collaborator[]> {
   if (!supabase) return [];
   const { data, error } = await supabase
-    .from("collaborators")
-    .select("*")
-    .order("display_order", { ascending: true });
+    .from('collaborators')
+    .select('*')
+    .order('display_order', { ascending: true });
   if (error) {
-    console.error("Error fetching collaborators:", error);
+    console.error('Error fetching collaborators:', error);
     return [];
   }
   return (data ?? []) as Collaborator[];

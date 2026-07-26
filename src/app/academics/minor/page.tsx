@@ -1,7 +1,7 @@
-import PageHeading from "@/components/ui/PageHeading";
-import IdsrContent from "@/components/sections/IdsrContent";
+import PageHeading from '@/components/ui/PageHeading';
+import IdsrContent from '@/components/sections/IdsrContent';
 
-export const metadata = { title: "Minor Degree in Robotics" };
+export const metadata = { title: 'Minor Degree in Robotics' };
 
 export default function MinorPage() {
   return (

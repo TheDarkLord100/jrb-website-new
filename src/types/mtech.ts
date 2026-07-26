@@ -18,7 +18,7 @@ export type MtechCourse = {
   id: string;
   code: string | null;
   title: string;
-  category: "core" | "project" | "elective_slot" | "open_category";
+  category: 'core' | 'project' | 'elective_slot' | 'open_category';
   semester: string | null;
   l: number | null;
   t: number | null;

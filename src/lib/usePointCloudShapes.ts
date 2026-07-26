@@ -1,9 +1,12 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import type { LoadedShape, PointCloudManifest } from "@/types/pointcloud";
+import { useEffect, useState } from 'react';
+import type { LoadedShape, PointCloudManifest } from '@/types/pointcloud';
 
-async function loadShape(shape: { name: string; bin_file: string }, count: number): Promise<LoadedShape> {
+async function loadShape(
+  shape: { name: string; bin_file: string },
+  count: number
+): Promise<LoadedShape> {
   const res = await fetch(`/pointclouds/${shape.bin_file}`);
   const buf = await res.arrayBuffer();
   const floats = new Float32Array(buf);
@@ -31,8 +34,8 @@ let cachedLoad: Promise<LoadedResult> | null = null;
 function loadAllShapes(): Promise<LoadedResult> {
   if (!cachedLoad) {
     cachedLoad = (async () => {
-      const res = await fetch("/pointclouds/manifest.json");
-      if (!res.ok) throw new Error("manifest.json not found");
+      const res = await fetch('/pointclouds/manifest.json');
+      if (!res.ok) throw new Error('manifest.json not found');
       const manifest: PointCloudManifest = await res.json();
       const shapes = await Promise.all(manifest.shapes.map((s) => loadShape(s, manifest.count)));
       return { count: manifest.count, shapes };
@@ -63,7 +66,7 @@ export function usePointCloudShapes() {
         }
       })
       .catch((e) => {
-        if (!cancelled) setError(e instanceof Error ? e.message : "Failed to load point clouds");
+        if (!cancelled) setError(e instanceof Error ? e.message : 'Failed to load point clouds');
       });
 
     return () => {

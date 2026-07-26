@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useAnnouncementsByType } from "@/lib/useAnnouncementsByType";
-import { formatAnnouncementDate } from "@/lib/announcements";
-import { stripMarkdownPreview } from "@/lib/stripMarkdown";
-import AnnouncementModal from "@/components/ui/AnnouncementModal";
-import Card from "@/components/ui/Card";
-import type { Announcement } from "@/types/announcement";
+import { useState } from 'react';
+import { useAnnouncementsByType } from '@/lib/useAnnouncementsByType';
+import { formatAnnouncementDate } from '@/lib/announcements';
+import { stripMarkdownPreview } from '@/lib/stripMarkdown';
+import AnnouncementModal from '@/components/ui/AnnouncementModal';
+import Card from '@/components/ui/Card';
+import type { Announcement } from '@/types/announcement';
 
 function AnnouncementsSkeleton() {
   return (
@@ -28,9 +28,9 @@ function AnnouncementsSkeleton() {
 export default function AnnouncementSidebar({
   type,
   heading,
-  emptyText = "No announcements available.",
+  emptyText = 'No announcements available.',
 }: {
-  type: Announcement["type"];
+  type: Announcement['type'];
   heading: string;
   emptyText?: string;
 }) {

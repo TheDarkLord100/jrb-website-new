@@ -14,7 +14,7 @@ import {
   TrendingUp,
   Circle,
   type LucideIcon,
-} from "lucide-react";
+} from 'lucide-react';
 
 // Add an entry here whenever a new icon name is used in an `icon` column
 // (mtech_specializations, mtech_career_pathways, industry_tiers, ...).

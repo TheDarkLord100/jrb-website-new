@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { FileText, BookOpen } from "lucide-react";
-import Markdown from "@/components/ui/Markdown";
-import TocNav, { type TocSection } from "@/components/ui/TocNav";
-import { SectionTitle, TextSkeleton, TableSkeleton } from "@/components/ui/ContentBlocks";
-import { useIdsrContent } from "@/lib/useIdsrContent";
+import { FileText, BookOpen } from 'lucide-react';
+import Markdown from '@/components/ui/Markdown';
+import TocNav, { type TocSection } from '@/components/ui/TocNav';
+import { SectionTitle, TextSkeleton, TableSkeleton } from '@/components/ui/ContentBlocks';
+import { useIdsrContent } from '@/lib/useIdsrContent';
 
 const SECTIONS: TocSection[] = [
-  { id: "overview", label: "Overview" },
-  { id: "curriculum-structure", label: "Curriculum Structure" },
-  { id: "core-courses", label: "Core Courses" },
-  { id: "electives", label: "Elective Courses" },
-  { id: "learning-approach", label: "Learning Approach" },
+  { id: 'overview', label: 'Overview' },
+  { id: 'curriculum-structure', label: 'Curriculum Structure' },
+  { id: 'core-courses', label: 'Core Courses' },
+  { id: 'electives', label: 'Elective Courses' },
+  { id: 'learning-approach', label: 'Learning Approach' },
 ];
 
 export default function IdsrContent() {
@@ -30,7 +30,7 @@ export default function IdsrContent() {
   return (
     <div className="grid gap-10 lg:grid-cols-[220px_1fr]">
       <TocNav sections={SECTIONS} />
-    
+
       <div className="flex min-w-0 flex-col gap-16">
         <section id="overview" className="scroll-mt-24">
           <SectionTitle>Overview</SectionTitle>
@@ -38,7 +38,7 @@ export default function IdsrContent() {
             <TextSkeleton lines={5} />
           ) : (
             <div className="mt-5 flex flex-col gap-4">
-              {bySectionKey("overview").map((s) => (
+              {bySectionKey('overview').map((s) => (
                 <Markdown key={s.id}>{s.body_markdown}</Markdown>
               ))}
 
@@ -73,8 +73,8 @@ export default function IdsrContent() {
                       key={row.id}
                       className={
                         row.is_highlighted
-                          ? "bg-gray-50 font-semibold text-[#001A23]"
-                          : "border-b border-gray-100"
+                          ? 'bg-gray-50 font-semibold text-[#001A23]'
+                          : 'border-b border-gray-100'
                       }
                     >
                       <td className="px-4 py-3 text-gray-700">{row.component}</td>
@@ -106,9 +106,9 @@ export default function IdsrContent() {
                   {data.coreCourses.map((row) => (
                     <tr key={row.id} className="border-b border-gray-100">
                       <td className="py-2 pr-4 text-gray-700">{row.course}</td>
-                      <td className="px-2 py-2 text-gray-600">{row.code ?? "—"}</td>
-                      <td className="px-2 py-2 text-gray-600">{row.ltp ?? "—"}</td>
-                      <td className="px-2 py-2 text-gray-600">{row.credits ?? "—"}</td>
+                      <td className="px-2 py-2 text-gray-600">{row.code ?? '—'}</td>
+                      <td className="px-2 py-2 text-gray-600">{row.ltp ?? '—'}</td>
+                      <td className="px-2 py-2 text-gray-600">{row.credits ?? '—'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -120,8 +120,8 @@ export default function IdsrContent() {
         <section id="electives" className="scroll-mt-24">
           <SectionTitle>Elective Courses</SectionTitle>
           <p className="mt-5 leading-relaxed text-gray-700">
-            Electives are drawn from courses offered across departments, allowing students to
-            shape their specialization around individual interests.
+            Electives are drawn from courses offered across departments, allowing students to shape
+            their specialization around individual interests.
           </p>
           {data === null ? (
             <div className="mt-5 flex animate-pulse flex-wrap gap-2">
@@ -150,7 +150,7 @@ export default function IdsrContent() {
             <TextSkeleton lines={4} />
           ) : (
             <div className="mt-5 flex flex-col gap-4">
-              {bySectionKey("learning-approach").map((s) => (
+              {bySectionKey('learning-approach').map((s) => (
                 <Markdown key={s.id}>{s.body_markdown}</Markdown>
               ))}
             </div>

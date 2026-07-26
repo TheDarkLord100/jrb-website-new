@@ -1,5 +1,5 @@
-import { getLabSlugs, getLabBySlug } from "@/lib/supabase/queries";
-import LabDetail from "@/components/sections/LabDetail";
+import { getLabSlugs, getLabBySlug } from '@/lib/supabase/queries';
+import LabDetail from '@/components/sections/LabDetail';
 
 // Static export: every lab's URL must be known when `next build` runs. A
 // lab added after the last build/deploy won't have a routable page until
@@ -17,7 +17,7 @@ import LabDetail from "@/components/sections/LabDetail";
 export async function generateStaticParams() {
   const slugs = await getLabSlugs();
   if (slugs.length === 0) {
-    return [{ slug: "_placeholder" }];
+    return [{ slug: '_placeholder' }];
   }
   return slugs.map((slug) => ({ slug }));
 }
@@ -25,7 +25,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const lab = await getLabBySlug(slug);
-  return { title: lab?.name ?? "Lab" };
+  return { title: lab?.name ?? 'Lab' };
 }
 
 export default async function LabPage({ params }: { params: Promise<{ slug: string }> }) {

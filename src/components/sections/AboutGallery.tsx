@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, Images, X } from "lucide-react";
-import SectionHeading from "@/components/ui/SectionHeading";
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { ChevronLeft, ChevronRight, Images, X } from 'lucide-react';
+import SectionHeading from '@/components/ui/SectionHeading';
 
 // Photos from events, inaugurations, and team milestones — not tied to any
 // specific research project. Each entry can hold one or more images; add
@@ -16,19 +16,19 @@ type GalleryEntry = {
 
 const galleryEntries: GalleryEntry[] = [
   {
-    caption: "M.Tech Robotics, Batch 2024-26",
+    caption: 'M.Tech Robotics, Batch 2024-26',
     images: [
       {
-        src: "/Assets/gallery_images/group_26.jpg",
-        alt: "M.Tech Batch 2024-26",
+        src: '/Assets/gallery_images/group_26.jpg',
+        alt: 'M.Tech Batch 2024-26',
       },
       {
-        src: "/Assets/gallery_images/group_26_2.jpg",
-        alt: "M.Tech Batch 2024-26",
+        src: '/Assets/gallery_images/group_26_2.jpg',
+        alt: 'M.Tech Batch 2024-26',
       },
       {
-        src: "/Assets/gallery_images/group_26_3.jpg",
-        alt: "M.Tech Batch 2024-26",
+        src: '/Assets/gallery_images/group_26_3.jpg',
+        alt: 'M.Tech Batch 2024-26',
       },
     ],
   },
@@ -36,46 +36,46 @@ const galleryEntries: GalleryEntry[] = [
     caption: "60th Edition of Cobotalks on 'Physical AI: AI for Robotics'",
     images: [
       {
-        src: "/Assets/gallery_images/cobotalks_60/1.jpg",
-        alt: "",
+        src: '/Assets/gallery_images/cobotalks_60/1.jpg',
+        alt: '',
       },
       {
-        src: "/Assets/gallery_images/cobotalks_60/2.jpg",
-        alt: "",
+        src: '/Assets/gallery_images/cobotalks_60/2.jpg',
+        alt: '',
       },
       {
-        src: "/Assets/gallery_images/cobotalks_60/3.jpg",
-        alt: "",
+        src: '/Assets/gallery_images/cobotalks_60/3.jpg',
+        alt: '',
       },
       {
-        src: "/Assets/gallery_images/cobotalks_60/4.jpg",
-        alt: "",
+        src: '/Assets/gallery_images/cobotalks_60/4.jpg',
+        alt: '',
       },
       {
-        src: "/Assets/gallery_images/cobotalks_60/5.jpg",
-        alt: "",
+        src: '/Assets/gallery_images/cobotalks_60/5.jpg',
+        alt: '',
       },
       {
-        src: "/Assets/gallery_images/cobotalks_60/6.jpg",
-        alt: "",
-      },
-    ],
-  },
-  {
-    caption: "IIT Monument Representing Interdisciplinary Engineering and Design",
-    images: [
-      {
-        src: "/Assets/gallery_images/iit_monu.jpg",
-        alt: "IIT Monument Representing Interdisciplinary Engineering and Design",
+        src: '/Assets/gallery_images/cobotalks_60/6.jpg',
+        alt: '',
       },
     ],
   },
   {
-    caption: "M.Tech Robotics, Batch 2023-25",
+    caption: 'IIT Monument Representing Interdisciplinary Engineering and Design',
     images: [
       {
-        src: "/Assets/gallery_images/group_25.jpg",
-        alt: "M.Tech Batch 2023-25",
+        src: '/Assets/gallery_images/iit_monu.jpg',
+        alt: 'IIT Monument Representing Interdisciplinary Engineering and Design',
+      },
+    ],
+  },
+  {
+    caption: 'M.Tech Robotics, Batch 2023-25',
+    images: [
+      {
+        src: '/Assets/gallery_images/group_25.jpg',
+        alt: 'M.Tech Batch 2023-25',
       },
     ],
   },
@@ -103,12 +103,12 @@ export default function AboutGallery() {
     if (openEntry === null) return;
 
     function handleKey(e: KeyboardEvent) {
-      if (e.key === "Escape") close();
-      if (e.key === "ArrowRight") showNext();
-      if (e.key === "ArrowLeft") showPrev();
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowRight') showNext();
+      if (e.key === 'ArrowLeft') showPrev();
     }
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openEntry, activeImage]);
 

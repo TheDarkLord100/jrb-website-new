@@ -1,8 +1,8 @@
-import PageHeading from "@/components/ui/PageHeading";
-import AdmissionsContent from "@/components/sections/AdmissionsContent";
-import AnnouncementSidebar from "@/components/sections/AnnouncementSidebar";
+import PageHeading from '@/components/ui/PageHeading';
+import AdmissionsContent from '@/components/sections/AdmissionsContent';
+import AnnouncementSidebar from '@/components/sections/AnnouncementSidebar';
 
-export const metadata = { title: "Admissions" };
+export const metadata = { title: 'Admissions' };
 
 export default function AdmissionsPage() {
   return (

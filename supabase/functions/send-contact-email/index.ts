@@ -14,20 +14,20 @@
 //                             Swap this later by updating the secret,
 //                             no code change or redeploy needed.
 
-const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-const CONTACT_RECIPIENT_EMAIL = Deno.env.get("CONTACT_RECIPIENT_EMAIL");
+const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
+const CONTACT_RECIPIENT_EMAIL = Deno.env.get('CONTACT_RECIPIENT_EMAIL');
 
 // Public contact form, no auth required to submit, so allow any origin.
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
 function jsonResponse(body: Record<string, unknown>, status: number) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { ...corsHeaders, "Content-Type": "application/json" },
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
   });
 }
 
@@ -36,17 +36,20 @@ function isValidEmail(email: string): boolean {
 }
 
 Deno.serve(async (req: Request) => {
-  if (req.method === "OPTIONS") {
+  if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
-  if (req.method !== "POST") {
-    return jsonResponse({ error: "Method not allowed." }, 405);
+  if (req.method !== 'POST') {
+    return jsonResponse({ error: 'Method not allowed.' }, 405);
   }
 
   if (!RESEND_API_KEY || !CONTACT_RECIPIENT_EMAIL) {
-    console.error("Missing RESEND_API_KEY or CONTACT_RECIPIENT_EMAIL secret.");
-    return jsonResponse({ error: "Contact form is not configured. Please email us directly." }, 500);
+    console.error('Missing RESEND_API_KEY or CONTACT_RECIPIENT_EMAIL secret.');
+    return jsonResponse(
+      { error: 'Contact form is not configured. Please email us directly.' },
+      500
+    );
   }
 
   let body: {
@@ -61,28 +64,28 @@ Deno.serve(async (req: Request) => {
   try {
     body = await req.json();
   } catch {
-    return jsonResponse({ error: "Invalid request body." }, 400);
+    return jsonResponse({ error: 'Invalid request body.' }, 400);
   }
 
-  const name = (body.name ?? "").trim();
-  const email = (body.email ?? "").trim();
-  const subject = (body.subject ?? "").trim() || "Contact from Website";
-  const message = (body.message ?? "").trim();
-  const organization = (body.organization ?? "").trim();
-  const phone = (body.phone ?? "").trim();
-  const collaborationType = (body.collaborationType ?? "").trim();
+  const name = (body.name ?? '').trim();
+  const email = (body.email ?? '').trim();
+  const subject = (body.subject ?? '').trim() || 'Contact from Website';
+  const message = (body.message ?? '').trim();
+  const organization = (body.organization ?? '').trim();
+  const phone = (body.phone ?? '').trim();
+  const collaborationType = (body.collaborationType ?? '').trim();
 
   if (!name || !email || !message) {
-    return jsonResponse({ error: "Name, email, and message are required." }, 400);
+    return jsonResponse({ error: 'Name, email, and message are required.' }, 400);
   }
   if (name.length > 200 || subject.length > 200 || organization.length > 200) {
-    return jsonResponse({ error: "One of the fields is too long." }, 400);
+    return jsonResponse({ error: 'One of the fields is too long.' }, 400);
   }
   if (message.length > 5000) {
-    return jsonResponse({ error: "Message is too long (5000 character limit)." }, 400);
+    return jsonResponse({ error: 'Message is too long (5000 character limit).' }, 400);
   }
   if (!isValidEmail(email)) {
-    return jsonResponse({ error: "Please provide a valid email address." }, 400);
+    return jsonResponse({ error: 'Please provide a valid email address.' }, 400);
   }
 
   const extraLines = [
@@ -94,19 +97,19 @@ Deno.serve(async (req: Request) => {
   const emailText = `New message from the CoE-BIRD website contact form.
 
 Name: ${name}
-Email: ${email}${extraLines.length > 0 ? "\n" + extraLines.join("\n") : ""}
+Email: ${email}${extraLines.length > 0 ? '\n' + extraLines.join('\n') : ''}
 
 Message:
 ${message}`;
 
-  const resendRes = await fetch("https://api.resend.com/emails", {
-    method: "POST",
+  const resendRes = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
     headers: {
       Authorization: `Bearer ${RESEND_API_KEY}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      from: "CoE-BIRD Website <onboarding@resend.dev>",
+      from: 'CoE-BIRD Website <onboarding@resend.dev>',
       to: [CONTACT_RECIPIENT_EMAIL],
       reply_to: email,
       subject: `[Website Contact] ${subject}`,
@@ -116,8 +119,8 @@ ${message}`;
 
   if (!resendRes.ok) {
     const errText = await resendRes.text();
-    console.error("Resend API error:", resendRes.status, errText);
-    return jsonResponse({ error: "Failed to send message. Please try again later." }, 502);
+    console.error('Resend API error:', resendRes.status, errText);
+    return jsonResponse({ error: 'Failed to send message. Please try again later.' }, 502);
   }
 
   return jsonResponse({ success: true }, 200);

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { getCollaborators } from "@/lib/supabase/queries";
-import type { Collaborator } from "@/types/industry";
+import { useEffect, useState } from 'react';
+import { getCollaborators } from '@/lib/supabase/queries';
+import type { Collaborator } from '@/types/industry';
 
 export function useCollaborators() {
   const [collaborators, setCollaborators] = useState<Collaborator[] | null>(null);
@@ -15,7 +15,7 @@ export function useCollaborators() {
         if (!cancelled) setCollaborators(data);
       })
       .catch((e) => {
-        if (!cancelled) setError(e instanceof Error ? e.message : "Failed to load collaborators");
+        if (!cancelled) setError(e instanceof Error ? e.message : 'Failed to load collaborators');
       });
     return () => {
       cancelled = true;

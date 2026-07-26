@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { X } from "lucide-react";
-import Markdown from "@/components/ui/Markdown";
-import type { Announcement } from "@/types/announcement";
+import Image from 'next/image';
+import { X } from 'lucide-react';
+import Markdown from '@/components/ui/Markdown';
+import type { Announcement } from '@/types/announcement';
 
 export default function AnnouncementModal({
   item,
@@ -33,7 +33,7 @@ export default function AnnouncementModal({
         </button>
 
         {images.length > 0 && (
-          <div className={`mb-5 grid gap-2 ${images.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}>
+          <div className={`mb-5 grid gap-2 ${images.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
             {images.slice(0, 4).map((src) => (
               <div key={src} className="relative aspect-[3/4] overflow-hidden bg-gray-100">
                 <Image src={src} alt={item.title} fill className="object-contain" />
@@ -42,7 +42,7 @@ export default function AnnouncementModal({
           </div>
         )}
 
-        <h3 className="font-serif pr-6 text-xl font-bold text-[#001A23]">{item.title}</h3>
+        <h3 className="pr-6 font-serif text-xl font-bold text-[#001A23]">{item.title}</h3>
         <div className="text-sm">
           <Markdown>{item.description}</Markdown>
         </div>
@@ -54,7 +54,7 @@ export default function AnnouncementModal({
             rel="noopener noreferrer"
             className="mt-5 inline-block border border-gray-300 px-5 py-2 text-sm font-medium text-[#001A23] transition-colors hover:border-amber-400 hover:text-amber-700"
           >
-            {item.link_text ?? "Open Link"}
+            {item.link_text ?? 'Open Link'}
           </a>
         )}
       </div>

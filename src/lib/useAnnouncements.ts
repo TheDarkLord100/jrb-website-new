@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { getAllAnnouncements } from "@/lib/supabase/queries";
-import type { Announcement } from "@/types/announcement";
+import { useEffect, useState } from 'react';
+import { getAllAnnouncements } from '@/lib/supabase/queries';
+import type { Announcement } from '@/types/announcement';
 
 export function useAnnouncements() {
   const [items, setItems] = useState<Announcement[] | null>(null);
@@ -16,7 +16,7 @@ export function useAnnouncements() {
         if (!cancelled) setItems(data);
       })
       .catch((e) => {
-        if (!cancelled) setError(e instanceof Error ? e.message : "Failed to load announcements");
+        if (!cancelled) setError(e instanceof Error ? e.message : 'Failed to load announcements');
       });
 
     return () => {

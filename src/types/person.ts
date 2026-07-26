@@ -1,5 +1,5 @@
 // Mirrors the `people` table described in docs/DATABASE.md.
-export type PersonRole = "faculty" | "student" | "postdoc" | "alumni";
+export type PersonRole = 'faculty' | 'student' | 'postdoc' | 'alumni';
 
 export type Person = {
   id: string;

@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useFrame } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
-import * as THREE from "three";
-import type { LoadedShape } from "@/types/pointcloud";
+import { useFrame } from '@react-three/fiber';
+import { useEffect, useMemo, useRef } from 'react';
+import * as THREE from 'three';
+import type { LoadedShape } from '@/types/pointcloud';
 
 // Durations are independent (not fractions of one fixed cycle) so an
 // interrupt (the visitor clicking a legend item) can cut a phase short
@@ -22,7 +22,7 @@ function easeInOutCubic(x: number) {
   return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
 }
 
-type Phase = "assembling" | "holding" | "dispersing";
+type Phase = 'assembling' | 'holding' | 'dispersing';
 
 type SceneData = {
   geometry: THREE.BufferGeometry;
@@ -80,10 +80,10 @@ export default function PointCloudField({
 
   // FSM state, mutated imperatively in useFrame — deliberately refs, not
   // React state, since this updates every frame.
-  const phaseRef = useRef<Phase>("dispersing");
+  const phaseRef = useRef<Phase>('dispersing');
   const phaseElapsedRef = useRef(0);
   const shapeIndexRef = useRef(0);
-  const lastReportedRef = useRef("");
+  const lastReportedRef = useRef('');
   const autoCycleAdvanceRef = useRef(false);
 
   useEffect(() => {
@@ -111,8 +111,8 @@ export default function PointCloudField({
     for (let i = 0; i < count; i++) sizes[i] = 0.05 + jitter[i] * 0.03;
 
     const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute("position", new THREE.BufferAttribute(currentPos, 3));
-    geometry.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
+    geometry.setAttribute('position', new THREE.BufferAttribute(currentPos, 3));
+    geometry.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1));
 
     dataRef.current = {
       geometry,
@@ -127,7 +127,7 @@ export default function PointCloudField({
       pointsRef.current.geometry = geometry;
     }
 
-    phaseRef.current = "dispersing";
+    phaseRef.current = 'dispersing';
     phaseElapsedRef.current = DISPERSE_DURATION; // start already "at noise"
     shapeIndexRef.current = 0;
 
@@ -146,39 +146,42 @@ export default function PointCloudField({
     // ---- decide phase transitions ----
     const wantsShape = activeIndex !== null;
 
-    if (wantsShape && (phaseRef.current === "dispersing" || shapeIndexRef.current !== activeIndex)) {
+    if (
+      wantsShape &&
+      (phaseRef.current === 'dispersing' || shapeIndexRef.current !== activeIndex)
+    ) {
       // (re)target: snapshot wherever points currently are and assemble
       // toward the requested shape from there — no popping.
       sourcePos.set(currentPos);
       shapeIndexRef.current = activeIndex as number;
-      phaseRef.current = "assembling";
+      phaseRef.current = 'assembling';
       phaseElapsedRef.current = 0;
-    } else if (!wantsShape && phaseRef.current === "holding" && !autoCycleAdvanceRef.current) {
+    } else if (!wantsShape && phaseRef.current === 'holding' && !autoCycleAdvanceRef.current) {
       // manual selection was cleared -> disperse, then resume auto-cycling
       sourcePos.set(currentPos);
-      phaseRef.current = "dispersing";
+      phaseRef.current = 'dispersing';
       phaseElapsedRef.current = 0;
     }
 
     phaseElapsedRef.current += delta;
 
-    if (phaseRef.current === "assembling" && phaseElapsedRef.current >= ASSEMBLE_DURATION) {
-      phaseRef.current = "holding";
+    if (phaseRef.current === 'assembling' && phaseElapsedRef.current >= ASSEMBLE_DURATION) {
+      phaseRef.current = 'holding';
       phaseElapsedRef.current = 0;
     } else if (
-      phaseRef.current === "holding" &&
+      phaseRef.current === 'holding' &&
       !wantsShape &&
       phaseElapsedRef.current >= AUTO_HOLD_DURATION
     ) {
       sourcePos.set(currentPos);
-      phaseRef.current = "dispersing";
+      phaseRef.current = 'dispersing';
       phaseElapsedRef.current = 0;
       autoCycleAdvanceRef.current = true;
-    } else if (phaseRef.current === "dispersing" && phaseElapsedRef.current >= DISPERSE_DURATION) {
+    } else if (phaseRef.current === 'dispersing' && phaseElapsedRef.current >= DISPERSE_DURATION) {
       if (autoCycleAdvanceRef.current || (!wantsShape && shapes.length > 0)) {
         shapeIndexRef.current = (shapeIndexRef.current + 1) % shapes.length;
         sourcePos.set(noisePos);
-        phaseRef.current = "assembling";
+        phaseRef.current = 'assembling';
         phaseElapsedRef.current = 0;
         autoCycleAdvanceRef.current = false;
       }
@@ -192,16 +195,16 @@ export default function PointCloudField({
     }
 
     // ---- write positions/colors for this frame ----
-    const duration = phaseRef.current === "assembling" ? ASSEMBLE_DURATION : DISPERSE_DURATION;
+    const duration = phaseRef.current === 'assembling' ? ASSEMBLE_DURATION : DISPERSE_DURATION;
     const rawT = Math.min(1, phaseElapsedRef.current / duration);
     const target =
-      phaseRef.current === "dispersing" ? noisePos : shapes[shapeIndexRef.current].positions;
+      phaseRef.current === 'dispersing' ? noisePos : shapes[shapeIndexRef.current].positions;
 
-    const posAttr = geometry.getAttribute("position") as THREE.BufferAttribute;
+    const posAttr = geometry.getAttribute('position') as THREE.BufferAttribute;
 
     for (let i = 0; i < count; i++) {
       let p: number;
-      if (phaseRef.current === "holding") {
+      if (phaseRef.current === 'holding') {
         p = 1;
       } else {
         const start = delays[i] * STAGGER;

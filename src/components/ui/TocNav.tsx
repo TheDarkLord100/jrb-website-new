@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export type TocSection = { id: string; label: string };
 
 export default function TocNav({ sections }: { sections: TocSection[] }) {
-  const [activeId, setActiveId] = useState(sections[0]?.id ?? "");
+  const [activeId, setActiveId] = useState(sections[0]?.id ?? '');
 
   useEffect(() => {
     const elements = sections
@@ -27,7 +27,7 @@ export default function TocNav({ sections }: { sections: TocSection[] }) {
         );
         setActiveId(topMost.target.id);
       },
-      { rootMargin: "-110px 0px -70% 0px", threshold: 0 }
+      { rootMargin: '-110px 0px -70% 0px', threshold: 0 }
     );
 
     elements.forEach((el) => observer.observe(el));
@@ -47,8 +47,8 @@ export default function TocNav({ sections }: { sections: TocSection[] }) {
             href={`#${s.id}`}
             className={`border-t-2 bg-white px-3 py-2 text-center text-sm font-medium transition-colors lg:border-t-0 lg:border-l-2 lg:bg-transparent lg:px-3 lg:py-1.5 lg:text-left ${
               active
-                ? "border-amber-400 bg-amber-50 text-amber-800 lg:bg-transparent lg:font-semibold lg:text-[#001A23]"
-                : "border-gray-200 text-gray-600 hover:border-amber-300 lg:border-transparent lg:font-normal lg:text-gray-500 lg:hover:border-transparent lg:hover:text-[#001A23]"
+                ? 'border-amber-400 bg-amber-50 text-amber-800 lg:bg-transparent lg:font-semibold lg:text-[#001A23]'
+                : 'border-gray-200 text-gray-600 hover:border-amber-300 lg:border-transparent lg:font-normal lg:text-gray-500 lg:hover:border-transparent lg:hover:text-[#001A23]'
             }`}
           >
             {s.label}

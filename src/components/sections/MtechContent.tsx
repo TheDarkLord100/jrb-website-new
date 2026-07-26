@@ -1,38 +1,37 @@
-"use client";
+'use client';
 
-import Accordion from "@/components/ui/Accordion";
-import { SectionTitle, TextSkeleton, TableSkeleton } from "@/components/ui/ContentBlocks";
-import Markdown from "@/components/ui/Markdown";
-import TocNav, { type TocSection } from "@/components/ui/TocNav";
-import { useMtechContent } from "@/lib/useMtechContent";
-import { getLucideIcon } from "@/lib/lucideIconMap";
-import type { MtechCourse } from "@/types/mtech";
-
+import Accordion from '@/components/ui/Accordion';
+import { SectionTitle, TextSkeleton, TableSkeleton } from '@/components/ui/ContentBlocks';
+import Markdown from '@/components/ui/Markdown';
+import TocNav, { type TocSection } from '@/components/ui/TocNav';
+import { useMtechContent } from '@/lib/useMtechContent';
+import { getLucideIcon } from '@/lib/lucideIconMap';
+import type { MtechCourse } from '@/types/mtech';
 
 const SECTIONS: TocSection[] = [
-  { id: "overview", label: "Overview" },
-  { id: "outcomes", label: "Learning Outcomes" },
-  { id: "why-jrb", label: "Why Choose JRB@IITD" },
-  { id: "curriculum-structure", label: "Curriculum Structure" },
-  { id: "core-courses", label: "Programme Core Courses" },
-  { id: "electives", label: "Programme Electives" },
-  { id: "projects", label: "Projects" },
-  { id: "semester-plan", label: "Semester-wise Plan" },
-  { id: "specializations", label: "Areas of Specialization" },
+  { id: 'overview', label: 'Overview' },
+  { id: 'outcomes', label: 'Learning Outcomes' },
+  { id: 'why-jrb', label: 'Why Choose JRB@IITD' },
+  { id: 'curriculum-structure', label: 'Curriculum Structure' },
+  { id: 'core-courses', label: 'Programme Core Courses' },
+  { id: 'electives', label: 'Programme Electives' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'semester-plan', label: 'Semester-wise Plan' },
+  { id: 'specializations', label: 'Areas of Specialization' },
 ];
 
 const SEMESTER_ORDER = [
-  "Semester I",
-  "Winter Break",
-  "Semester II",
-  "Summer Term",
-  "Semester III",
-  "Semester IV",
+  'Semester I',
+  'Winter Break',
+  'Semester II',
+  'Summer Term',
+  'Semester III',
+  'Semester IV',
 ];
 
 function CourseTable({
   rows,
-  componentLabel = "Course",
+  componentLabel = 'Course',
 }: {
   rows: MtechCourse[];
   componentLabel?: string;
@@ -56,13 +55,13 @@ function CourseTable({
             <tr key={row.id} className="border-b border-gray-100">
               {hasCode && (
                 <td className="py-2 pr-3 text-xs whitespace-nowrap text-gray-500">
-                  {row.code ?? "—"}
+                  {row.code ?? '—'}
                 </td>
               )}
               <td className="py-2 pr-4 text-gray-700">{row.title}</td>
-              <td className="px-2 py-2 text-gray-600">{row.l ?? "—"}</td>
-              <td className="px-2 py-2 text-gray-600">{row.t ?? "—"}</td>
-              <td className="px-2 py-2 text-gray-600">{row.p ?? "—"}</td>
+              <td className="px-2 py-2 text-gray-600">{row.l ?? '—'}</td>
+              <td className="px-2 py-2 text-gray-600">{row.t ?? '—'}</td>
+              <td className="px-2 py-2 text-gray-600">{row.p ?? '—'}</td>
               <td className="px-2 py-2 text-gray-600">{row.credits}</td>
             </tr>
           ))}
@@ -84,10 +83,9 @@ export default function MtechContent() {
   }
 
   const bySectionKey = (key: string) => data?.sections.filter((s) => s.section_key === key) ?? [];
-  const coreCourses = data?.courses.filter((c) => c.category === "core") ?? [];
-  const projectCourses = data?.courses.filter((c) => c.category === "project") ?? [];
-  const totalCredits =
-    data?.creditCategories.reduce((sum, c) => sum + c.credits, 0) ?? null;
+  const coreCourses = data?.courses.filter((c) => c.category === 'core') ?? [];
+  const projectCourses = data?.courses.filter((c) => c.category === 'project') ?? [];
+  const totalCredits = data?.creditCategories.reduce((sum, c) => sum + c.credits, 0) ?? null;
 
   const semesterGroups = SEMESTER_ORDER.map((title) => {
     const rows = (data?.courses ?? []).filter((c) => c.semester === title);
@@ -104,7 +102,7 @@ export default function MtechContent() {
           {data === null ? (
             <TextSkeleton lines={5} />
           ) : (
-            bySectionKey("overview").map((s) => <Markdown key={s.id}>{s.body_markdown}</Markdown>)
+            bySectionKey('overview').map((s) => <Markdown key={s.id}>{s.body_markdown}</Markdown>)
           )}
         </section>
 
@@ -113,7 +111,7 @@ export default function MtechContent() {
           {data === null ? (
             <TextSkeleton lines={4} />
           ) : (
-            bySectionKey("outcomes").map((s) => <Markdown key={s.id}>{s.body_markdown}</Markdown>)
+            bySectionKey('outcomes').map((s) => <Markdown key={s.id}>{s.body_markdown}</Markdown>)
           )}
         </section>
 
@@ -123,7 +121,7 @@ export default function MtechContent() {
             <TextSkeleton lines={6} />
           ) : (
             <div className="mt-5 flex flex-col gap-8">
-              {bySectionKey("why-jrb").map((s) => (
+              {bySectionKey('why-jrb').map((s) => (
                 <div key={s.id}>
                   {s.title && (
                     <h3 className="font-serif text-lg font-bold text-[#001A23]">{s.title}</h3>
@@ -174,7 +172,13 @@ export default function MtechContent() {
             24 credits, spread across Semesters I and II. The AI/ML core requirement can be
             satisfied by any one of three courses.
           </p>
-          {data === null ? <TableSkeleton /> : <div className="mt-5"><CourseTable rows={coreCourses} /></div>}
+          {data === null ? (
+            <TableSkeleton />
+          ) : (
+            <div className="mt-5">
+              <CourseTable rows={coreCourses} />
+            </div>
+          )}
         </section>
 
         <section id="electives" className="scroll-mt-24">
@@ -182,7 +186,7 @@ export default function MtechContent() {
           {data === null ? (
             <TextSkeleton lines={2} />
           ) : (
-            bySectionKey("electives-intro").map((s) => (
+            bySectionKey('electives-intro').map((s) => (
               <Markdown key={s.id}>{s.body_markdown}</Markdown>
             ))
           )}
@@ -192,9 +196,7 @@ export default function MtechContent() {
               <span className="text-[10px] font-bold tracking-wide text-amber-600 uppercase">
                 Default track
               </span>
-              <h4 className="mt-1 text-sm font-semibold text-[#001A23]">
-                Project-Intensive Track
-              </h4>
+              <h4 className="mt-1 text-sm font-semibold text-[#001A23]">Project-Intensive Track</h4>
               <ul className="mt-3 flex flex-col gap-1.5 text-sm text-gray-600">
                 <li>MTP–II (12 credits)</li>
                 <li>2 Programme Elective courses (3 credits each)</li>
@@ -205,9 +207,7 @@ export default function MtechContent() {
               <span className="text-[10px] font-bold tracking-wide text-gray-400 uppercase">
                 Requires PEC approval
               </span>
-              <h4 className="mt-1 text-sm font-semibold text-[#001A23]">
-                Course-Intensive Track
-              </h4>
+              <h4 className="mt-1 text-sm font-semibold text-[#001A23]">Course-Intensive Track</h4>
               <ul className="mt-3 flex flex-col gap-1.5 text-sm text-gray-600">
                 <li>6 Programme Elective courses (3 credits each)</li>
               </ul>
@@ -220,11 +220,17 @@ export default function MtechContent() {
           {data === null ? (
             <TextSkeleton lines={2} />
           ) : (
-            bySectionKey("projects-intro").map((s) => (
+            bySectionKey('projects-intro').map((s) => (
               <Markdown key={s.id}>{s.body_markdown}</Markdown>
             ))
           )}
-          {data === null ? <TableSkeleton /> : <div className="mt-5"><CourseTable rows={projectCourses} /></div>}
+          {data === null ? (
+            <TableSkeleton />
+          ) : (
+            <div className="mt-5">
+              <CourseTable rows={projectCourses} />
+            </div>
+          )}
         </section>
 
         <section id="semester-plan" className="scroll-mt-24">
@@ -237,7 +243,7 @@ export default function MtechContent() {
                 <Accordion key={sem.title} title={sem.title} accent={sem.accent}>
                   <CourseTable
                     rows={sem.rows}
-                    componentLabel={sem.accent ? "Component" : "Course"}
+                    componentLabel={sem.accent ? 'Component' : 'Course'}
                   />
                 </Accordion>
               ))}
@@ -249,8 +255,8 @@ export default function MtechContent() {
           <SectionTitle>Areas of Specialization</SectionTitle>
           <p className="mt-5 leading-relaxed text-gray-700">
             Students may pursue a specialization by completing at least 6 credits from Programme
-            Electives (PE) or Open Category (OC) courses in the chosen area, along with
-            undertaking MTP–II in the same area.
+            Electives (PE) or Open Category (OC) courses in the chosen area, along with undertaking
+            MTP–II in the same area.
           </p>
           {data === null ? (
             <div className="mt-6 grid animate-pulse gap-5 sm:grid-cols-2 lg:grid-cols-3">

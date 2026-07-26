@@ -1,6 +1,6 @@
-import VerticalPage from "@/components/sections/VerticalPage";
+import VerticalPage from '@/components/sections/VerticalPage';
 
-export const metadata = { title: "Soft, Compliant and Bio-Inspired Robotic Systems" };
+export const metadata = { title: 'Soft, Compliant and Bio-Inspired Robotic Systems' };
 
 export default function Page() {
   return (

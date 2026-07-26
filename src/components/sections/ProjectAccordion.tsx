@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { ChevronDown } from "lucide-react";
+import { ChevronDown } from 'lucide-react';
 
 export type Project = {
   title: string;

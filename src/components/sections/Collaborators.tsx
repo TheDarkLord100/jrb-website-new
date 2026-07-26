@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import SectionHeading from "@/components/ui/SectionHeading";
-import { useCollaborators } from "@/lib/useCollaborators";
+import Image from 'next/image';
+import SectionHeading from '@/components/ui/SectionHeading';
+import { useCollaborators } from '@/lib/useCollaborators';
 
 function LogosSkeleton() {
   return (
@@ -53,7 +53,7 @@ export default function Collaborators() {
               <Image
                 key={`${c.id}-${i}`}
                 src={c.logo_url}
-                alt={c.name ?? "Collaborator logo"}
+                alt={c.name ?? 'Collaborator logo'}
                 width={110}
                 height={55}
                 className="h-14 w-auto shrink-0 object-contain grayscale transition-all hover:grayscale-0"

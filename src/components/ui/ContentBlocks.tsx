@@ -13,7 +13,7 @@ export function TextSkeleton({ lines = 3 }: { lines?: number }) {
       {Array.from({ length: lines }).map((_, i) => (
         <div
           key={i}
-          className={`h-3 rounded bg-gray-100 ${i === lines - 1 ? "w-2/3" : "w-full"}`}
+          className={`h-3 rounded bg-gray-100 ${i === lines - 1 ? 'w-2/3' : 'w-full'}`}
         />
       ))}
     </div>

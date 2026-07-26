@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { SHAPE_CONTENT } from "@/components/sections/hero/shapeContent";
+import Link from 'next/link';
+import { SHAPE_CONTENT } from '@/components/sections/hero/shapeContent';
 
 export default function ShapeLegend({
   shapeNames,
@@ -13,7 +13,7 @@ export default function ShapeLegend({
   shapeNames: string[];
   activeShapeIndex: number;
   manualIndex: number | null;
-  phase: "assembling" | "holding" | "dispersing";
+  phase: 'assembling' | 'holding' | 'dispersing';
   onSelect: (index: number | null) => void;
 }) {
   return (
@@ -25,7 +25,7 @@ export default function ShapeLegend({
       {shapeNames.map((name, i) => {
         const content = SHAPE_CONTENT[name];
         const isForming = i === activeShapeIndex;
-        const isHeld = isForming && phase === "holding";
+        const isHeld = isForming && phase === 'holding';
         const isManuallySelected = manualIndex === i;
 
         return (
@@ -33,18 +33,18 @@ export default function ShapeLegend({
             key={name}
             onClick={() => onSelect(isManuallySelected ? null : i)}
             className={`group flex items-center gap-2.5 rounded px-2 py-1.5 text-left transition-colors ${
-              isManuallySelected ? "bg-white/10" : "hover:bg-white/5"
+              isManuallySelected ? 'bg-white/10' : 'hover:bg-white/5'
             }`}
           >
             <span
               className={`h-1.5 w-1.5 shrink-0 rounded-full transition-colors ${
-                isHeld ? "bg-amber-400" : "bg-white/25"
+                isHeld ? 'bg-amber-400' : 'bg-white/25'
               }`}
             />
             <span className="flex flex-col">
               <span
                 className={`text-xs font-medium transition-colors ${
-                  isForming ? "text-white" : "text-white/55"
+                  isForming ? 'text-white' : 'text-white/55'
                 }`}
               >
                 {content?.label ?? name}

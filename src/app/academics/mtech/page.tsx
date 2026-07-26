@@ -1,7 +1,7 @@
-import PageHeading from "@/components/ui/PageHeading";
-import MtechContent from "@/components/sections/MtechContent";
+import PageHeading from '@/components/ui/PageHeading';
+import MtechContent from '@/components/sections/MtechContent';
 
-export const metadata = { title: "M.Tech. in Robotics" };
+export const metadata = { title: 'M.Tech. in Robotics' };
 
 export default function MTechPage() {
   return (

@@ -1,22 +1,22 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Handshake, FlaskConical, GraduationCap } from "lucide-react";
+import Image from 'next/image';
+import Link from 'next/link';
+import { Handshake, FlaskConical, GraduationCap } from 'lucide-react';
 
 const pillars = [
   {
     icon: Handshake,
-    title: "Collaborate",
-    description: "Work with our faculty on sponsored research and consulting projects.",
+    title: 'Collaborate',
+    description: 'Work with our faculty on sponsored research and consulting projects.',
   },
   {
     icon: FlaskConical,
-    title: "Co-Develop",
-    description: "Access our labs, equipment, and technical expertise to prototype new systems.",
+    title: 'Co-Develop',
+    description: 'Access our labs, equipment, and technical expertise to prototype new systems.',
   },
   {
     icon: GraduationCap,
-    title: "Engage Talent",
-    description: "Connect with graduate students and researchers for internships and recruiting.",
+    title: 'Engage Talent',
+    description: 'Connect with graduate students and researchers for internships and recruiting.',
   },
 ];
 
@@ -29,13 +29,13 @@ export default function IndustryConnect() {
           <p className="text-xs font-semibold tracking-[0.2em] text-amber-600 uppercase">
             Industry &amp; Partnerships
           </p>
-          <h2 className="font-serif mt-3 text-2xl font-bold text-[#001A23] sm:text-3xl">
+          <h2 className="mt-3 font-serif text-2xl font-bold text-[#001A23] sm:text-3xl">
             Partnering with Industry
           </h2>
           <p className="mt-4 max-w-md text-gray-600">
-            CoE-BIRD partners with industry to move robotics research from the lab into
-            real-world deployment — through sponsored projects, shared infrastructure, and
-            direct engagement with our students and faculty.
+            CoE-BIRD partners with industry to move robotics research from the lab into real-world
+            deployment — through sponsored projects, shared infrastructure, and direct engagement
+            with our students and faculty.
           </p>
 
           <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
@@ -45,9 +45,7 @@ export default function IndustryConnect() {
                   <pillar.icon size={20} className="text-amber-700" strokeWidth={1.75} />
                 </div>
                 <h3 className="mt-3 text-sm font-semibold text-[#001A23]">{pillar.title}</h3>
-                <p className="mt-1 text-sm leading-relaxed text-gray-600">
-                  {pillar.description}
-                </p>
+                <p className="mt-1 text-sm leading-relaxed text-gray-600">{pillar.description}</p>
               </div>
             ))}
           </div>

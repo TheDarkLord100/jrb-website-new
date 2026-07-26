@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { useAnnouncements } from "@/lib/useAnnouncements";
-import { formatAnnouncementDate } from "@/lib/announcements";
-import { stripMarkdownPreview } from "@/lib/stripMarkdown";
-import AnnouncementModal from "@/components/ui/AnnouncementModal";
-import SectionHeading from "@/components/ui/SectionHeading";
-import type { Announcement } from "@/types/announcement";
+import { useState } from 'react';
+import Link from 'next/link';
+import { useAnnouncements } from '@/lib/useAnnouncements';
+import { formatAnnouncementDate } from '@/lib/announcements';
+import { stripMarkdownPreview } from '@/lib/stripMarkdown';
+import AnnouncementModal from '@/components/ui/AnnouncementModal';
+import SectionHeading from '@/components/ui/SectionHeading';
+import type { Announcement } from '@/types/announcement';
 
 const MAX_VISIBLE = 6;
 
-const TYPE_LABELS: Record<Announcement["type"], string> = {
-  news: "News",
-  event: "Event",
-  admission: "Admissions",
+const TYPE_LABELS: Record<Announcement['type'], string> = {
+  news: 'News',
+  event: 'Event',
+  admission: 'Admissions',
 };
 
 function NewsSkeleton() {
@@ -83,9 +83,7 @@ export default function NewsAndAnnouncements() {
               </div>
             )}
 
-            {total === 0 && (
-              <p className="text-center text-gray-500">No announcements available</p>
-            )}
+            {total === 0 && <p className="text-center text-gray-500">No announcements available</p>}
 
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {normalVisible.map((item) => (
@@ -103,9 +101,7 @@ export default function NewsAndAnnouncements() {
                       {formatAnnouncementDate(item.date)}
                     </span>
                   </div>
-                  <span className="font-serif mt-2 font-semibold text-[#001A23]">
-                    {item.title}
-                  </span>
+                  <span className="mt-2 font-serif font-semibold text-[#001A23]">{item.title}</span>
                   <p className="mt-2 line-clamp-2 text-sm text-gray-600">
                     {stripMarkdownPreview(item.description)}
                   </p>

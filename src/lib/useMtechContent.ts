@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   getMtechSections,
   getMtechCreditCategories,
   getMtechCourses,
   getMtechSpecializations,
-} from "@/lib/supabase/queries";
-import type { MtechSection, MtechCreditCategory, MtechCourse, MtechCard } from "@/types/mtech";
+} from '@/lib/supabase/queries';
+import type { MtechSection, MtechCreditCategory, MtechCourse, MtechCard } from '@/types/mtech';
 
 type MtechContent = {
   sections: MtechSection[];
@@ -35,7 +35,7 @@ export function useMtechContent() {
         }
       })
       .catch((e) => {
-        if (!cancelled) setError(e instanceof Error ? e.message : "Failed to load page content");
+        if (!cancelled) setError(e instanceof Error ? e.message : 'Failed to load page content');
       });
 
     return () => {

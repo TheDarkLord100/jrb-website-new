@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useCallback } from "react";
-import { useSyncExternalStore } from "react";
-import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
-import Fade from "embla-carousel-fade";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from 'next/image';
+import { useCallback } from 'react';
+import { useSyncExternalStore } from 'react';
+import useEmblaCarousel from 'embla-carousel-react';
+import Autoplay from 'embla-carousel-autoplay';
+import Fade from 'embla-carousel-fade';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 type FeaturedProject = {
   image: string;
@@ -19,27 +19,28 @@ type FeaturedProject = {
 // anywhere.
 const featuredProjects: FeaturedProject[] = [
   {
-    image: "/Assets/projects/3-pick.png",
-    title: "Autonomous Mobile Cobot for Pick-and-Place Operations",
+    image: '/Assets/projects/3-pick.png',
+    title: 'Autonomous Mobile Cobot for Pick-and-Place Operations',
     description:
-      "A mobile collaborative robot capable of autonomous navigation and manipulation for pick-and-place tasks.",
+      'A mobile collaborative robot capable of autonomous navigation and manipulation for pick-and-place tasks.',
   },
   {
-    image: "/Assets/projects/8-snake.png",
-    title: "Bio-Inspired Snake Robot for Search and Locomotion",
+    image: '/Assets/projects/8-snake.png',
+    title: 'Bio-Inspired Snake Robot for Search and Locomotion',
     description:
-      "A snake-like robot inspired by biological locomotion for efficient movement in constrained environments.",
+      'A snake-like robot inspired by biological locomotion for efficient movement in constrained environments.',
   },
   {
-    image: "/Assets/projects/1-drone.jpg",
-    title: "Aerial Manipulation & Navigation",
+    image: '/Assets/projects/1-drone.jpg',
+    title: 'Aerial Manipulation & Navigation',
     description:
-      "Drones that sense, navigate, and manipulate objects in unstructured outdoor environments.",
+      'Drones that sense, navigate, and manipulate objects in unstructured outdoor environments.',
   },
   {
-    image: "/Assets/projects/12-slam.jpg",
-    title: "SLAM-Based Autonomous Navigation",
-    description: "Simultaneous localization and mapping for robust navigation in unknown environments.",
+    image: '/Assets/projects/12-slam.jpg',
+    title: 'SLAM-Based Autonomous Navigation',
+    description:
+      'Simultaneous localization and mapping for robust navigation in unknown environments.',
   },
 ];
 
@@ -52,8 +53,8 @@ export default function FeaturedProjectsCarousel() {
   const subscribe = useCallback(
     (callback: () => void) => {
       if (!emblaApi) return () => {};
-      emblaApi.on("select", callback);
-      return () => emblaApi.off("select", callback);
+      emblaApi.on('select', callback);
+      return () => emblaApi.off('select', callback);
     },
     [emblaApi]
   );
@@ -108,7 +109,7 @@ export default function FeaturedProjectsCarousel() {
             onClick={() => emblaApi?.scrollTo(i)}
             aria-label={`Go to ${p.title}`}
             className={`h-2 rounded-full transition-all ${
-              i === selectedIndex ? "w-6 bg-amber-400" : "w-2 bg-gray-300"
+              i === selectedIndex ? 'w-6 bg-amber-400' : 'w-2 bg-gray-300'
             }`}
           />
         ))}

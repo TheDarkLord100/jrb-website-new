@@ -1,7 +1,7 @@
-import PageHeading from "@/components/ui/PageHeading";
-import ResearchLabs from "@/components/sections/ResearchLabs";
+import PageHeading from '@/components/ui/PageHeading';
+import ResearchLabs from '@/components/sections/ResearchLabs';
 
-export const metadata = { title: "Research Facilities" };
+export const metadata = { title: 'Research Facilities' };
 
 export default function ResearchFacilitiesPage() {
   return (

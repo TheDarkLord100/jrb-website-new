@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { getPeople } from "@/lib/supabase/queries";
-import type { Person } from "@/types/person";
+import { useEffect, useState } from 'react';
+import { getPeople } from '@/lib/supabase/queries';
+import type { Person } from '@/types/person';
 
 export function usePeople() {
   const [people, setPeople] = useState<Person[] | null>(null);
@@ -16,7 +16,7 @@ export function usePeople() {
         if (!cancelled) setPeople(data);
       })
       .catch((e) => {
-        if (!cancelled) setError(e instanceof Error ? e.message : "Failed to load people");
+        if (!cancelled) setError(e instanceof Error ? e.message : 'Failed to load people');
       });
 
     return () => {

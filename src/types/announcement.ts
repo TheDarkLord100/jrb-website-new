@@ -8,6 +8,6 @@ export type Announcement = {
   date: string;
   is_important: boolean;
   image_urls: string[] | null;
-  type: "news" | "event" | "admission";
+  type: 'news' | 'event' | 'admission';
   is_visible: boolean;
 };

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
-import { useState } from "react";
-import { usePointCloudShapes } from "@/lib/usePointCloudShapes";
-import PointCloudField from "@/components/sections/hero/PointCloudField";
-import GridFloor from "@/components/sections/hero/GridFloor";
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
+import { useState } from 'react';
+import { usePointCloudShapes } from '@/lib/usePointCloudShapes';
+import PointCloudField from '@/components/sections/hero/PointCloudField';
+import GridFloor from '@/components/sections/hero/GridFloor';
 
 export default function HeroPointCloud() {
   const { count, shapes, error } = usePointCloudShapes();
@@ -85,7 +85,7 @@ export default function HeroPointCloud() {
       {/* drag hint, fades out after first interaction */}
       <div
         className={`pointer-events-none absolute right-6 bottom-6 text-[10px] font-medium tracking-widest text-white/30 uppercase transition-opacity duration-700 ${
-          hasInteracted ? "opacity-0" : "opacity-100"
+          hasInteracted ? 'opacity-0' : 'opacity-100'
         }`}
       >
         Drag to rotate

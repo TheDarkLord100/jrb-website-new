@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { ExternalLink } from "lucide-react";
-import Card from "@/components/ui/Card";
-import Markdown from "@/components/ui/Markdown";
-import { useAdmissions } from "@/lib/useAdmission";
+import { ExternalLink } from 'lucide-react';
+import Card from '@/components/ui/Card';
+import Markdown from '@/components/ui/Markdown';
+import { useAdmissions } from '@/lib/useAdmission';
 
 function formatLastUpdated(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString("en-IN", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
+  return new Date(dateStr).toLocaleDateString('en-IN', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
   });
 }
 

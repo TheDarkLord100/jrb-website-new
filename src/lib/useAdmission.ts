@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { getAdmissionSections, getAdmissionLinks } from "@/lib/supabase/queries";
-import type { AdmissionSection, AdmissionLink } from "@/types/admissions";
+import { useEffect, useState } from 'react';
+import { getAdmissionSections, getAdmissionLinks } from '@/lib/supabase/queries';
+import type { AdmissionSection, AdmissionLink } from '@/types/admissions';
 
 type AdmissionsData = {
   sections: AdmissionSection[];
@@ -22,7 +22,7 @@ export function useAdmissions() {
       })
       .catch((e) => {
         if (!cancelled) {
-          setError(e instanceof Error ? e.message : "Failed to load admissions data");
+          setError(e instanceof Error ? e.message : 'Failed to load admissions data');
         }
       });
 

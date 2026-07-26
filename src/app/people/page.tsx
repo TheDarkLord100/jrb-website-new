@@ -1,7 +1,7 @@
-import PageHeading from "@/components/ui/PageHeading";
-import PeopleDirectory from "@/components/sections/PeopleDirectory";
+import PageHeading from '@/components/ui/PageHeading';
+import PeopleDirectory from '@/components/sections/PeopleDirectory';
 
-export const metadata = { title: "People" };
+export const metadata = { title: 'People' };
 
 export default function PeoplePage() {
   return (

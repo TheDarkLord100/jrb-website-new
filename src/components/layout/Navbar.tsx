@@ -71,11 +71,13 @@ export default function Navbar() {
   return (
     <>
       {/* ── Fixed Header ─────────────────────────────────────────────────── */}
-      <header className="fixed top-0 left-0 w-full z-50 bg-[#001A23] shadow-md h-16">
-        <div className="max-w-[75rem] mx-auto px-5 h-full flex items-center justify-between">
-
+      <header className="fixed top-0 left-0 z-50 h-16 w-full bg-[#001A23] shadow-md">
+        <div className="mx-auto flex h-full max-w-[75rem] items-center justify-between px-5">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-4 text-white font-semibold text-lg hover:no-underline">
+          <Link
+            href="/"
+            className="flex items-center gap-4 text-lg font-semibold text-white hover:no-underline"
+          >
             <Image
               src="/Assets/logos/bird.png"
               alt="CoE BIRD Logo"
@@ -87,34 +89,37 @@ export default function Navbar() {
           </Link>
 
           {/* ── Desktop Nav ──────────────────────────────────────────────── */}
-          <nav className="hidden lg:flex items-center">
+          <nav className="hidden items-center lg:flex">
             <ul className="flex items-center">
               {NAV_ITEMS.map((item) => (
-                <li key={item.label} className="relative group ml-6">
+                <li key={item.label} className="group relative ml-6">
                   {item.children ? (
                     <>
                       {/* Parent with dropdown */}
                       <button
                         aria-haspopup="true"
-                        className="flex items-center gap-1 text-white font-medium hover:text-amber-400 transition-colors cursor-pointer"
+                        className="flex cursor-pointer items-center gap-1 font-medium text-white transition-colors hover:text-amber-400"
                       >
                         {item.label}
-                        <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
+                        <ChevronDown
+                          size={14}
+                          className="transition-transform group-hover:rotate-180"
+                        />
                       </button>
 
                       {/* Dropdown menu */}
-                      <ul className="absolute top-8 left-[-2rem] min-w-[13rem] pb-2 px-4 bg-[#001A23] border-t-2 border-amber-400 shadow-lg rounded-b opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 transition-all duration-500 ease-in-out z-50">
+                      <ul className="invisible absolute top-8 left-[-2rem] z-50 min-w-[13rem] translate-y-2 rounded-b border-t-2 border-amber-400 bg-[#001A23] px-4 pb-2 opacity-0 shadow-lg transition-all duration-500 ease-in-out group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
                         {item.children.map((child) => (
                           <li
                             key={child.label}
-                            className={`mt-3 ${child.children ? 'relative group/sub' : ''}`}
+                            className={`mt-3 ${child.children ? 'group/sub relative' : ''}`}
                           >
                             {child.children ? (
                               <>
                                 {/* Nested parent */}
                                 <button
                                   aria-haspopup="true"
-                                  className="flex items-center justify-between w-full text-white font-medium hover:text-amber-400 transition-colors text-sm"
+                                  className="flex w-full items-center justify-between text-sm font-medium text-white transition-colors hover:text-amber-400"
                                 >
                                   {child.label}
                                   <ChevronDown
@@ -124,7 +129,7 @@ export default function Navbar() {
                                 </button>
 
                                 {/* Nested dropdown */}
-                                <ul className="absolute top-0 left-full ml-2 min-w-[14rem] pb-2 px-4 bg-[#001A23] border-t-2 border-amber-400 shadow-lg rounded-b opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible group-focus-within/sub:opacity-100 group-focus-within/sub:visible transition-all duration-500 ease-in-out z-50">
+                                <ul className="invisible absolute top-0 left-full z-50 ml-2 min-w-[14rem] rounded-b border-t-2 border-amber-400 bg-[#001A23] px-4 pb-2 opacity-0 shadow-lg transition-all duration-500 ease-in-out group-focus-within/sub:visible group-focus-within/sub:opacity-100 group-hover/sub:visible group-hover/sub:opacity-100">
                                   {child.children.map((nested) => (
                                     <li key={nested.label} className="mt-3">
                                       <Link
@@ -170,7 +175,7 @@ export default function Navbar() {
 
           {/* Burger button */}
           <button
-            className="lg:hidden text-white p-1"
+            className="p-1 text-white lg:hidden"
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
           >
@@ -182,14 +187,14 @@ export default function Navbar() {
       {/* ── Mobile Overlay ───────────────────────────────────────────────────── */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 bg-black/65 z-40 lg:hidden"
+          className="fixed inset-0 z-40 bg-black/65 lg:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
       {/* ── Mobile Drawer ────────────────────────────────────────────────────── */}
       <div
-        className={`fixed top-0 left-0 h-full w-3/4 max-w-xs bg-[#001A23] z-50 lg:hidden overflow-y-auto transition-transform duration-700 ease-in-out ${
+        className={`fixed top-0 left-0 z-50 h-full w-3/4 max-w-xs overflow-y-auto bg-[#001A23] transition-transform duration-700 ease-in-out lg:hidden ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -205,9 +210,19 @@ export default function Navbar() {
         </div>
 
         {/* Logo in drawer */}
-        <div className="px-5 pb-4 border-b border-white/10">
-          <Link href="/" onClick={() => setMobileOpen(false)} className="flex items-center gap-3 text-white font-semibold">
-            <Image src="/Assets/logos/bird.png" alt="CoE BIRD" width={36} height={36} className="h-9 w-auto" />
+        <div className="border-b border-white/10 px-5 pb-4">
+          <Link
+            href="/"
+            onClick={() => setMobileOpen(false)}
+            className="flex items-center gap-3 font-semibold text-white"
+          >
+            <Image
+              src="/Assets/logos/bird.png"
+              alt="CoE BIRD"
+              width={36}
+              height={36}
+              className="h-9 w-auto"
+            />
             <span className="text-sm">CoE on BIRD | IIT Delhi</span>
           </Link>
         </div>
@@ -221,7 +236,7 @@ export default function Navbar() {
                   <button
                     onClick={() => toggleItem(item.label)}
                     aria-expanded={openItems.has(item.label)}
-                    className="flex justify-between items-center w-full py-3 text-white font-medium"
+                    className="flex w-full items-center justify-between py-3 font-medium text-white"
                   >
                     {item.label}
                     <ChevronDown
@@ -231,7 +246,7 @@ export default function Navbar() {
                   </button>
 
                   {openItems.has(item.label) && (
-                    <ul className="pl-4 pb-2">
+                    <ul className="pb-2 pl-4">
                       {item.children.map((child) => (
                         <li key={child.label}>
                           {child.children ? (
@@ -239,7 +254,7 @@ export default function Navbar() {
                               <button
                                 onClick={() => toggleItem(child.label)}
                                 aria-expanded={openItems.has(child.label)}
-                                className="flex justify-between items-center w-full py-2 text-white/80 font-medium text-sm"
+                                className="flex w-full items-center justify-between py-2 text-sm font-medium text-white/80"
                               >
                                 {child.label}
                                 <ChevronDown
@@ -249,13 +264,13 @@ export default function Navbar() {
                               </button>
 
                               {openItems.has(child.label) && (
-                                <ul className="pl-4 pb-1">
+                                <ul className="pb-1 pl-4">
                                   {child.children.map((nested) => (
                                     <li key={nested.label}>
                                       <Link
                                         href={nested.href!}
                                         onClick={() => setMobileOpen(false)}
-                                        className="block py-2 text-white/70 text-sm hover:text-amber-400 transition-colors"
+                                        className="block py-2 text-sm text-white/70 transition-colors hover:text-amber-400"
                                       >
                                         {nested.label}
                                       </Link>
@@ -268,7 +283,7 @@ export default function Navbar() {
                             <Link
                               href={child.href!}
                               onClick={() => setMobileOpen(false)}
-                              className="block py-2 text-white/80 text-sm hover:text-amber-400 transition-colors"
+                              className="block py-2 text-sm text-white/80 transition-colors hover:text-amber-400"
                             >
                               {child.label}
                             </Link>
@@ -282,7 +297,7 @@ export default function Navbar() {
                 <Link
                   href={item.href!}
                   onClick={() => setMobileOpen(false)}
-                  className={`block py-3 font-medium hover:text-amber-400 transition-colors ${
+                  className={`block py-3 font-medium transition-colors hover:text-amber-400 ${
                     isActive(item.href) ? 'text-amber-400' : 'text-white'
                   }`}
                 >

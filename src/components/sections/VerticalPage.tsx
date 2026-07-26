@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { User, FlaskConical } from "lucide-react";
-import PageHeading from "@/components/ui/PageHeading";
-import { useThemeAssociations } from "@/lib/useThemeAssociations";
+import Link from 'next/link';
+import { User, FlaskConical } from 'lucide-react';
+import PageHeading from '@/components/ui/PageHeading';
+import { useThemeAssociations } from '@/lib/useThemeAssociations';
 
 function ChipsSkeleton() {
   return (
@@ -68,7 +68,7 @@ export default function VerticalPage({
                         // the URL stays clean -- People reads this once on
                         // mount and immediately clears it, so a refresh (or
                         // a direct visit to /people) always shows everyone.
-                        sessionStorage.setItem("peopleSearchPrefill", person.name);
+                        sessionStorage.setItem('peopleSearchPrefill', person.name);
                       }}
                       className="flex items-center gap-2 border border-gray-200 bg-white px-4 py-2 text-sm text-gray-700 transition-colors hover:border-amber-400 hover:bg-amber-50 hover:text-amber-800"
                     >

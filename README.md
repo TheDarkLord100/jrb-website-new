@@ -9,13 +9,13 @@ Official website for the **Centre of Excellence on Biologically Inspired Robots 
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
+| Layer     | Technology                             |
+| --------- | -------------------------------------- |
 | Framework | Next.js 16 (App Router, static export) |
-| Language | TypeScript |
-| Styling | Tailwind CSS v4 |
-| Database | Supabase (Postgres + Auth) |
-| Icons | Lucide React |
+| Language  | TypeScript                             |
+| Styling   | Tailwind CSS v4                        |
+| Database  | Supabase (Postgres + Auth)             |
+| Icons     | Lucide React                           |
 
 ---
 
@@ -42,31 +42,38 @@ docs/             # Setup and deployment guides
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js v18+
 - npm
 
 ### 1. Clone the repository
+
 ```bash
 git clone https://github.com/TheDarkLord100/jrb-website-new.git
 cd jrb-website-new
 ```
 
 ### 2. Install dependencies
+
 ```bash
 npm install
 ```
 
 ### 3. Set up environment variables
+
 ```bash
 cp .env.example .env.local
 ```
+
 Fill in your Supabase credentials in `.env.local`. Find them at:
 **Supabase Dashboard → Project Settings → API**
 
 ### 4. Run the development server
+
 ```bash
 npm run dev
 ```
+
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
@@ -76,13 +83,17 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 This project uses Next.js static export (`output: 'export'`), which compiles the site into plain HTML/CSS/JS files served by Apache — no Node.js required on the server.
 
 ### Build
+
 ```bash
 npm run build
 ```
+
 This generates an `/out` directory containing all static files.
 
 ### Deploy to Server
+
 Copy the `/out` directory to the Apache server:
+
 ```bash
 rsync -avz --delete out/ user@server:/var/www/robotics/html/
 ```
@@ -123,11 +134,12 @@ map and design system (dark `#001A23` header, yellow-400 accents):
 - **`src/lib/announcements.ts`** and **`src/lib/people-data.ts`**: seed/adapter
   data. `announcements.ts` currently adapts the same public Gist JSON the old
   site used into the `announcements` table shape — there's a `TODO(supabase)`
-  comment marking exactly where to swap in a real query.  `people-data.ts` is
+  comment marking exactly where to swap in a real query. `people-data.ts` is
   static seed data (55 people) ported from the old site, shaped to match the
   `people` table.
 
 ### Known gaps / next steps
+
 - Supabase isn't wired up yet (per your message, that's the next phase). The
   `announcements` and `people` data already match the DB schema shape, so
   `src/lib/supabase/queries.ts` should be able to replace `announcements.ts`

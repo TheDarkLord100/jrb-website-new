@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Image from "next/image";
-import { useAnnouncementsByType } from "@/lib/useAnnouncementsByType";
-import { formatAnnouncementDate } from "@/lib/announcements";
-import { stripMarkdownPreview } from "@/lib/stripMarkdown";
-import AnnouncementModal from "@/components/ui/AnnouncementModal";
-import type { Announcement } from "@/types/announcement";
+import { useState } from 'react';
+import Image from 'next/image';
+import { useAnnouncementsByType } from '@/lib/useAnnouncementsByType';
+import { formatAnnouncementDate } from '@/lib/announcements';
+import { stripMarkdownPreview } from '@/lib/stripMarkdown';
+import AnnouncementModal from '@/components/ui/AnnouncementModal';
+import type { Announcement } from '@/types/announcement';
 
 function EventsSkeleton() {
   return (
@@ -29,7 +29,7 @@ function EventsSkeleton() {
 }
 
 export default function EventsList() {
-  const { items, error } = useAnnouncementsByType("event");
+  const { items, error } = useAnnouncementsByType('event');
   const [modalItem, setModalItem] = useState<Announcement | null>(null);
 
   if (error) {
@@ -75,7 +75,7 @@ export default function EventsList() {
                     </span>
                   )}
                 </div>
-                <h3 className="font-serif mt-2 font-semibold text-[#001A23]">{item.title}</h3>
+                <h3 className="mt-2 font-serif font-semibold text-[#001A23]">{item.title}</h3>
                 <p className="mt-2 line-clamp-2 text-sm text-gray-600">
                   {stripMarkdownPreview(item.description)}
                 </p>

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useState, type ReactNode } from "react";
-import { ChevronDown } from "lucide-react";
+import Image from 'next/image';
+import { useState, type ReactNode } from 'react';
+import { ChevronDown } from 'lucide-react';
 
 type EventItem = {
   img: string;
@@ -16,12 +16,12 @@ type EventItem = {
 
 const events: EventItem[] = [
   {
-    img: "/Assets/events/60.png",
-    alt: "Cobotalks 60",
-    tag: "Seminar",
-    title: "60th Cobotalks – Physical AI for Robotics",
-    summary: "Exploring intelligent, adaptive, and context-aware robotic systems.",
-    date: "March 11, 2026",
+    img: '/Assets/events/60.png',
+    alt: 'Cobotalks 60',
+    tag: 'Seminar',
+    title: '60th Cobotalks – Physical AI for Robotics',
+    summary: 'Exploring intelligent, adaptive, and context-aware robotic systems.',
+    date: 'March 11, 2026',
     expanded: (
       <>
         <p>
@@ -50,12 +50,12 @@ const events: EventItem[] = [
     ),
   },
   {
-    img: "/Assets/events/59.png",
-    alt: "Cobotalks 59",
-    tag: "Seminar",
-    title: "59th Cobotalks – Building Builders",
-    summary: "Entrepreneurship insights on developing impactful individuals.",
-    date: "February 18, 2026",
+    img: '/Assets/events/59.png',
+    alt: 'Cobotalks 59',
+    tag: 'Seminar',
+    title: '59th Cobotalks – Building Builders',
+    summary: 'Entrepreneurship insights on developing impactful individuals.',
+    date: 'February 18, 2026',
     expanded: (
       <>
         <p>
@@ -70,19 +70,19 @@ const events: EventItem[] = [
           <li>Creating impact-driven culture</li>
         </ul>
         <p className="mt-3">
-          The session provided practical insights into entrepreneurship and leadership for
-          students and aspiring founders.
+          The session provided practical insights into entrepreneurship and leadership for students
+          and aspiring founders.
         </p>
       </>
     ),
   },
   {
-    img: "/Assets/events/58.png",
-    alt: "Cobotalks 58",
-    tag: "Seminar",
-    title: "58th Cobotalks – Flexible Wearable Sensors",
-    summary: "Advancements in wearable sensing for biomedical and soft robotics applications.",
-    date: "January 14, 2026",
+    img: '/Assets/events/58.png',
+    alt: 'Cobotalks 58',
+    tag: 'Seminar',
+    title: '58th Cobotalks – Flexible Wearable Sensors',
+    summary: 'Advancements in wearable sensing for biomedical and soft robotics applications.',
+    date: 'January 14, 2026',
     expanded: (
       <>
         <p>
@@ -138,7 +138,7 @@ export default function EventsAccordion() {
               </div>
               <ChevronDown
                 size={20}
-                className={`shrink-0 text-gray-400 transition-transform ${open ? "rotate-180" : ""}`}
+                className={`shrink-0 text-gray-400 transition-transform ${open ? 'rotate-180' : ''}`}
               />
             </button>
 

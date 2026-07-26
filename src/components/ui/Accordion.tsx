@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
-import { ChevronDown } from "lucide-react";
+import type { ReactNode } from 'react';
+import { ChevronDown } from 'lucide-react';
 
 export default function Accordion({
   title,
@@ -13,12 +13,12 @@ export default function Accordion({
   return (
     <details
       className={`group border-t-2 bg-white shadow-sm ring-1 ring-gray-100 open:shadow-md ${
-        accent ? "border-amber-400" : "border-gray-200"
+        accent ? 'border-amber-400' : 'border-gray-200'
       }`}
     >
       <summary
         className={`flex cursor-pointer list-none items-center justify-between px-5 py-3 font-semibold ${
-          accent ? "text-amber-700" : "text-[#001A23]"
+          accent ? 'text-amber-700' : 'text-[#001A23]'
         }`}
       >
         {title}

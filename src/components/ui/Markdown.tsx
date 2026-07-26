@@ -1,5 +1,5 @@
-import ReactMarkdown, { type Components } from "react-markdown";
-import remarkGfm from "remark-gfm";
+import ReactMarkdown, { type Components } from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 // Renders trusted Markdown (site content authored via the Supabase
 // Dashboard, not arbitrary user input) as React elements styled to match
@@ -8,9 +8,7 @@ import remarkGfm from "remark-gfm";
 // used elsewhere for body copy; add overrides here (e.g. h2/h3, blockquote,
 // code) if a content block ever needs them.
 const components: Components = {
-  p: ({ children }) => (
-    <p className="mt-3 leading-relaxed text-gray-700 first:mt-0">{children}</p>
-  ),
+  p: ({ children }) => <p className="mt-3 leading-relaxed text-gray-700 first:mt-0">{children}</p>,
   ul: ({ children }) => (
     <ul className="mt-3 list-disc pl-5 text-gray-700 first:mt-0">{children}</ul>
   ),
@@ -24,12 +22,12 @@ const components: Components = {
     // sections on the same page) should navigate normally, not open a new
     // tab. Everything else (external links, PDF downloads) keeps the
     // existing behavior.
-    const isAnchor = href?.startsWith("#");
+    const isAnchor = href?.startsWith('#');
     return (
       <a
         href={href}
-        target={isAnchor ? undefined : "_blank"}
-        rel={isAnchor ? undefined : "noopener noreferrer"}
+        target={isAnchor ? undefined : '_blank'}
+        rel={isAnchor ? undefined : 'noopener noreferrer'}
         className="text-[#001A23] underline underline-offset-2 hover:text-amber-700"
       >
         {children}

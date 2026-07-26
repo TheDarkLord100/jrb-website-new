@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { getThemeFaculty, getThemeLabs } from "@/lib/supabase/queries";
-import type { Person } from "@/types/person";
-import type { Lab } from "@/types/lab";
+import { useEffect, useState } from 'react';
+import { getThemeFaculty, getThemeLabs } from '@/lib/supabase/queries';
+import type { Person } from '@/types/person';
+import type { Lab } from '@/types/lab';
 
 type ThemeAssociations = {
   faculty: Person[];
@@ -23,7 +23,7 @@ export function useThemeAssociations(themeSlug: string) {
       })
       .catch((e) => {
         if (!cancelled) {
-          setError(e instanceof Error ? e.message : "Failed to load theme data");
+          setError(e instanceof Error ? e.message : 'Failed to load theme data');
         }
       });
 

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { MapPin, User, Users, ExternalLink, ChevronLeft, ChevronRight, X } from "lucide-react";
-import { useLab } from "@/lib/useLab";
-import LabDetailSkeleton from "@/components/sections/LabDetailSkeleton";
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { MapPin, User, Users, ExternalLink, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { useLab } from '@/lib/useLab';
+import LabDetailSkeleton from '@/components/sections/LabDetailSkeleton';
 
 function GalleryLightbox({
   images,
@@ -20,12 +20,12 @@ function GalleryLightbox({
 }) {
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
-      if (e.key === "ArrowRight") onNavigate((index + 1) % images.length);
-      if (e.key === "ArrowLeft") onNavigate((index - 1 + images.length) % images.length);
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowRight') onNavigate((index + 1) % images.length);
+      if (e.key === 'ArrowLeft') onNavigate((index - 1 + images.length) % images.length);
     }
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
   }, [index, images.length, onClose, onNavigate]);
 
   const img = images[index];
@@ -57,7 +57,7 @@ function GalleryLightbox({
 
       <div className="relative max-h-[80vh] w-full max-w-4xl">
         <div className="relative aspect-[4/3] w-full">
-          <Image src={img.image_url} alt={img.caption ?? ""} fill className="object-contain" />
+          <Image src={img.image_url} alt={img.caption ?? ''} fill className="object-contain" />
         </div>
         {img.caption && <p className="mt-4 text-center text-white">{img.caption}</p>}
       </div>
@@ -95,7 +95,10 @@ export default function LabDetail({ slug }: { slug: string }) {
     return (
       <div className="py-20 text-center">
         <p className="text-gray-500">This lab couldn&apos;t be found.</p>
-        <Link href="/research/facilities" className="mt-3 inline-block text-amber-700 hover:underline">
+        <Link
+          href="/research/facilities"
+          className="mt-3 inline-block text-amber-700 hover:underline"
+        >
           ← Back to Research Facilities
         </Link>
       </div>
@@ -169,7 +172,9 @@ export default function LabDetail({ slug }: { slug: string }) {
 
           {images.length > 0 && (
             <>
-              <h2 className="mt-8 font-serif text-lg font-bold text-[#001A23]">Laboratory Gallery</h2>
+              <h2 className="mt-8 font-serif text-lg font-bold text-[#001A23]">
+                Laboratory Gallery
+              </h2>
               <div className="mt-3 grid grid-cols-2 gap-4">
                 {images.map((img, i) => (
                   <button
@@ -177,7 +182,12 @@ export default function LabDetail({ slug }: { slug: string }) {
                     onClick={() => setLightboxIndex(i)}
                     className="relative aspect-[4/3] overflow-hidden"
                   >
-                    <Image src={img.image_url} alt={img.caption ?? lab.name} fill className="object-cover" />
+                    <Image
+                      src={img.image_url}
+                      alt={img.caption ?? lab.name}
+                      fill
+                      className="object-cover"
+                    />
                   </button>
                 ))}
               </div>

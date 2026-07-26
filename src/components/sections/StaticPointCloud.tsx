@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
-import { useEffect, useMemo, useRef } from "react";
-import * as THREE from "three";
-import { usePointCloudShapes } from "@/lib/usePointCloudShapes";
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
+import { useEffect, useMemo, useRef } from 'react';
+import * as THREE from 'three';
+import { usePointCloudShapes } from '@/lib/usePointCloudShapes';
 
 const VERTEX_SHADER = /* glsl */ `
   attribute float aSize;
@@ -27,7 +27,15 @@ const FRAGMENT_SHADER = /* glsl */ `
   }
 `;
 
-function FixedShape({ positions, jitter, count }: { positions: Float32Array; jitter: Float32Array; count: number }) {
+function FixedShape({
+  positions,
+  jitter,
+  count,
+}: {
+  positions: Float32Array;
+  jitter: Float32Array;
+  count: number;
+}) {
   const pointsRef = useRef<THREE.Points>(null);
   const uniforms = useMemo(
     () => ({ uColor: { value: new THREE.Color(0xffc94d) }, uOpacity: { value: 0.25 } }),
@@ -36,10 +44,10 @@ function FixedShape({ positions, jitter, count }: { positions: Float32Array; jit
 
   useEffect(() => {
     const geo = new THREE.BufferGeometry();
-    geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     const sizes = new Float32Array(count);
     for (let i = 0; i < count; i++) sizes[i] = 0.03 + jitter[i] * 0.015;
-    geo.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
+    geo.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1));
 
     if (pointsRef.current) {
       pointsRef.current.geometry = geo;
@@ -93,7 +101,7 @@ export default function StaticPointCloud({ shapeName }: { shapeName: string }) {
         <Canvas
           camera={{ position: cameraPosition, fov: 45 }}
           gl={{ alpha: true }}
-          style={{ background: "transparent" }}
+          style={{ background: 'transparent' }}
         >
           <FixedShape positions={shape.positions} jitter={shape.jitter} count={count} />
           <OrbitControls

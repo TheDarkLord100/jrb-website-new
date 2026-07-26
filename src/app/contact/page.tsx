@@ -1,10 +1,10 @@
-import Image from "next/image";
-import { MapPin, Mail } from "lucide-react";
-import PageHeading from "@/components/ui/PageHeading";
-import ContactForm from "@/components/sections/ContactForm";
-import Card from "@/components/ui/Card";
+import Image from 'next/image';
+import { MapPin, Mail } from 'lucide-react';
+import PageHeading from '@/components/ui/PageHeading';
+import ContactForm from '@/components/sections/ContactForm';
+import Card from '@/components/ui/Card';
 
-export const metadata = { title: "Contact Us" };
+export const metadata = { title: 'Contact Us' };
 
 export default function ContactPage() {
   return (
@@ -17,7 +17,9 @@ export default function ContactPage() {
             <Image src="/Assets/logos/iit_logo.jpg" alt="IIT Delhi Logo" width={56} height={56} />
           </div>
 
-          <h3 className="text-lg font-bold text-[#001A23]">Indian Institute of Technology, Delhi</h3>
+          <h3 className="text-lg font-bold text-[#001A23]">
+            Indian Institute of Technology, Delhi
+          </h3>
 
           <p className="mt-4 leading-relaxed text-gray-600">
             The Centre of Excellence (CoE) on BIRD, i.e., Biologically Inspired Robots and Drones,

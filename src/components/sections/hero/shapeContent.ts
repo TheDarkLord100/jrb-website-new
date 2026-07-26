@@ -10,18 +10,18 @@ export type ShapeContent = {
 
 export const SHAPE_CONTENT: Record<string, ShapeContent> = {
   drone: {
-    label: "Quadcopter",
-    vertical: "Autonomous Field Robotics",
-    href: "/research/themes/field-robotics",
+    label: 'Quadcopter',
+    vertical: 'Autonomous Field Robotics',
+    href: '/research/themes/field-robotics',
   },
   kuka: {
-    label: "Robotic Arm",
-    vertical: "Manipulation & Control",
-    href: "/research/themes/human-robotics",
+    label: 'Robotic Arm',
+    vertical: 'Manipulation & Control',
+    href: '/research/themes/human-robotics',
   },
   amr: {
-    label: "Autonomous Mobile Robot",
-    vertical: "Autonomous Field Robotics",
-    href: "/research/themes/field-robotics",
+    label: 'Autonomous Mobile Robot',
+    vertical: 'Autonomous Field Robotics',
+    href: '/research/themes/field-robotics',
   },
 };

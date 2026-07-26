@@ -30,25 +30,32 @@ There is one main branch — `master`.
 ## Codebase Overview
 
 ### `src/app/`
+
 Contains all the pages and routes using Next.js App Router. Each folder is a route — for example `src/app/people/` maps to `/people`. `layout.tsx` at the root wraps every page with the navbar and footer.
 
 ### `src/components/`
+
 All reusable UI lives here, split into three folders:
+
 - `ui/` — small primitives like buttons, cards, badges
 - `layout/` — navbar and footer
 - `sections/` — larger page-level sections like the hero carousel or announcements block
 
 ### `src/lib/supabase/`
+
 - `client.ts` — initialises the Supabase client using environment variables
 - `queries.ts` — all database fetch functions are defined here. Any time you need to read from the database, add a function here rather than writing inline queries in components.
 
 ### `src/types/`
+
 Shared TypeScript interfaces. If you add a new table or field to the database, update the types here to match.
 
 ### `src/styles/`
+
 Global CSS and Tailwind directives. Avoid adding custom CSS here unless it cannot be done with Tailwind utilities.
 
 ### `docs/`
+
 Project documentation — database schema, setup guides, and deployment instructions. Update these if you make changes to the database or deployment process.
 
 ---

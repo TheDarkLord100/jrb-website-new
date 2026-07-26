@@ -1,30 +1,30 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Mail } from "lucide-react";
-import { Handshake, FlaskConical, GraduationCap } from "lucide-react";
-import Collaborators from "@/components/sections/Collaborators";
-import IndustryTiers from "@/components/sections/IndustryTiers";
-import IndustryContactForm from "@/components/sections/IndustryContactForm";
+import Image from 'next/image';
+import Link from 'next/link';
+import { Mail } from 'lucide-react';
+import { Handshake, FlaskConical, GraduationCap } from 'lucide-react';
+import Collaborators from '@/components/sections/Collaborators';
+import IndustryTiers from '@/components/sections/IndustryTiers';
+import IndustryContactForm from '@/components/sections/IndustryContactForm';
 
-export const metadata = { title: "Industry & Partnerships" };
+export const metadata = { title: 'Industry & Partnerships' };
 
 // Reused verbatim from the homepage's IndustryConnect teaser -- real,
 // already-established copy, not invented for this page.
 const pillars = [
   {
     icon: Handshake,
-    title: "Collaborate",
-    description: "Work with our faculty on sponsored research and consulting projects.",
+    title: 'Collaborate',
+    description: 'Work with our faculty on sponsored research and consulting projects.',
   },
   {
     icon: FlaskConical,
-    title: "Co-Develop",
-    description: "Access our labs, equipment, and technical expertise to prototype new systems.",
+    title: 'Co-Develop',
+    description: 'Access our labs, equipment, and technical expertise to prototype new systems.',
   },
   {
     icon: GraduationCap,
-    title: "Engage Talent",
-    description: "Connect with graduate students and researchers for internships and recruiting.",
+    title: 'Engage Talent',
+    description: 'Connect with graduate students and researchers for internships and recruiting.',
   },
 ];
 
@@ -38,13 +38,13 @@ export default function IndustryPage() {
             <p className="text-sm font-semibold tracking-widest text-amber-400 uppercase">
               Industry &amp; Partnerships
             </p>
-            <h1 className="font-serif mt-4 max-w-lg text-3xl leading-tight font-bold text-white sm:text-4xl lg:text-5xl">
+            <h1 className="mt-4 max-w-lg font-serif text-3xl leading-tight font-bold text-white sm:text-4xl lg:text-5xl">
               Industry Connect
             </h1>
             <p className="mt-6 max-w-md text-sm leading-relaxed text-white/70 sm:text-base">
-              Partner with CoE-BIRD to move robotics research from the lab into real-world
-              impact — through sponsored projects, shared infrastructure, and direct engagement
-              with our students and faculty.
+              Partner with CoE-BIRD to move robotics research from the lab into real-world impact —
+              through sponsored projects, shared infrastructure, and direct engagement with our
+              students and faculty.
             </p>
 
             <div className="mt-10 flex flex-wrap gap-4">
@@ -92,9 +92,7 @@ export default function IndustryPage() {
                   <pillar.icon size={20} className="text-amber-700" strokeWidth={1.75} />
                 </div>
                 <h3 className="mt-3 text-sm font-semibold text-[#001A23]">{pillar.title}</h3>
-                <p className="mt-1 text-sm leading-relaxed text-gray-600">
-                  {pillar.description}
-                </p>
+                <p className="mt-1 text-sm leading-relaxed text-gray-600">{pillar.description}</p>
               </div>
             ))}
           </div>

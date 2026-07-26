@@ -1,7 +1,7 @@
-import Link from "next/link";
-import HeroPointCloud from "@/components/sections/hero/HeroPointCloud";
+import Link from 'next/link';
+import HeroPointCloud from '@/components/sections/hero/HeroPointCloud';
 
-const MISSION_STATEMENT = "Pushing the frontiers of Robotics and AI";
+const MISSION_STATEMENT = 'Pushing the frontiers of Robotics and AI';
 
 export default function Hero() {
   return (
@@ -12,7 +12,7 @@ export default function Hero() {
         <p className="text-sm font-semibold tracking-widest text-amber-400 uppercase">
           Our Mission
         </p>
-        <h1 className="font-serif mt-4 max-w-lg text-3xl leading-tight font-bold text-white sm:text-4xl lg:text-5xl">
+        <h1 className="mt-4 max-w-lg font-serif text-3xl leading-tight font-bold text-white sm:text-4xl lg:text-5xl">
           {MISSION_STATEMENT}
         </h1>
         <p className="mt-6 max-w-md text-sm leading-relaxed text-white/70 sm:text-base">

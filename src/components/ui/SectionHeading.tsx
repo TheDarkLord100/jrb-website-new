@@ -1,10 +1,4 @@
-export default function SectionHeading({
-  title,
-  eyebrow,
-}: {
-  title: string;
-  eyebrow?: string;
-}) {
+export default function SectionHeading({ title, eyebrow }: { title: string; eyebrow?: string }) {
   return (
     <div className="mb-8 text-center">
       {eyebrow && (

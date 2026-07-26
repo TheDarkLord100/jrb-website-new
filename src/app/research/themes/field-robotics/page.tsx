@@ -1,6 +1,6 @@
-import VerticalPage from "@/components/sections/VerticalPage";
+import VerticalPage from '@/components/sections/VerticalPage';
 
-export const metadata = { title: "Autonomous Field Robotics" };
+export const metadata = { title: 'Autonomous Field Robotics' };
 
 export default function Page() {
   return (

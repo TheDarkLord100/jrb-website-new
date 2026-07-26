@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Grid } from "@react-three/drei";
+import { Grid } from '@react-three/drei';
 
 /**
  * A restrained reference grid beneath the point cloud — deliberately styled

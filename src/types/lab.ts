@@ -1,4 +1,4 @@
-export type LabCategory = "perception" | "dynamics" | "human" | "manufacturing";
+export type LabCategory = 'perception' | 'dynamics' | 'human' | 'manufacturing';
 
 export type Lab = {
   id: string;

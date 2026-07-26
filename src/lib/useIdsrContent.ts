@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
   getIdsrSections,
   getIdsrCurriculumStructure,
   getIdsrCoreCourses,
   getIdsrElectives,
-} from "@/lib/supabase/queries";
-import type { IdsrSection, IdsrCurriculumRow, IdsrCoreCourse, IdsrElective } from "@/types/idsr";
+} from '@/lib/supabase/queries';
+import type { IdsrSection, IdsrCurriculumRow, IdsrCoreCourse, IdsrElective } from '@/types/idsr';
 
 type IdsrContentData = {
   sections: IdsrSection[];
@@ -33,7 +33,7 @@ export function useIdsrContent() {
         if (!cancelled) setData({ sections, curriculum, coreCourses, electives });
       })
       .catch((e) => {
-        if (!cancelled) setError(e instanceof Error ? e.message : "Failed to load page content");
+        if (!cancelled) setError(e instanceof Error ? e.message : 'Failed to load page content');
       });
 
     return () => {

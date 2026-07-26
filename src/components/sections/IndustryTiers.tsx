@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useIndustryTiers } from "@/lib/useIndustryTiers";
-import { getLucideIcon } from "@/lib/lucideIconMap";
+import { useIndustryTiers } from '@/lib/useIndustryTiers';
+import { getLucideIcon } from '@/lib/lucideIconMap';
 
 function TiersSkeleton() {
   return (
@@ -52,7 +52,7 @@ export default function IndustryTiers() {
             <div className="mt-3 flex h-10 w-10 items-center justify-center border border-amber-200 bg-amber-50/60">
               <Icon size={18} className="text-amber-700" strokeWidth={1.75} />
             </div>
-            <h3 className="font-serif mt-3 text-base font-bold text-[#001A23]">{tier.title}</h3>
+            <h3 className="mt-3 font-serif text-base font-bold text-[#001A23]">{tier.title}</h3>
             <ul className="mt-4 flex flex-1 flex-col gap-2 text-sm text-gray-600">
               {tier.items.map((item) => (
                 <li key={item} className="flex gap-2">
