@@ -1,6 +1,6 @@
 # IIT Delhi Robotics Department Website
 
-Official website for the **Centre of Excellence on Biologically Inspired Robots and Drones (BIRD)** at IIT Delhi — built with Next.js, Tailwind CSS, and Supabase.
+Official website for the **Centre of Excellence on Biologically Inspired Robots and Drones (CoE-BIRD)** at IIT Delhi — built with Next.js, Tailwind CSS, and Supabase.
 
 > **Repo:** https://github.com/TheDarkLord100/jrb-website-new
 > **Live site:** https://robotics.iitd.ac.in
@@ -9,13 +9,17 @@ Official website for the **Centre of Excellence on Biologically Inspired Robots 
 
 ## Tech Stack
 
-| Layer     | Technology                             |
-| --------- | -------------------------------------- |
+| Layer | Technology |
+|---|---|
 | Framework | Next.js 16 (App Router, static export) |
-| Language  | TypeScript                             |
-| Styling   | Tailwind CSS v4                        |
-| Database  | Supabase (Postgres + Auth)             |
-| Icons     | Lucide React                           |
+| Language | TypeScript |
+| Styling | Tailwind CSS v4 |
+| Database | Supabase (Postgres, Row Level Security) |
+| Backend logic | Supabase Edge Functions (Deno) |
+| Content | `react-markdown` + `remark-gfm` for Markdown-authored fields |
+| 3D | Three.js / React Three Fiber (homepage hero point cloud) |
+| Icons | Lucide React |
+| Email | Resend (via the `send-contact-email` Edge Function) |
 
 ---
 
@@ -23,18 +27,61 @@ Official website for the **Centre of Excellence on Biologically Inspired Robots 
 
 ```
 src/
-├── app/          # Pages and routes
-├── components/   # Reusable UI components
-│   ├── ui/       # Primitives (buttons, cards, etc.)
-│   ├── layout/   # Navbar, Footer
-│   └── sections/ # Page sections
+├── app/                     # Pages and routes (Next.js App Router)
+│   ├── about/
+│   ├── academics/
+│   │   ├── admissions/
+│   │   ├── minor/           # IDSR page (route name predates the content — see docs/DATABASE.md)
+│   │   └── mtech/
+│   ├── contact/
+│   ├── events/
+│   ├── industry/
+│   ├── people/
+│   └── research/
+│       ├── facilities/
+│       │   └── [slug]/      # generateStaticParams — see the gotcha below
+│       └── themes/
+│           ├── cross-cutting/
+│           ├── field-robotics/
+│           ├── human-robotics/
+│           └── soft-bio-robotics/
+│
+├── components/
+│   ├── ui/                  # Primitives: Card, Pill, PageHeading, SectionHeading,
+│   │                           Accordion, Markdown, TocNav, AnnouncementModal, ContentBlocks
+│   ├── layout/               # Navbar (+ navItems.ts, DesktopNav, MobileDrawer), Footer
+│   └── sections/              # Page-specific content, grouped by feature:
+│       ├── home/               #   Hero, ResearchDomains, NewsAndAnnouncements,
+│       │                       #   IndustryConnect, FeaturedProjectsCarousel, Collaborators
+│       ├── hero/                #   Three.js point cloud internals (shared by Hero + StaticPointCloud)
+│       ├── people/               #   PeopleDirectory, PeopleSkeleton
+│       ├── research/             #   ResearchLabs, LabDetail(+Skeleton), VerticalPage, StaticPointCloud
+│       ├── academics/             #   AdmissionsContent, IdsrContent, MtechContent
+│       ├── events/                 #   EventsList, AnnouncementSidebar (shared with Admissions)
+│       ├── industry/                #   IndustryTiers, IndustryContactForm
+│       ├── about/                    #   AboutGallery
+│       └── contact/                   #   ContactForm
+│
 ├── lib/
-│   └── supabase/ # Supabase client and query functions
-├── types/        # TypeScript interfaces
-└── styles/       # Global CSS
+│   ├── hooks/                 # Every `use*` data hook (one per Supabase query group)
+│   ├── supabase/
+│   │   ├── client.ts          # Supabase client -- returns `null` if env vars are missing,
+│   │   │                        never throws at import time (would break the static build)
+│   │   └── queries/            # Query functions, one file per domain, re-exported via index.ts
+│   ├── announcements.ts        # formatAnnouncementDate() utility
+│   ├── contact.ts              # sendContactMessage() -- invokes the send-contact-email Edge Function
+│   ├── stripMarkdown.ts        # Rough plain-text preview for card excerpts of Markdown content
+│   └── lucideIconMap.ts        # Maps a DB-stored icon name string to a lucide-react component
+│
+└── types/                       # One file per data domain, mirrors docs/DATABASE.md
 
-docs/             # Setup and deployment guides
-.github/          # CI workflows and issue templates
+supabase/
+└── functions/
+    └── send-contact-email/       # Deno Edge Function, see docs/DATABASE.md for required secrets
+
+docs/
+└── DATABASE.md                    # Schema reference: every table, column, and RLS policy
+                                     # (descriptive only -- no runnable SQL is checked into the repo)
 ```
 
 ---
@@ -66,9 +113,21 @@ cp .env.example .env.local
 ```
 
 Fill in your Supabase credentials in `.env.local`. Find them at:
-**Supabase Dashboard → Project Settings → API**
+**Supabase Dashboard → Project Settings → API** — use the **publishable** key, not the legacy anon key.
 
-### 4. Run the development server
+### 4. Set up the database (first time only)
+
+The database schema isn't checked into this repo. Use [`docs/DATABASE.md`](./docs/DATABASE.md) as the reference for every table, column, and access-control policy this project expects, and create them in your own Supabase project's SQL Editor. Reach out to whoever set up the original project if you need the exact existing schema rather than recreating it from the reference doc.
+
+### 5. Deploy the Edge Function
+
+```bash
+supabase functions deploy send-contact-email
+```
+
+Then set its required secrets under **Edge Functions → Secrets** in the Dashboard — see [`docs/DATABASE.md`](./docs/DATABASE.md#edge-functions) for exactly which ones.
+
+### 6. Run the development server
 
 ```bash
 npm run dev
@@ -80,7 +139,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Building & Deployment
 
-This project uses Next.js static export (`output: 'export'`), which compiles the site into plain HTML/CSS/JS files served by Apache — no Node.js required on the server.
+This project uses Next.js static export (`output: 'export'`), which compiles the site into plain HTML/CSS/JS files — no Node.js required on the server.
 
 ### Build
 
@@ -92,66 +151,36 @@ This generates an `/out` directory containing all static files.
 
 ### Deploy to Server
 
-Copy the `/out` directory to the Apache server:
+Copy the `/out` directory to the web server, e.g.:
 
 ```bash
 rsync -avz --delete out/ user@server:/var/www/robotics/html/
 ```
 
-See [`docs/DEPLOYMENT.md`](./docs/DEPLOYMENT.md) for the full Apache configuration guide.
+> **Note:** there's no `docs/DEPLOYMENT.md` in this repo yet, despite this section implying more detail exists — a previous version of this README referenced one that was never actually written. If there's a specific Apache vhost config, deploy pipeline, or server path this project relies on, that should get written down properly rather than left as a dangling reference.
+
+---
+
+## A build-time gotcha worth knowing
+
+Any `[slug]` dynamic route (currently just `/research/facilities/[slug]`) needs `generateStaticParams`. Under `output: 'export'`, an **empty array returned from it fails the entire build** — not just that route — so it always needs a fallback placeholder param if the underlying table could ever be empty.
 
 ---
 
 ## Other Commands
 
 ```bash
-npm run lint        # Run ESLint
-npm run typecheck   # Run TypeScript checks
-npm run format      # Format code with Prettier
+npm run lint          # Run ESLint
+npm run typecheck      # Run TypeScript checks
+npm run format          # Format code with Prettier
+npm run format:check    # Check formatting without writing changes
 ```
 
 ---
 
-## Merge Notes (this pass)
+## Known gaps / next steps
 
-This pass ported all content pages from the previous static-HTML rebuild into
-this project's Tailwind/`src` structure, following the Navbar's existing route
-map and design system (dark `#001A23` header, yellow-400 accents):
-
-- **Pages added:** `/about`, `/research/themes` (+ 4 detail pages under
-  `/research/themes/{human-robotics,soft-bio-robotics,field-robotics,cross-cutting}`),
-  `/research/facilities`, `/people`, `/academics/mtech`, `/academics/minor`,
-  `/academics/admissions`, `/events`, `/contact`
-- **`src/components/ui/`**: `PageHeading`, `SectionHeading`, `Card`, `Pill`,
-  `Tag`, `Accordion`, `AnnouncementModal`
-- **`src/components/sections/`**: `Hero`, `ResearchDomains`,
-  `NewsAndAnnouncements`, `Collaborators`, `VerticalPage` + `ProjectAccordion`
-  (research field pages), `ResearchLabs`, `PeopleDirectory`, `EventsAccordion`,
-  `ContactForm`, `AdmissionAnnouncements`
-- **`src/types/`**: `announcement.ts` and `person.ts`, both shaped to match
-  `docs/DATABASE.md` exactly so swapping in real Supabase queries later is a
-  drop-in change rather than a rewrite.
-- **`src/lib/announcements.ts`** and **`src/lib/people-data.ts`**: seed/adapter
-  data. `announcements.ts` currently adapts the same public Gist JSON the old
-  site used into the `announcements` table shape — there's a `TODO(supabase)`
-  comment marking exactly where to swap in a real query. `people-data.ts` is
-  static seed data (55 people) ported from the old site, shaped to match the
-  `people` table.
-
-### Known gaps / next steps
-
-- Supabase isn't wired up yet (per your message, that's the next phase). The
-  `announcements` and `people` data already match the DB schema shape, so
-  `src/lib/supabase/queries.ts` should be able to replace `announcements.ts`
-  and `people-data.ts` without touching any components.
-- `hero_settings`/`hero_slides` are still hardcoded in `Hero.tsx` — same story,
-  shaped to match the table so it's a straightforward swap.
-- `labs`/`lab_images`/`lab_announcements` aren't wired to Supabase yet either;
-  `ResearchLabs.tsx` has static seed data.
-- Font: this repo uses `next/font/google` (Inter), which needs to reach
-  `fonts.googleapis.com` at build time — that's blocked in the sandbox this was
-  built in, so the build here was verified with the font import temporarily
-  stripped. It's restored in the delivered code; run `npm run build` locally to
-  confirm (should just work with normal internet access).
-- I left `src/components/layout/Navbar.tsx` and `Footer.tsx` as you had them —
-  didn't touch your existing work there.
+- **Projects section** — a `projects` table (+ `theme_projects` junction, mirroring `theme_faculty`/`theme_labs`) is planned but not yet built; needs real project write-ups, leads, and links before seeding.
+- **"For Students" gated resource section** — designed (passphrase-gate pattern, checked server-side in an Edge Function so the resource list itself is never in the public bundle) but not yet implemented; waiting on real content and a passphrase.
+- **`collaborators.name`** — the 13 seeded logos are unlabeled files; real company names haven't been confirmed yet.
+- **Industry page tier content** (`industry_tiers`) is intentionally placeholder/illustrative, not a real published programme.
