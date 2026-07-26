@@ -52,4 +52,3 @@ export async function getIdsrElectives(): Promise<IdsrElective[]> {
   }
   return (data ?? []) as IdsrElective[];
 }
-

@@ -1,7 +1,6 @@
 import { supabase } from '@/lib/supabase/client';
 import type { AdmissionSection, AdmissionLink } from '@/types/admissions';
 
-
 export async function getAdmissionSections(): Promise<AdmissionSection[]> {
   if (!supabase) {
     console.error(

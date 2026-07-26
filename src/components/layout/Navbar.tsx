@@ -14,11 +14,13 @@ export default function Navbar() {
   return (
     <>
       {/* ── Fixed Header ─────────────────────────────────────────────────── */}
-      <header className="fixed top-0 left-0 w-full z-50 bg-[#001A23] shadow-md h-16">
-        <div className="max-w-[75rem] mx-auto px-5 h-full flex items-center justify-between">
-
+      <header className="fixed top-0 left-0 z-50 h-16 w-full bg-[#001A23] shadow-md">
+        <div className="mx-auto flex h-full max-w-[75rem] items-center justify-between px-5">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-4 text-white font-semibold text-lg hover:no-underline">
+          <Link
+            href="/"
+            className="flex items-center gap-4 text-lg font-semibold text-white hover:no-underline"
+          >
             <Image
               src="/Assets/logos/bird.png"
               alt="CoE BIRD Logo"
@@ -33,7 +35,7 @@ export default function Navbar() {
 
           {/* Burger button */}
           <button
-            className="lg:hidden text-white p-1"
+            className="p-1 text-white lg:hidden"
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
           >

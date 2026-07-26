@@ -2,7 +2,6 @@ import { supabase } from '@/lib/supabase/client';
 import type { Person } from '@/types/person';
 import type { Lab } from '@/types/lab';
 
-
 // Faculty linked to a research theme via the theme_faculty junction table --
 // sources the real, current `people` row (name, id, etc.) rather than a
 // hardcoded name string that can drift out of sync.

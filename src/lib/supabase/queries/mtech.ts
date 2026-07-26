@@ -1,7 +1,6 @@
 import { supabase } from '@/lib/supabase/client';
 import type { MtechSection, MtechCreditCategory, MtechCourse, MtechCard } from '@/types/mtech';
 
-
 export async function getMtechSections(): Promise<MtechSection[]> {
   if (!supabase) return [];
   const { data, error } = await supabase

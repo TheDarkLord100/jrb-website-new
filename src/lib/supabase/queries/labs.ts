@@ -1,7 +1,6 @@
 import { supabase } from '@/lib/supabase/client';
 import type { Lab, LabImage, LabAnnouncement } from '@/types/lab';
 
-
 export async function getLabs(): Promise<Lab[]> {
   if (!supabase) {
     console.error(

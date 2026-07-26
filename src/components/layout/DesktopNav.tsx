@@ -11,34 +11,34 @@ export default function DesktopNav() {
   const isActive = (href?: string) => href === pathname;
 
   return (
-    <nav className="hidden lg:flex items-center">
+    <nav className="hidden items-center lg:flex">
       <ul className="flex items-center">
         {NAV_ITEMS.map((item) => (
-          <li key={item.label} className="relative group ml-6">
+          <li key={item.label} className="group relative ml-6">
             {item.children ? (
               <>
                 {/* Parent with dropdown */}
                 <button
                   aria-haspopup="true"
-                  className="flex items-center gap-1 text-white font-medium hover:text-amber-400 transition-colors cursor-pointer"
+                  className="flex cursor-pointer items-center gap-1 font-medium text-white transition-colors hover:text-amber-400"
                 >
                   {item.label}
                   <ChevronDown size={14} className="transition-transform group-hover:rotate-180" />
                 </button>
 
                 {/* Dropdown menu */}
-                <ul className="absolute top-8 left-[-2rem] min-w-[13rem] pb-2 px-4 bg-[#001A23] border-t-2 border-amber-400 shadow-lg rounded-b opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 transition-all duration-500 ease-in-out z-50">
+                <ul className="invisible absolute top-8 left-[-2rem] z-50 min-w-[13rem] translate-y-2 rounded-b border-t-2 border-amber-400 bg-[#001A23] px-4 pb-2 opacity-0 shadow-lg transition-all duration-500 ease-in-out group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
                   {item.children.map((child) => (
                     <li
                       key={child.label}
-                      className={`mt-3 ${child.children ? 'relative group/sub' : ''}`}
+                      className={`mt-3 ${child.children ? 'group/sub relative' : ''}`}
                     >
                       {child.children ? (
                         <>
                           {/* Nested parent */}
                           <button
                             aria-haspopup="true"
-                            className="flex items-center justify-between w-full text-white font-medium hover:text-amber-400 transition-colors text-sm"
+                            className="flex w-full items-center justify-between text-sm font-medium text-white transition-colors hover:text-amber-400"
                           >
                             {child.label}
                             <ChevronDown
@@ -48,7 +48,7 @@ export default function DesktopNav() {
                           </button>
 
                           {/* Nested dropdown */}
-                          <ul className="absolute top-0 left-full ml-2 min-w-[14rem] pb-2 px-4 bg-[#001A23] border-t-2 border-amber-400 shadow-lg rounded-b opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible group-focus-within/sub:opacity-100 group-focus-within/sub:visible transition-all duration-500 ease-in-out z-50">
+                          <ul className="invisible absolute top-0 left-full z-50 ml-2 min-w-[14rem] rounded-b border-t-2 border-amber-400 bg-[#001A23] px-4 pb-2 opacity-0 shadow-lg transition-all duration-500 ease-in-out group-focus-within/sub:visible group-focus-within/sub:opacity-100 group-hover/sub:visible group-hover/sub:opacity-100">
                             {child.children.map((nested) => (
                               <li key={nested.label} className="mt-3">
                                 <Link

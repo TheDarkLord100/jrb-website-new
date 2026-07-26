@@ -1,7 +1,6 @@
 import { supabase } from '@/lib/supabase/client';
 import type { Announcement } from '@/types/announcement';
 
-
 export async function getAnnouncementsByType(type: Announcement['type']): Promise<Announcement[]> {
   if (!supabase) {
     console.error(
