@@ -19,16 +19,23 @@ const components: Components = {
   ),
   li: ({ children }) => <li className="mt-1 leading-relaxed first:mt-0">{children}</li>,
   strong: ({ children }) => <strong className="font-semibold text-[#001A23]">{children}</strong>,
-  a: ({ href, children }) => (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-[#001A23] underline underline-offset-2 hover:text-amber-700"
-    >
-      {children}
-    </a>
-  ),
+  a: ({ href, children }) => {
+    // In-page anchors (e.g. "#specializations", used by cross-links between
+    // sections on the same page) should navigate normally, not open a new
+    // tab. Everything else (external links, PDF downloads) keeps the
+    // existing behavior.
+    const isAnchor = href?.startsWith("#");
+    return (
+      <a
+        href={href}
+        target={isAnchor ? undefined : "_blank"}
+        rel={isAnchor ? undefined : "noopener noreferrer"}
+        className="text-[#001A23] underline underline-offset-2 hover:text-amber-700"
+      >
+        {children}
+      </a>
+    );
+  },
 };
 
 export default function Markdown({ children }: { children: string }) {
