@@ -4,16 +4,21 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ChevronDown } from 'lucide-react';
-import { NAV_ITEMS } from './navItems';
+import { NAV_ITEMS, INTERNAL_NAV_ITEM } from './navItems';
+import { useStudentSession } from '@/lib/hooks/useStudentSession';
 
 export default function DesktopNav() {
   const pathname = usePathname();
   const isActive = (href?: string) => href === pathname;
+  const { isLoggedIn } = useStudentSession();
+  const items = isLoggedIn
+    ? [...NAV_ITEMS.slice(0, -1), INTERNAL_NAV_ITEM, NAV_ITEMS[NAV_ITEMS.length - 1]]
+    : NAV_ITEMS;
 
   return (
     <nav className="hidden items-center lg:flex">
       <ul className="flex items-center">
-        {NAV_ITEMS.map((item) => (
+        {items.map((item) => (
           <li key={item.label} className="group relative ml-6">
             {item.children ? (
               <>

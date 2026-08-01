@@ -40,3 +40,5 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Industry Connect', href: '/industry' },
   { label: 'Contact Us', href: '/contact' },
 ];
+
+export const INTERNAL_NAV_ITEM: NavItem = { label: 'Internal', href: '/internal' };

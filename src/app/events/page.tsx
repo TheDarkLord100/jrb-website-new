@@ -3,6 +3,7 @@ import PageHeading from '@/components/ui/PageHeading';
 import SectionHeading from '@/components/ui/SectionHeading';
 import EventsList from '@/components/sections/events/EventsList';
 import AnnouncementSidebar from '@/components/sections/events/AnnouncementSidebar';
+import StudentLogin from "@/components/sections/events/StudentLogin";
 
 export const metadata = { title: 'Events' };
 
@@ -30,6 +31,7 @@ export default function EventsPage() {
             </Link>
 
             <AnnouncementSidebar type="news" heading="News" emptyText="No news posted yet." />
+            <StudentLogin />
           </aside>
         </div>
       </div>
