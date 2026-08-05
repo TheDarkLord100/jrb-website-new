@@ -6,8 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { X, ChevronDown } from 'lucide-react';
-import { NAV_ITEMS, INTERNAL_NAV_ITEM } from './navItems';
-import { useStudentSession } from '@/lib/hooks/useStudentSession';
+import { NAV_ITEMS } from './navItems';
 
 export default function MobileDrawer({
   mobileOpen,
@@ -18,10 +17,6 @@ export default function MobileDrawer({
 }) {
   const [openItems, setOpenItems] = useState<Set<string>>(new Set());
   const pathname = usePathname();
-  const { isLoggedIn } = useStudentSession();
-  const items = isLoggedIn
-    ? [...NAV_ITEMS.slice(0, -1), INTERNAL_NAV_ITEM, NAV_ITEMS[NAV_ITEMS.length - 1]]
-    : NAV_ITEMS;
 
   const toggleItem = (label: string) => {
     setOpenItems((prev) => {
@@ -71,7 +66,7 @@ export default function MobileDrawer({
 
         {/* Mobile nav items */}
         <ul className="px-5 py-4">
-          {items.map((item) => (
+          {NAV_ITEMS.map((item) => (
             <li key={item.label} className="border-b border-white/10">
               {item.children ? (
                 <>
