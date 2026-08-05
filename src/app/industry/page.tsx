@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Mail } from 'lucide-react';
+import { Mail, FileText } from 'lucide-react';
 import { Handshake, FlaskConical, GraduationCap } from 'lucide-react';
 import Collaborators from '@/components/sections/home/Collaborators';
 import IndustryTiers from '@/components/sections/industry/IndustryTiers';
@@ -145,6 +145,15 @@ export default function IndustryPage() {
             >
               Or use our general contact page →
             </Link>
+            <a
+              href="/Assets/mtechsponsor.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 flex w-fit items-center gap-2 border border-gray-300 px-5 py-2.5 text-sm font-medium text-[#001A23] transition-colors hover:border-amber-400 hover:text-amber-700"
+            >
+              <FileText size={16} className="text-amber-600" />
+              IITD-Industry Robotics Consortium (MTech sponsorship)
+            </a>
           </div>
 
           <div className="border-t-2 border-amber-400 bg-white p-6 shadow-sm ring-1 ring-gray-100">
