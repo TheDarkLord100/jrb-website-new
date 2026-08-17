@@ -186,3 +186,4 @@ npm run format:check    # Check formatting without writing changes
 - **Industry page tier content** (`industry_tiers`) is intentionally placeholder/illustrative, not a real published programme.
 
 This is a test statement. ignore it.
+Ignore this comment.
