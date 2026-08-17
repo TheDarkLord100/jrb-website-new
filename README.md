@@ -184,6 +184,3 @@ npm run format:check    # Check formatting without writing changes
 - **"For Students" gated resource section** — designed (passphrase-gate pattern, checked server-side in an Edge Function so the resource list itself is never in the public bundle) but not yet implemented; waiting on real content and a passphrase.
 - **`collaborators.name`** — the 13 seeded logos are unlabeled files; real company names haven't been confirmed yet.
 - **Industry page tier content** (`industry_tiers`) is intentionally placeholder/illustrative, not a real published programme.
-
-This is a test statement. ignore it.
-Ignore this comment.
