@@ -1,7 +1,13 @@
 import VerticalPage from '@/components/sections/research/VerticalPage';
 
-export const metadata = { title: 'Soft, Compliant and Bio-Inspired Robotic Systems' };
+import { buildMetadata } from '@/lib/metadata';
 
+export const metadata = buildMetadata({
+  title: 'Soft, Compliant and Bio-Inspired Robotic Systems',
+  description:
+    'CoE-BIRD research into soft materials, compliant actuation, and adaptive morphology inspired by biological organisms, enabling robots to operate safely in unstructured environments.',
+  path: '/research/themes/soft-bio-robotics',
+});
 export default function Page() {
   return (
     <VerticalPage

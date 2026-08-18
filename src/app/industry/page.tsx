@@ -6,8 +6,14 @@ import Collaborators from '@/components/sections/home/Collaborators';
 import IndustryTiers from '@/components/sections/industry/IndustryTiers';
 import IndustryContactForm from '@/components/sections/industry/IndustryContactForm';
 
-export const metadata = { title: 'Industry & Partnerships' };
+import { buildMetadata } from '@/lib/metadata';
 
+export const metadata = buildMetadata({
+  title: 'Industry & Partnerships',
+  description:
+    'Partner with CoE-BIRD to move robotics research from the lab into real-world impact — through sponsored projects, shared infrastructure, and direct engagement with our students and faculty.',
+  path: '/industry',
+});
 // Reused verbatim from the homepage's IndustryConnect teaser -- real,
 // already-established copy, not invented for this page.
 const pillars = [

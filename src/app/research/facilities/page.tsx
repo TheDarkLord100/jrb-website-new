@@ -1,8 +1,14 @@
 import PageHeading from '@/components/ui/PageHeading';
 import ResearchLabs from '@/components/sections/research/ResearchLabs';
 
-export const metadata = { title: 'Research Facilities' };
+import { buildMetadata } from '@/lib/metadata';
 
+export const metadata = buildMetadata({
+  title: 'Research Facilities',
+  description:
+    'Labs and research facilities at CoE-BIRD, the Centre of Excellence on Biologically Inspired Robots and Drones at IIT Delhi.',
+  path: '/research/facilities',
+});
 export default function ResearchFacilitiesPage() {
   return (
     <div>

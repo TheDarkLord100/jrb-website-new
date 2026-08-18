@@ -1,7 +1,13 @@
 import VerticalPage from '@/components/sections/research/VerticalPage';
 
-export const metadata = { title: 'Autonomous Field Robotics' };
+import { buildMetadata } from '@/lib/metadata';
 
+export const metadata = buildMetadata({
+  title: 'Autonomous Field Robotics',
+  description:
+    'CoE-BIRD research into robotic systems for agriculture, disaster response, infrastructure inspection, and aerial exploration, integrating sensing, perception, navigation, and autonomous decision-making.',
+  path: '/research/themes/field-robotics',
+});
 export default function Page() {
   return (
     <VerticalPage

@@ -1,8 +1,13 @@
 import PageHeading from '@/components/ui/PageHeading';
 import PeopleDirectory from '@/components/sections/people/PeopleDirectory';
+import { buildMetadata } from '@/lib/metadata';
 
-export const metadata = { title: 'People' };
-
+export const metadata = buildMetadata({
+  title: 'People',
+  description:
+    'Faculty, students, post-docs, and alumni of CoE-BIRD — the Centre of Excellence on Biologically Inspired Robots and Drones at IIT Delhi.',
+  path: '/people',
+});
 export default function PeoplePage() {
   return (
     <div>

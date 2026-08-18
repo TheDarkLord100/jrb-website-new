@@ -4,8 +4,14 @@ import SectionHeading from '@/components/ui/SectionHeading';
 import EventsList from '@/components/sections/events/EventsList';
 import AnnouncementSidebar from '@/components/sections/events/AnnouncementSidebar';
 
-export const metadata = { title: 'Events' };
+import { buildMetadata } from '@/lib/metadata';
 
+export const metadata = buildMetadata({
+  title: 'Events',
+  description:
+    'Past events, talks, and announcements from CoE-BIRD, the Centre of Excellence on Biologically Inspired Robots and Drones at IIT Delhi.',
+  path: '/events',
+});
 export default function EventsPage() {
   return (
     <div>

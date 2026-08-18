@@ -1,8 +1,14 @@
 import PageHeading from '@/components/ui/PageHeading';
 import MtechContent from '@/components/sections/academics/MtechContent';
 
-export const metadata = { title: 'M.Tech. in Robotics' };
+import { buildMetadata } from '@/lib/metadata';
 
+export const metadata = buildMetadata({
+  title: 'M.Tech. in Robotics',
+  description:
+    'The M.Tech in Robotics (JRB) at IIT Delhi — an interdisciplinary programme jointly offered by Electrical Engineering, Mechanical Engineering, Computer Science, and the School of AI.',
+  path: '/academics/mtech',
+});
 export default function MTechPage() {
   return (
     <div>

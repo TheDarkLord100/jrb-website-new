@@ -2,8 +2,14 @@ import PageHeading from '@/components/ui/PageHeading';
 import AdmissionsContent from '@/components/sections/academics/AdmissionsContent';
 import AnnouncementSidebar from '@/components/sections/events/AnnouncementSidebar';
 
-export const metadata = { title: 'Admissions' };
+import { buildMetadata } from '@/lib/metadata';
 
+export const metadata = buildMetadata({
+  title: 'Admissions',
+  description:
+    'Admissions information and announcements for CoE-BIRD\'s robotics programmes at IIT Delhi, including the M.Tech in Robotics and the Interdisciplinary Specialization in Robotics.',
+  path: '/academics/admissions',
+});
 export default function AdmissionsPage() {
   return (
     <div>

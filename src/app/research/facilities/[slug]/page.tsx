@@ -1,5 +1,6 @@
 import { getLabSlugs, getLabBySlug } from '@/lib/supabase/queries';
 import LabDetail from '@/components/sections/research/LabDetail';
+import { buildMetadata } from '@/lib/metadata';
 
 // Static export: every lab's URL must be known when `next build` runs. A
 // lab added after the last build/deploy won't have a routable page until
@@ -22,10 +23,17 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug }));
 }
 
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const lab = await getLabBySlug(slug);
-  return { title: lab?.name ?? 'Lab' };
+  return buildMetadata({
+    title: lab?.name ?? 'Lab',
+    description:
+      lab?.description ??
+      'A research facility at CoE-BIRD, the Centre of Excellence on Biologically Inspired Robots and Drones at IIT Delhi.',
+    path: `/research/facilities/${slug}`,
+  });
 }
 
 export default async function LabPage({ params }: { params: Promise<{ slug: string }> }) {

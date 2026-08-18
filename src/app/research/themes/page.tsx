@@ -4,8 +4,14 @@ import SectionHeading from '@/components/ui/SectionHeading';
 import StaticPointCloud from '@/components/sections/research/StaticPointCloud';
 import FeaturedProjectsCarousel from '@/components/sections/FeaturedProjectsCarousel';
 
-export const metadata = { title: 'Research Themes' };
+import { buildMetadata } from '@/lib/metadata';
 
+export const metadata = buildMetadata({
+  title: 'Research Themes',
+  description:
+    'Research at CoE-BIRD spans autonomous navigation, learning-based control, human-robot interaction, bio-inspired design, and field robotics, with an emphasis on experimental validation and real-world deployment.',
+  path: '/research/themes',
+});
 const verticals = [
   {
     // TODO: "kuka" (robotic arm) is a placeholder — a dedicated shape (e.g.

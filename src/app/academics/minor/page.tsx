@@ -1,8 +1,14 @@
 import PageHeading from '@/components/ui/PageHeading';
 import IdsrContent from '@/components/sections/academics/IdsrContent';
 
-export const metadata = { title: 'Minor Degree in Robotics' };
+import { buildMetadata } from '@/lib/metadata';
 
+export const metadata = buildMetadata({
+  title: 'Minor Degree in Robotics',
+  description:
+    'The Interdisciplinary Specialization in Robotics (IDSR) — an undergraduate robotics specialization at IIT Delhi, grown from the university\'s robotics research programme.',
+  path: '/academics/minor',
+});
 export default function MinorPage() {
   return (
     <div>

@@ -4,8 +4,14 @@ import PageHeading from '@/components/ui/PageHeading';
 import ContactForm from '@/components/sections/contact/ContactForm';
 import Card from '@/components/ui/Card';
 
-export const metadata = { title: 'Contact Us' };
+import { buildMetadata } from '@/lib/metadata';
 
+export const metadata = buildMetadata({
+  title: 'Contact Us',
+  description:
+    'Get in touch with CoE-BIRD at IIT Delhi, Hauz Khas, New Delhi. Reach us at robotics@iitd.ac.in for research collaboration, admissions, or general inquiries.',
+  path: '/contact',
+});
 export default function ContactPage() {
   return (
     <div>

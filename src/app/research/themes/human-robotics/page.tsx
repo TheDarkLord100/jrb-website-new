@@ -1,7 +1,13 @@
 import VerticalPage from '@/components/sections/research/VerticalPage';
 
-export const metadata = { title: 'Human-Centred and Assistive Robotics' };
+import { buildMetadata } from '@/lib/metadata';
 
+export const metadata = buildMetadata({
+  title: 'Human-Centred and Assistive Robotics',
+  description:
+    'CoE-BIRD research into robotic systems designed to interact safely with humans — assistive technologies, wearable robotics, rehabilitation systems, and collaborative robots.',
+  path: '/research/themes/human-robotics',
+});
 export default function Page() {
   return (
     <VerticalPage

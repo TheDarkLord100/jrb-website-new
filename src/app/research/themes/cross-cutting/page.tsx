@@ -1,7 +1,13 @@
 import VerticalPage from '@/components/sections/research/VerticalPage';
 
-export const metadata = { title: 'Embodied Intelligence, Learning and Control' };
+import { buildMetadata } from '@/lib/metadata';
 
+export const metadata = buildMetadata({
+  title: 'Embodied Intelligence, Learning and Control',
+  description:
+    'A unifying research theme at CoE-BIRD: integrating intelligence directly within robotic systems through the interaction between perception, learning, control, and physical embodiment.',
+  path: '/research/themes/cross-cutting',
+});
 export default function Page() {
   return (
     <VerticalPage
