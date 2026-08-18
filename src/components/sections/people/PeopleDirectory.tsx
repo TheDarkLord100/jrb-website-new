@@ -37,6 +37,7 @@ const TAGS = [
 const STUDENT_BATCHES = [
   { key: 'all', label: 'All' },
   { key: '2025-27', label: '2025–27' },
+  { key: '2026-28', label: '2026–28' },
 ];
 
 const ALUMNI_BATCHES = [
