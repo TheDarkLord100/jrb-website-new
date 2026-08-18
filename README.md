@@ -9,17 +9,17 @@ Official website for the **Centre of Excellence on Biologically Inspired Robots 
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | Next.js 16 (App Router, static export) |
-| Language | TypeScript |
-| Styling | Tailwind CSS v4 |
-| Database | Supabase (Postgres, Row Level Security) |
-| Backend logic | Supabase Edge Functions (Deno) |
-| Content | `react-markdown` + `remark-gfm` for Markdown-authored fields |
-| 3D | Three.js / React Three Fiber (homepage hero point cloud) |
-| Icons | Lucide React |
-| Email | Resend (via the `send-contact-email` Edge Function) |
+| Layer         | Technology                                                   |
+| ------------- | ------------------------------------------------------------ |
+| Framework     | Next.js 16 (App Router, static export)                       |
+| Language      | TypeScript                                                   |
+| Styling       | Tailwind CSS v4                                              |
+| Database      | Supabase (Postgres, Row Level Security)                      |
+| Backend logic | Supabase Edge Functions (Deno)                               |
+| Content       | `react-markdown` + `remark-gfm` for Markdown-authored fields |
+| 3D            | Three.js / React Three Fiber (homepage hero point cloud)     |
+| Icons         | Lucide React                                                 |
+| Email         | Resend (via the `send-contact-email` Edge Function)          |
 
 ---
 
