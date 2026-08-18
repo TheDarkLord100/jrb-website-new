@@ -1,19 +1,13 @@
 import type { Metadata } from 'next';
-import { Inter, Libre_Baskerville } from 'next/font/google';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import '@/app/globals.css';
 
-const inter = Inter({ variable: '--font-inter', subsets: ['latin'] });
-const libreBaskerville = Libre_Baskerville({
-  variable: '--font-libre-baskerville',
-  subsets: ['latin'],
-  weight: ['400', '700'],
-});
+const inter = { variable: '' };
+const libreBaskerville = { variable: '' };
 
 const SITE_DESCRIPTION =
   'Centre of Excellence on Biologically Inspired Robots and Drones (BIRD) at IIT Delhi. Advancing research in autonomous systems, cobotics, and intelligent robotics.';
-
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://robotics.iitd.ac.in'),
@@ -38,12 +32,45 @@ export const metadata: Metadata = {
     images: ['/Assets/logos/bird.png'],
   },
 };
+// Structured data (JSON-LD) — describes CoE-BIRD as a research org under
+// IIT Delhi for search engines. 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ResearchOrganization',
+  name: 'Centre of Excellence on Biologically Inspired Robots and Drones',
+  alternateName: 'CoE-BIRD',
+  url: 'https://robotics.iitd.ac.in',
+  logo: 'https://robotics.iitd.ac.in/Assets/logos/bird.png',
+  description: SITE_DESCRIPTION,
+  email: 'robotics@iitd.ac.in',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'IIT Campus, Hauz Khas',
+    addressLocality: 'New Delhi',
+    addressRegion: 'Delhi',
+    postalCode: '110016',
+    addressCountry: 'IN',
+  },
+  parentOrganization: {
+    '@type': 'CollegeOrUniversity',
+    name: 'Indian Institute of Technology Delhi',
+    url: 'https://home.iitd.ac.in',
+  },
+  sameAs: ['https://www.linkedin.com/company/center-of-excellence-bird-robotics-drones-iitd'],
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${libreBaskerville.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body>
         <Navbar />
+        {/* pt-16 offsets the fixed navbar height */}
         <main className="pt-16">{children}</main>
         <Footer />
       </body>
