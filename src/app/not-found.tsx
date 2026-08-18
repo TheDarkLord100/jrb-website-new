@@ -1,5 +1,5 @@
 // src/app/not-found.tsx
-import Link from "next/link";
+import Link from 'next/link';
 
 export default function NotFound() {
   return (
@@ -11,7 +11,15 @@ export default function NotFound() {
         aria-label="Illustration of a broken robot with a cracked eye and a detached arm"
       >
         {/* ground */}
-        <line x1="60" y1="304" x2="340" y2="304" stroke="#001A23" strokeWidth="2" strokeLinecap="round" />
+        <line
+          x1="60"
+          y1="304"
+          x2="340"
+          y2="304"
+          stroke="#001A23"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
 
         {/* detached arm on the ground */}
         <line
@@ -38,17 +46,50 @@ export default function NotFound() {
         />
 
         {/* legs */}
-        <line x1="172" y1="278" x2="172" y2="300" stroke="#001A23" strokeWidth="9" strokeLinecap="round" />
-        <line x1="228" y1="278" x2="228" y2="300" stroke="#001A23" strokeWidth="9" strokeLinecap="round" />
+        <line
+          x1="172"
+          y1="278"
+          x2="172"
+          y2="300"
+          stroke="#001A23"
+          strokeWidth="9"
+          strokeLinecap="round"
+        />
+        <line
+          x1="228"
+          y1="278"
+          x2="228"
+          y2="300"
+          stroke="#001A23"
+          strokeWidth="9"
+          strokeLinecap="round"
+        />
         <ellipse cx="172" cy="303" rx="12" ry="5" fill="white" stroke="#001A23" strokeWidth="3" />
         <ellipse cx="228" cy="303" rx="12" ry="5" fill="white" stroke="#001A23" strokeWidth="3" />
 
         {/* left arm (still attached) */}
-        <line x1="150" y1="192" x2="112" y2="238" stroke="#001A23" strokeWidth="9" strokeLinecap="round" />
+        <line
+          x1="150"
+          y1="192"
+          x2="112"
+          y2="238"
+          stroke="#001A23"
+          strokeWidth="9"
+          strokeLinecap="round"
+        />
         <circle cx="112" cy="238" r="10" fill="white" stroke="#001A23" strokeWidth="3" />
 
         {/* torso */}
-        <rect x="150" y="170" width="100" height="110" rx="8" fill="white" stroke="#001A23" strokeWidth="4" />
+        <rect
+          x="150"
+          y="170"
+          width="100"
+          height="110"
+          rx="8"
+          fill="white"
+          stroke="#001A23"
+          strokeWidth="4"
+        />
 
         {/* empty right shoulder socket with a spark */}
         <circle cx="250" cy="192" r="6" fill="white" stroke="#001A23" strokeWidth="3" />
@@ -80,19 +121,68 @@ export default function NotFound() {
 
         {/* head, tilted for a "broken" posture */}
         <g transform="rotate(-8 200 108)">
-          <rect x="155" y="68" width="90" height="80" rx="10" fill="white" stroke="#001A23" strokeWidth="4" />
+          <rect
+            x="155"
+            y="68"
+            width="90"
+            height="80"
+            rx="10"
+            fill="white"
+            stroke="#001A23"
+            strokeWidth="4"
+          />
 
           {/* left eye -- normal */}
           <rect x="172" y="98" width="14" height="14" rx="2" fill="#001A23" />
 
           {/* right eye -- broken, X'd out */}
-          <line x1="210" y1="98" x2="224" y2="112" stroke="#d97706" strokeWidth="3.5" strokeLinecap="round" />
-          <line x1="224" y1="98" x2="210" y2="112" stroke="#d97706" strokeWidth="3.5" strokeLinecap="round" />
+          <line
+            x1="210"
+            y1="98"
+            x2="224"
+            y2="112"
+            stroke="#d97706"
+            strokeWidth="3.5"
+            strokeLinecap="round"
+          />
+          <line
+            x1="224"
+            y1="98"
+            x2="210"
+            y2="112"
+            stroke="#d97706"
+            strokeWidth="3.5"
+            strokeLinecap="round"
+          />
 
           {/* mouth grille, one bar knocked crooked */}
-          <line x1="180" y1="130" x2="180" y2="138" stroke="#001A23" strokeWidth="3" strokeLinecap="round" />
-          <line x1="198" y1="130" x2="196" y2="140" stroke="#001A23" strokeWidth="3" strokeLinecap="round" />
-          <line x1="216" y1="130" x2="216" y2="138" stroke="#001A23" strokeWidth="3" strokeLinecap="round" />
+          <line
+            x1="180"
+            y1="130"
+            x2="180"
+            y2="138"
+            stroke="#001A23"
+            strokeWidth="3"
+            strokeLinecap="round"
+          />
+          <line
+            x1="198"
+            y1="130"
+            x2="196"
+            y2="140"
+            stroke="#001A23"
+            strokeWidth="3"
+            strokeLinecap="round"
+          />
+          <line
+            x1="216"
+            y1="130"
+            x2="216"
+            y2="138"
+            stroke="#001A23"
+            strokeWidth="3"
+            strokeLinecap="round"
+          />
 
           {/* crack across the head */}
           <path
@@ -105,7 +195,13 @@ export default function NotFound() {
           />
 
           {/* bent antenna with a spark at the tip */}
-          <path d="M188 68 L172 42" fill="none" stroke="#001A23" strokeWidth="3" strokeLinecap="round" />
+          <path
+            d="M188 68 L172 42"
+            fill="none"
+            stroke="#001A23"
+            strokeWidth="3"
+            strokeLinecap="round"
+          />
           <path
             d="M172 42 L182 32 L172 30 L184 18"
             fill="none"
@@ -117,14 +213,14 @@ export default function NotFound() {
         </g>
       </svg>
 
-      <h1 className="font-serif mt-4 text-2xl font-bold text-[#001A23] sm:text-3xl">
+      <h1 className="mt-4 font-serif text-2xl font-bold text-[#001A23] sm:text-3xl">
         Page Not Found
       </h1>
       <div className="mx-auto mt-2 h-0.5 w-12 bg-amber-400" />
 
       <p className="mt-5 max-w-sm text-sm leading-relaxed text-gray-600">
-        The page you&apos;re looking for doesn&apos;t exist, may have been moved, or the link
-        might be broken.
+        The page you&apos;re looking for doesn&apos;t exist, may have been moved, or the link might
+        be broken.
       </p>
 
       <Link
