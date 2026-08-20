@@ -1,0 +1,25 @@
+RewriteEngine On
+
+# Explicit fixes for the two routes that are BOTH a real page AND a real
+# directory (they have child routes: /research/facilities/[slug],
+# /research/themes/[theme]) — matches with or without trailing slash,
+# since a reload/direct navigation can land on either form.
+RewriteRule ^research/facilities/?$ /research/facilities.html [L]
+RewriteRule ^research/themes/?$ /research/themes.html [L]
+
+# 1) Real files — serve directly
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# 2) Clean URLs for everything else
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+)$ $1.html [L]
+
+# 3) Genuine content directories with no .html sibling (Assets, pointclouds, academics/*, research/facilities/*, research/themes/*)
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+ErrorDocument 404 /404.html
+
+# --- Old-URL redirects go here as they're identified ---
+# Redirect 301 /news /events

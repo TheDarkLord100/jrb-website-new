@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import HeroPointCloud from '@/components/sections/hero/HeroPointCloud';
 
-const MISSION_STATEMENT = 'Pushing the frontiers of Robotics and AI';
+const MISSION_STATEMENT = 'Engineering Bio-Inspired Robots for Real-World Autonomy';
 
 export default function Hero() {
   return (
