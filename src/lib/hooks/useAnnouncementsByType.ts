@@ -7,6 +7,7 @@ import type { Announcement } from '@/types/announcement';
 export function useAnnouncementsByType(type: Announcement['type']) {
   const [items, setItems] = useState<Announcement[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // console.log(items);
 
   useEffect(() => {
     let cancelled = false;

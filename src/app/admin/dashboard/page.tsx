@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import PageHeading from '@/components/ui/PageHeading';
 
-type NavChild = { id: string; label: string };
-type NavNode = { id: string; label: string; children?: NavChild[] };
+type NavChild = { id: string; label: string; href?: string };
+type NavNode = { id: string; label: string; href?: string; children?: NavChild[] };
 
 const structure: NavNode[] = [
   { id: 'about', label: 'about' },
@@ -18,7 +19,7 @@ const structure: NavNode[] = [
     ],
   },
   { id: 'contact', label: 'contact' },
-  { id: 'events', label: 'events' },
+  { id: 'events', label: 'events', href: '/admin/dashboard/events' },
   { id: 'industry', label: 'industry' },
   { id: 'people', label: 'people' },
   {
@@ -39,6 +40,7 @@ function findParentLabel(childId: string) {
 }
 
 export default function DashboardClient() {
+  const router = useRouter();
   const [activeId, setActiveId] = useState('about');
   const [activeLabel, setActiveLabel] = useState('about');
   const [open, setOpen] = useState<Record<string, boolean>>({
@@ -53,7 +55,11 @@ export default function DashboardClient() {
   const toggleOpen = (id: string) =>
     setOpen((prev) => ({ ...prev, [id]: !prev[id] }));
 
-  const select = (id: string, label: string) => {
+  const select = (id: string, label: string, href?: string) => {
+    if (href) {
+      router.push(href);
+      return;
+    }
     setActiveId(id);
     setActiveLabel(label);
   };
@@ -86,8 +92,8 @@ export default function DashboardClient() {
                     type="button"
                     onClick={() =>
                       isParent
-                        ? (toggleOpen(node.id), select(node.id, node.label))
-                        : select(node.id, node.label)
+                        ? (toggleOpen(node.id), select(node.id, node.label, node.href))
+                        : select(node.id, node.label, node.href)
                     }
                     className={`flex w-full items-center gap-2 rounded-md px-3 py-2 text-left transition-colors hover:bg-slate-800 hover:text-slate-100 ${
                       isNodeActive ? 'bg-slate-800 text-teal-300' : isParent ? 'text-slate-300' : ''
@@ -119,7 +125,7 @@ export default function DashboardClient() {
                           <button
                             key={child.id}
                             type="button"
-                            onClick={() => select(child.id, child.label)}
+                            onClick={() => select(child.id, child.label, child.href)}
                             className={`flex w-full items-center gap-2 rounded-md px-3 py-2 text-left transition-colors hover:bg-slate-800 hover:text-slate-100 ${
                               childActive ? 'bg-slate-800 text-teal-300' : ''
                             }`}
