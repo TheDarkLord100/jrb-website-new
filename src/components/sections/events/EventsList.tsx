@@ -28,8 +28,8 @@ function EventsSkeleton() {
   );
 }
 
-export default function EventsList() {
-  const { items, error } = useAnnouncementsByType('event');
+export default function EventsList({ initialItems = [] }: { initialItems?: Announcement[] }) {
+  const { items, error } = useAnnouncementsByType('event', initialItems);
   const [modalItem, setModalItem] = useState<Announcement | null>(null);
 
   if (error) {

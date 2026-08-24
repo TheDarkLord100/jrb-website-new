@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 import { getIndustryTiers } from '@/lib/supabase/queries';
 import type { IndustryTier } from '@/types/industry';
 
-export function useIndustryTiers() {
-  const [tiers, setTiers] = useState<IndustryTier[] | null>(null);
+export function useIndustryTiers(initialTiers: IndustryTier[] = []) {
+  const [tiers, setTiers] = useState<IndustryTier[] | null>(
+    initialTiers.length > 0 ? initialTiers : null
+  );
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

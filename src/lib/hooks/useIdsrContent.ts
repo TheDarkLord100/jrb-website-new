@@ -16,8 +16,8 @@ type IdsrContentData = {
   electives: IdsrElective[];
 };
 
-export function useIdsrContent() {
-  const [data, setData] = useState<IdsrContentData | null>(null);
+export function useIdsrContent(initialData: IdsrContentData | null = null) {
+  const [data, setData] = useState<IdsrContentData | null>(initialData);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

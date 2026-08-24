@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { useLabs } from '@/lib/hooks/useLabs';
-import type { LabCategory } from '@/types/lab';
+import type { Lab, LabCategory } from '@/types/lab';
 
 const CATEGORIES: { key: LabCategory; label: string }[] = [
   { key: 'perception', label: 'Perception & Cognition' },
@@ -38,8 +38,8 @@ function LabsSkeleton() {
   );
 }
 
-export default function ResearchLabs() {
-  const { labs, error } = useLabs();
+export default function ResearchLabs({ initialLabs = [] }: { initialLabs?: Lab[] }) {
+  const { labs, error } = useLabs(initialLabs);
   const [active, setActive] = useState<LabCategory>('perception');
 
   const filtered = useMemo(() => {

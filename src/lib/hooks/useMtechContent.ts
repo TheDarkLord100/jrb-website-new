@@ -16,8 +16,8 @@ type MtechContent = {
   specializations: MtechCard[];
 };
 
-export function useMtechContent() {
-  const [data, setData] = useState<MtechContent | null>(null);
+export function useMtechContent(initialData: MtechContent | null = null) {
+  const [data, setData] = useState<MtechContent | null>(initialData);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

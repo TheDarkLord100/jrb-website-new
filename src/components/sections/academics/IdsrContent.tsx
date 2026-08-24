@@ -5,6 +5,7 @@ import Markdown from '@/components/ui/Markdown';
 import TocNav, { type TocSection } from '@/components/ui/TocNav';
 import { SectionTitle, TextSkeleton, TableSkeleton } from '@/components/ui/ContentBlocks';
 import { useIdsrContent } from '@/lib/hooks/useIdsrContent';
+import type { IdsrSection, IdsrCurriculumRow, IdsrCoreCourse, IdsrElective } from '@/types/idsr';
 
 const SECTIONS: TocSection[] = [
   { id: 'overview', label: 'Overview' },
@@ -14,8 +15,17 @@ const SECTIONS: TocSection[] = [
   { id: 'learning-approach', label: 'Learning Approach' },
 ];
 
-export default function IdsrContent() {
-  const { data, error } = useIdsrContent();
+export default function IdsrContent({
+  initialData = null,
+}: {
+  initialData?: {
+    sections: IdsrSection[];
+    curriculum: IdsrCurriculumRow[];
+    coreCourses: IdsrCoreCourse[];
+    electives: IdsrElective[];
+  } | null;
+}) {
+  const { data, error } = useIdsrContent(initialData);
 
   if (error) {
     return (

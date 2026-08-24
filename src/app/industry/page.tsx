@@ -5,6 +5,7 @@ import { Handshake, FlaskConical, GraduationCap } from 'lucide-react';
 import Collaborators from '@/components/sections/home/Collaborators';
 import IndustryTiers from '@/components/sections/industry/IndustryTiers';
 import IndustryContactForm from '@/components/sections/industry/IndustryContactForm';
+import { getIndustryTiers, getCollaborators } from '@/lib/supabase/queries';
 
 import { buildMetadata } from '@/lib/metadata';
 
@@ -14,8 +15,7 @@ export const metadata = buildMetadata({
     'Partner with CoE-BIRD to move robotics research from the lab into real-world impact — through sponsored projects, shared infrastructure, and direct engagement with our students and faculty.',
   path: '/industry',
 });
-// Reused verbatim from the homepage's IndustryConnect teaser -- real,
-// already-established copy, not invented for this page.
+
 const pillars = [
   {
     icon: Handshake,
@@ -34,7 +34,9 @@ const pillars = [
   },
 ];
 
-export default function IndustryPage() {
+export default async function IndustryPage() {
+    const [tiers, collaborators] = await Promise.all([getIndustryTiers(), getCollaborators()]);
+
   return (
     <div>
       {/* Hero */}
@@ -118,12 +120,12 @@ export default function IndustryPage() {
             </p>
           </div>
 
-          <IndustryTiers />
+          <IndustryTiers initialTiers={tiers} />
         </div>
       </section>
 
       {/* Collaborations / Partners -- real logos, existing component */}
-      <Collaborators />
+      <Collaborators initialCollaborators={collaborators} />
 
       {/* Start a Collaboration */}
       <section id="start-collaboration" className="scroll-mt-20 bg-gray-50 py-20">

@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import SectionHeading from '@/components/ui/SectionHeading';
 import { useCollaborators } from '@/lib/hooks/useCollaborators';
+import { Collaborator } from '@/types/industry';
 
 function LogosSkeleton() {
   return (
@@ -14,9 +15,8 @@ function LogosSkeleton() {
   );
 }
 
-export default function Collaborators() {
-  const { collaborators, error } = useCollaborators();
-
+export default function Collaborators({ initialCollaborators = [] }: { initialCollaborators?: Collaborator[] }) {
+  const { collaborators, error } = useCollaborators(initialCollaborators);
   if (error) {
     return (
       <section className="bg-white py-16">

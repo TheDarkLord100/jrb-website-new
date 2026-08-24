@@ -6,7 +6,7 @@ import Markdown from '@/components/ui/Markdown';
 import TocNav, { type TocSection } from '@/components/ui/TocNav';
 import { useMtechContent } from '@/lib/hooks/useMtechContent';
 import { getLucideIcon } from '@/lib/lucideIconMap';
-import type { MtechCourse } from '@/types/mtech';
+import type { MtechSection, MtechCreditCategory, MtechCourse, MtechCard } from '@/types/mtech';
 
 const SECTIONS: TocSection[] = [
   { id: 'overview', label: 'Overview' },
@@ -71,8 +71,17 @@ function CourseTable({
   );
 }
 
-export default function MtechContent() {
-  const { data, error } = useMtechContent();
+export default function MtechContent({
+  initialData = null,
+}: {
+  initialData?: {
+    sections: MtechSection[];
+    creditCategories: MtechCreditCategory[];
+    courses: MtechCourse[];
+    specializations: MtechCard[];
+  } | null;
+}) {
+  const { data, error } = useMtechContent(initialData);
 
   if (error) {
     return (

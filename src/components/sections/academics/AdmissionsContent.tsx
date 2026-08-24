@@ -4,6 +4,7 @@ import { ExternalLink } from 'lucide-react';
 import Card from '@/components/ui/Card';
 import Markdown from '@/components/ui/Markdown';
 import { useAdmissions } from '@/lib/hooks/useAdmission';
+import type { AdmissionSection, AdmissionLink } from '@/types/admissions';
 
 function formatLastUpdated(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('en-IN', {
@@ -41,8 +42,12 @@ function LinksSkeleton() {
   );
 }
 
-export default function AdmissionsContent() {
-  const { data, error } = useAdmissions();
+export default function AdmissionsContent({
+  initialData = null,
+}: {
+  initialData?: { sections: AdmissionSection[]; links: AdmissionLink[] } | null;
+}) {
+  const { data, error } = useAdmissions(initialData);
 
   if (error) {
     return (

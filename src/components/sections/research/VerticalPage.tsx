@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { User, FlaskConical } from 'lucide-react';
 import PageHeading from '@/components/ui/PageHeading';
 import { useThemeAssociations } from '@/lib/hooks/useThemeAssociations';
+import { Person } from '@/types/person';
+import { Lab } from '@/types/lab';
 
 function ChipsSkeleton() {
   return (
@@ -23,13 +25,14 @@ export default function VerticalPage({
   themeSlug,
   title,
   intro,
+  initialData = null,
 }: {
   themeSlug: string;
   title: string;
   intro: string;
+  initialData?: { faculty: Person[]; labs: Lab[] } | null;
 }) {
-  const { data, error } = useThemeAssociations(themeSlug);
-
+  const { data, error } = useThemeAssociations(themeSlug, initialData);
   return (
     <div>
       <PageHeading eyebrow="Research" title={title} />

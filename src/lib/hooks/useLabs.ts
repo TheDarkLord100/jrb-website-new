@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { getLabs } from '@/lib/supabase/queries';
 import type { Lab } from '@/types/lab';
 
-export function useLabs() {
-  const [labs, setLabs] = useState<Lab[] | null>(null);
+export function useLabs(initialLabs: Lab[] = []) {
+  const [labs, setLabs] = useState<Lab[] | null>(initialLabs.length > 0 ? initialLabs : null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

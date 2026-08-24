@@ -29,12 +29,14 @@ export default function AnnouncementSidebar({
   type,
   heading,
   emptyText = 'No announcements available.',
+  initialItems = [],
 }: {
   type: Announcement['type'];
   heading: string;
   emptyText?: string;
+  initialItems?: Announcement[];
 }) {
-  const { items, error } = useAnnouncementsByType(type);
+  const { items, error } = useAnnouncementsByType(type, initialItems);
   const [modalItem, setModalItem] = useState<Announcement | null>(null);
 
   return (

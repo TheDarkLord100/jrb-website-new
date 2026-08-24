@@ -10,8 +10,8 @@ type LabDetailData = {
   announcements: LabAnnouncement[];
 };
 
-export function useLab(slug: string) {
-  const [data, setData] = useState<LabDetailData | null>(null);
+export function useLab(slug: string, initialData: LabDetailData | null = null) {
+  const [data, setData] = useState<LabDetailData | null>(initialData);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

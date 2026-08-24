@@ -9,8 +9,8 @@ type AdmissionsData = {
   links: AdmissionLink[];
 };
 
-export function useAdmissions() {
-  const [data, setData] = useState<AdmissionsData | null>(null);
+export function useAdmissions(initialData: AdmissionsData | null = null) {
+  const [data, setData] = useState<AdmissionsData | null>(initialData);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
