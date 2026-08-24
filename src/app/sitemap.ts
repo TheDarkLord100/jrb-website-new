@@ -1,6 +1,8 @@
 import type { MetadataRoute } from 'next';
 import { getLabSlugs } from '@/lib/supabase/queries';
 
+export const dynamic = 'force-static';
+
 const SITE_URL = 'https://robotics.iitd.ac.in';
 
 const staticRoutes = [
