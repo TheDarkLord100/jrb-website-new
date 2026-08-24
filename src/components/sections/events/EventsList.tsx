@@ -6,6 +6,7 @@ import { useAnnouncementsByType } from '@/lib/hooks/useAnnouncementsByType';
 import { formatAnnouncementDate } from '@/lib/announcements';
 import { stripMarkdownPreview } from '@/lib/stripMarkdown';
 import AnnouncementModal from '@/components/ui/AnnouncementModal';
+import SectionHeading from '@/components/ui/SectionHeading';
 import type { Announcement } from '@/types/announcement';
 
 function EventsSkeleton() {
@@ -28,6 +29,38 @@ function EventsSkeleton() {
   );
 }
 
+function EventCard({ item, onOpen }: { item: Announcement; onOpen: () => void }) {
+  const thumbnail = item.image_urls?.[0];
+  return (
+    <button
+      onClick={onOpen}
+      className="flex flex-col overflow-hidden border-t-2 border-amber-400 bg-white text-left shadow-sm ring-1 ring-gray-100 transition-shadow hover:shadow-md"
+    >
+      {thumbnail && (
+        <div className="relative aspect-[3/4] w-full bg-gray-100">
+          <Image src={thumbnail} alt={item.title} fill className="object-contain" />
+        </div>
+      )}
+      <div className="flex flex-1 flex-col p-5">
+        <div className="flex items-center justify-between gap-2">
+          <span className="text-xs font-semibold text-gray-400">
+            {formatAnnouncementDate(item.date)}
+          </span>
+          {item.is_important && (
+            <span className="shrink-0 bg-amber-50 px-2 py-0.5 text-[10px] font-bold tracking-wide text-amber-700 uppercase">
+              Important
+            </span>
+          )}
+        </div>
+        <h3 className="mt-2 font-serif font-semibold text-[#001A23]">{item.title}</h3>
+        <p className="mt-2 line-clamp-2 text-sm text-gray-600">
+          {stripMarkdownPreview(item.description)}
+        </p>
+      </div>
+    </button>
+  );
+}
+
 export default function EventsList({ initialItems = [] }: { initialItems?: Announcement[] }) {
   const { items, error } = useAnnouncementsByType('event', initialItems);
   const [modalItem, setModalItem] = useState<Announcement | null>(null);
@@ -45,44 +78,47 @@ export default function EventsList({ initialItems = [] }: { initialItems?: Annou
   }
 
   if (items.length === 0) {
-    return <p className="py-20 text-center text-gray-500">No past events listed yet.</p>;
+    return <p className="py-20 text-center text-gray-500">No events listed yet.</p>;
   }
+
+  // Compare against the start of today so an event dated today still
+  // counts as "upcoming" for the whole day, not "past" from midnight on.
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
+
+  const upcoming = items
+    .filter((item) => new Date(item.date) >= startOfToday)
+    // The query returns newest-first (for the "past" list); upcoming
+    // events read better soonest-first, so this list is re-sorted.
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+  // Already most-recent-first from the query — no re-sort needed here.
+  const past = items.filter((item) => new Date(item.date) < startOfToday);
 
   return (
     <>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((item) => {
-          const thumbnail = item.image_urls?.[0];
-          return (
-            <button
-              key={item.id}
-              onClick={() => setModalItem(item)}
-              className="flex flex-col overflow-hidden border-t-2 border-amber-400 bg-white text-left shadow-sm ring-1 ring-gray-100 transition-shadow hover:shadow-md"
-            >
-              {thumbnail && (
-                <div className="relative aspect-[3/4] w-full bg-gray-100">
-                  <Image src={thumbnail} alt={item.title} fill className="object-contain" />
-                </div>
-              )}
-              <div className="flex flex-1 flex-col p-5">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs font-semibold text-gray-400">
-                    {formatAnnouncementDate(item.date)}
-                  </span>
-                  {item.is_important && (
-                    <span className="shrink-0 bg-amber-50 px-2 py-0.5 text-[10px] font-bold tracking-wide text-amber-700 uppercase">
-                      Important
-                    </span>
-                  )}
-                </div>
-                <h3 className="mt-2 font-serif font-semibold text-[#001A23]">{item.title}</h3>
-                <p className="mt-2 line-clamp-2 text-sm text-gray-600">
-                  {stripMarkdownPreview(item.description)}
-                </p>
-              </div>
-            </button>
-          );
-        })}
+      {upcoming.length > 0 && (
+        <div className="mb-12">
+          <SectionHeading title="Upcoming Events" />
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {upcoming.map((item) => (
+              <EventCard key={item.id} item={item} onOpen={() => setModalItem(item)} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div>
+        <SectionHeading title="Past Events" />
+        {past.length === 0 ? (
+          <p className="py-10 text-center text-gray-500">No past events listed yet.</p>
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {past.map((item) => (
+              <EventCard key={item.id} item={item} onOpen={() => setModalItem(item)} />
+            ))}
+          </div>
+        )}
       </div>
 
       <AnnouncementModal item={modalItem} onClose={() => setModalItem(null)} />
