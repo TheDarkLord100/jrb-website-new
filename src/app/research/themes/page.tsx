@@ -151,7 +151,6 @@ export default function ResearchThemesPage() {
           </a>
         </div>
 
-
         {/* Featured Projects */}
         <div className="mt-16">
           <SectionHeading title="Featured Projects" />

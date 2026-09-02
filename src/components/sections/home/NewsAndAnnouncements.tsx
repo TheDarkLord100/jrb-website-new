@@ -35,7 +35,11 @@ function NewsSkeleton() {
   );
 }
 
-export default function NewsAndAnnouncements({ initialItems = [] }: { initialItems?: Announcement[] }) {
+export default function NewsAndAnnouncements({
+  initialItems = [],
+}: {
+  initialItems?: Announcement[];
+}) {
   const { items, error } = useAnnouncements(initialItems);
   const [modalItem, setModalItem] = useState<Announcement | null>(null);
 

@@ -36,10 +36,10 @@ export default function ResearchDomains() {
         <SectionHeading eyebrow="Research" title="Research Domains" />
 
         <p className="mx-auto mb-14 max-w-2xl text-center text-gray-600">
-          The Centre of Excellence on Biologically Inspired Robots and Drones at IIT
-          Delhi is an interdisciplinary research centre advancing robotics for real-world
-          autonomy. We design intelligent robotic systems, from assistive wearables to
-          field-deployed drones, that operate reliably in complex, unstructured environments.
+          The Centre of Excellence on Biologically Inspired Robots and Drones at IIT Delhi is an
+          interdisciplinary research centre advancing robotics for real-world autonomy. We design
+          intelligent robotic systems, from assistive wearables to field-deployed drones, that
+          operate reliably in complex, unstructured environments.
         </p>
 
         <div className="relative">

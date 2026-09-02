@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   },
 };
 // Structured data (JSON-LD) — describes CoE-BIRD as a research org under
-// IIT Delhi for search engines. 
+// IIT Delhi for search engines.
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ResearchOrganization',
