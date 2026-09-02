@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useSyncExternalStore } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
@@ -9,14 +9,13 @@ import Fade from 'embla-carousel-fade';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 type FeaturedProject = {
-  image: string;
   title: string;
   description: string;
-};
+} & ({ image: string; video?: undefined } | { video: string; image?: undefined });
 
 // Curated highlights — not the full project list. Add/remove/reorder freely;
-// each entry is just an image + title + one-line description, nothing links
-// anywhere.
+// each entry is just an image or video + title + one-line description,
+// nothing links anywhere.
 const featuredProjects: FeaturedProject[] = [
   {
     image: '/Assets/projects/3-pick.png',
@@ -42,13 +41,26 @@ const featuredProjects: FeaturedProject[] = [
     description:
       'Simultaneous localization and mapping for robust navigation in unknown environments.',
   },
+  {
+    video: '/Assets/drone.mp4',
+    title: 'Aerial Manipulator for Object Grasping',
+    description:
+      'A drone equipped with a robotic arm capable of grasping and transporting objects in hard-to-reach environments.',
+  },
 ];
 
 export default function FeaturedProjectsCarousel() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
-    Fade(),
-    Autoplay({ delay: 6000, stopOnInteraction: false }),
-  ]);
+  // Plugins must be created exactly once, not on every render -- a fresh
+  // array/plugin-instance identity on each render causes Embla to silently
+  // tear down and rebuild its engine every time, which is what caused the
+  // "internalEngine" crash. useRef's argument is still evaluated on every
+  // render, but only the first render's value is ever actually used, so
+  // `.current` stays stable across all later renders.
+  const pluginsRef = useRef([Fade(), Autoplay({ delay: 6000, stopOnInteraction: false })]);
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, pluginsRef.current);
+
+  const videoRefs = useRef<Map<string, HTMLVideoElement>>(new Map());
 
   const subscribe = useCallback(
     (callback: () => void) => {
@@ -62,8 +74,45 @@ export default function FeaturedProjectsCarousel() {
   const getServerSnapshot = useCallback(() => 0, []);
 
   const selectedIndex = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-
   const project = featuredProjects[selectedIndex];
+
+  useEffect(() => {
+    // Guard on emblaApi existing -- calling into the Autoplay plugin
+    // before Embla itself is ready is exactly what crashed before.
+    if (!emblaApi) return;
+    const autoplay = emblaApi.plugins().autoplay;
+    if (!autoplay) return;
+
+    // Pause every other tracked video (in case one was left playing when
+    // the user manually skipped away from it).
+    videoRefs.current.forEach((el, title) => {
+      if (title !== project.title) el.pause();
+    });
+
+    if (project.video) {
+      // Video slides drive their own pacing via onEnded below, not the
+      // fixed-delay timer.
+      autoplay.stop();
+      const el = videoRefs.current.get(project.title);
+      if (el) {
+        // Restart from the beginning every time this slide becomes active
+        // again -- otherwise, since Embla never remounts slides, it would
+        // just sit frozen on its last frame after the first play-through.
+        el.currentTime = 0;
+        el.play().catch(() => {
+          // Autoplay can be rejected by the browser in rare cases (e.g. a
+          // very fast repeated scroll); safe to ignore, the poster/last
+          // frame just stays visible instead of erroring.
+        });
+      }
+    } else if (!autoplay.isPlaying()) {
+      autoplay.play();
+    }
+  }, [emblaApi, project]);
+
+  const handleVideoEnded = useCallback(() => {
+    emblaApi?.scrollNext();
+  }, [emblaApi]);
 
   return (
     <div className="mx-auto max-w-5xl">
@@ -72,7 +121,21 @@ export default function FeaturedProjectsCarousel() {
           <div className="flex">
             {featuredProjects.map((p) => (
               <div key={p.title} className="relative h-80 w-full flex-[0_0_100%] sm:h-[28rem]">
-                <Image src={p.image} alt={p.title} fill className="object-cover" />
+                {p.video ? (
+                  <video
+                    ref={(el) => {
+                      if (el) videoRefs.current.set(p.title, el);
+                      else videoRefs.current.delete(p.title);
+                    }}
+                    src={p.video}
+                    muted
+                    playsInline
+                    onEnded={handleVideoEnded}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <Image src={p.image!} alt={p.title} fill className="object-cover" />
+                )}
               </div>
             ))}
           </div>

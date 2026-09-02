@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 import { getAllAnnouncements } from '@/lib/supabase/queries';
 import type { Announcement } from '@/types/announcement';
 
-export function useAnnouncements() {
-  const [items, setItems] = useState<Announcement[] | null>(null);
+export function useAnnouncements(initialItems: Announcement[] = []) {
+  const [items, setItems] = useState<Announcement[] | null>(
+    initialItems.length > 0 ? initialItems : null
+  );
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

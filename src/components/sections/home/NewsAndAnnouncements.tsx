@@ -35,8 +35,8 @@ function NewsSkeleton() {
   );
 }
 
-export default function NewsAndAnnouncements() {
-  const { items, error } = useAnnouncements();
+export default function NewsAndAnnouncements({ initialItems = [] }: { initialItems?: Announcement[] }) {
+  const { items, error } = useAnnouncements(initialItems);
   const [modalItem, setModalItem] = useState<Announcement | null>(null);
 
   const important = items?.filter((item) => item.is_important) ?? [];

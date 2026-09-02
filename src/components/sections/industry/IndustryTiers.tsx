@@ -2,6 +2,7 @@
 
 import { useIndustryTiers } from '@/lib/hooks/useIndustryTiers';
 import { getLucideIcon } from '@/lib/lucideIconMap';
+import { IndustryTier } from '@/types/industry';
 
 function TiersSkeleton() {
   return (
@@ -16,8 +17,8 @@ function TiersSkeleton() {
   );
 }
 
-export default function IndustryTiers() {
-  const { tiers, error } = useIndustryTiers();
+export default function IndustryTiers({ initialTiers = [] }: { initialTiers?: IndustryTier[] }) {
+  const { tiers, error } = useIndustryTiers(initialTiers);
 
   if (error) {
     return (

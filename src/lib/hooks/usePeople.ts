@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 import { getPeople } from '@/lib/supabase/queries';
 import type { Person } from '@/types/person';
 
-export function usePeople() {
-  const [people, setPeople] = useState<Person[] | null>(null);
+export function usePeople(initialPeople: Person[] = []) {
+  const [people, setPeople] = useState<Person[] | null>(
+    initialPeople.length > 0 ? initialPeople : null
+  );
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

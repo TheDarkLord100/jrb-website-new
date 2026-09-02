@@ -1,8 +1,14 @@
 import PageHeading from '@/components/ui/PageHeading';
 import Card from '@/components/ui/Card';
 import AboutGallery from '@/components/sections/about/AboutGallery';
+import { buildMetadata } from '@/lib/metadata';
 
-export const metadata = { title: 'About' };
+export const metadata = buildMetadata({
+  title: 'About',
+  description:
+    'CoE-BIRD grew from a student robotics club at IIT Delhi into an interdisciplinary Centre of Excellence, established in 2019, working on how machines learn from biological systems and operate safely alongside people.',
+  path: '/about',
+});
 
 const timeline = [
   {

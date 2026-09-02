@@ -113,8 +113,8 @@ function MemberCard({ p }: { p: Person }) {
   );
 }
 
-export default function PeopleDirectory() {
-  const { people, error } = usePeople();
+export default function PeopleDirectory({ initialPeople = [] }: { initialPeople?: Person[] }) {
+  const { people, error } = usePeople(initialPeople);
 
   const [tab, setTab] = useState<(typeof TABS)[number]['key']>('faculty');
   const [dept, setDept] = useState('all');

@@ -1,18 +1,30 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { getAnnouncementsByType } from '@/lib/supabase/queries';
 import type { Announcement } from '@/types/announcement';
 
-export function useAnnouncementsByType(type: Announcement['type']) {
-  const [items, setItems] = useState<Announcement[] | null>(null);
+export function useAnnouncementsByType(
+  type: Announcement['type'],
+  initialItems: Announcement[] = []
+) {
+  const [items, setItems] = useState<Announcement[] | null>(
+    initialItems.length > 0 ? initialItems : null
+  );
   const [error, setError] = useState<string | null>(null);
-  // console.log(items);
+
+  const isFirstRun = useRef(true);
 
   useEffect(() => {
     let cancelled = false;
-    setItems(null);
-    setError(null);
+
+    // Skip clearing to null on the very first run when we already have
+    // seeded data for this type — only reset on later type changes.
+    if (!isFirstRun.current) {
+      setItems(null);
+      setError(null);
+    }
+    isFirstRun.current = false;
 
     getAnnouncementsByType(type)
       .then((data) => {

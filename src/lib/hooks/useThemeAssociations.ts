@@ -10,8 +10,11 @@ type ThemeAssociations = {
   labs: Lab[];
 };
 
-export function useThemeAssociations(themeSlug: string) {
-  const [data, setData] = useState<ThemeAssociations | null>(null);
+export function useThemeAssociations(
+  themeSlug: string,
+  initialData: ThemeAssociations | null = null
+) {
+  const [data, setData] = useState<ThemeAssociations | null>(initialData);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { MapPin, User, Users, ExternalLink, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useLab } from '@/lib/hooks/useLab';
 import LabDetailSkeleton from '@/components/sections/research/LabDetailSkeleton';
+import { Lab, LabImage, LabAnnouncement } from '@/types/lab';
 
 function GalleryLightbox({
   images,
@@ -75,8 +76,15 @@ function GalleryLightbox({
   );
 }
 
-export default function LabDetail({ slug }: { slug: string }) {
-  const { data, error } = useLab(slug);
+export default function LabDetail({
+  slug,
+  initialData = null,
+}: {
+  slug: string;
+  initialData?: { lab: Lab | null; images: LabImage[]; announcements: LabAnnouncement[] } | null;
+}) {
+  const { data, error } = useLab(slug, initialData);
+  // ...rest of the component unchanged
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   if (error) {

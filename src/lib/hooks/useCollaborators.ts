@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 import { getCollaborators } from '@/lib/supabase/queries';
 import type { Collaborator } from '@/types/industry';
 
-export function useCollaborators() {
-  const [collaborators, setCollaborators] = useState<Collaborator[] | null>(null);
+export function useCollaborators(initialCollaborators: Collaborator[] = []) {
+  const [collaborators, setCollaborators] = useState<Collaborator[] | null>(
+    initialCollaborators.length > 0 ? initialCollaborators : null
+  );
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
