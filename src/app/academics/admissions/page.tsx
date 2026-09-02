@@ -1,7 +1,11 @@
 import PageHeading from '@/components/ui/PageHeading';
 import AdmissionsContent from '@/components/sections/academics/AdmissionsContent';
 import AnnouncementSidebar from '@/components/sections/events/AnnouncementSidebar';
-import { getAdmissionSections, getAdmissionLinks, getAnnouncementsByType } from '@/lib/supabase/queries';
+import {
+  getAdmissionSections,
+  getAdmissionLinks,
+  getAnnouncementsByType,
+} from '@/lib/supabase/queries';
 import { buildMetadata } from '@/lib/metadata';
 
 export const metadata = buildMetadata({
@@ -28,7 +32,11 @@ export default async function AdmissionsPage() {
         </div>
 
         <aside>
-          <AnnouncementSidebar type="admission" heading="Announcements" initialItems={announcements} />
+          <AnnouncementSidebar
+            type="admission"
+            heading="Announcements"
+            initialItems={announcements}
+          />
         </aside>
       </div>
     </div>

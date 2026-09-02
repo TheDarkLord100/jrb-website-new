@@ -1,4 +1,9 @@
-import { getLabSlugs, getLabBySlug, getLabImages, getLabAnnouncements } from '@/lib/supabase/queries';
+import {
+  getLabSlugs,
+  getLabBySlug,
+  getLabImages,
+  getLabAnnouncements,
+} from '@/lib/supabase/queries';
 import LabDetail from '@/components/sections/research/LabDetail';
 import { buildMetadata } from '@/lib/metadata';
 

@@ -15,7 +15,11 @@ function LogosSkeleton() {
   );
 }
 
-export default function Collaborators({ initialCollaborators = [] }: { initialCollaborators?: Collaborator[] }) {
+export default function Collaborators({
+  initialCollaborators = [],
+}: {
+  initialCollaborators?: Collaborator[];
+}) {
   const { collaborators, error } = useCollaborators(initialCollaborators);
   if (error) {
     return (

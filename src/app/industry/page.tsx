@@ -35,7 +35,7 @@ const pillars = [
 ];
 
 export default async function IndustryPage() {
-    const [tiers, collaborators] = await Promise.all([getIndustryTiers(), getCollaborators()]);
+  const [tiers, collaborators] = await Promise.all([getIndustryTiers(), getCollaborators()]);
 
   return (
     <div>
