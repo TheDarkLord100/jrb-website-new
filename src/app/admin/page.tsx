@@ -1,8 +1,34 @@
-import PageHeading from '@/components/ui/PageHeading';
+'use client';
 
-export const metadata = { title: 'Admin Login' };
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import PageHeading from '@/components/ui/PageHeading';
+import { useAdminAuth } from '@/lib/hooks/useAdminAuth';
 
 export default function AdminPage() {
+  const router = useRouter();
+  const { signIn } = useAdminAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setError(null);
+
+    const { error } = await signIn(email, password);
+    setSubmitting(false);
+
+    if (error) {
+      setError('Invalid email or password.');
+      return;
+    }
+
+    router.push('/admin/dashboard');
+  };
+
   return (
     <div>
       <PageHeading title="Admin Login" />
@@ -11,70 +37,46 @@ export default function AdminPage() {
           <div className="mx-auto max-w-md rounded-2xl border border-gray-100 bg-white p-9 shadow-sm">
             <h2 className="text-lg font-bold text-[#001A23]">Sign in</h2>
             <p className="mt-1 mb-6 text-sm text-gray-400">Authorized personnel only.</p>
-            <form className="flex flex-col gap-5">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
               <div>
                 <label htmlFor="email" className="mb-1.5 block text-sm font-semibold text-gray-700">
-                  User ID
+                  Email
                 </label>
-                <div className="relative">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-gray-400"
-                  >
-                    <rect x="2" y="4" width="20" height="16" rx="2" />
-                    <path d="m22 6-10 7L2 6" />
-                  </svg>
-                  <input
-                    id="email"
-                    type="text"
-                    placeholder="user id"
-                    required
-                    className="w-full rounded-lg border border-gray-200 py-2.5 pr-3.5 pl-10 text-sm text-gray-700 placeholder-gray-400 outline-none focus:border-[#001A23] focus:ring-4 focus:ring-[#001A23]/10"
-                  />
-                </div>
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@iitd.ac.in"
+                  required
+                  className="w-full rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm text-gray-700 placeholder-gray-400 outline-none focus:border-[#001A23] focus:ring-4 focus:ring-[#001A23]/10"
+                />
               </div>
 
               <div>
-                <label
-                  htmlFor="password"
-                  className="mb-1.5 block text-sm font-semibold text-gray-700"
-                >
+                <label htmlFor="password" className="mb-1.5 block text-sm font-semibold text-gray-700">
                   Password
                 </label>
-                <div className="relative">
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-gray-400"
-                  >
-                    <rect x="4" y="11" width="16" height="9" rx="2" />
-                    <path d="M8 11V7a4 4 0 0 1 8 0v4" />
-                  </svg>
-                  <input
-                    id="password"
-                    type="password"
-                    placeholder="Enter your password"
-                    autoComplete="current-password"
-                    required
-                    className="w-full rounded-lg border border-gray-200 py-2.5 pr-3.5 pl-10 text-sm text-gray-700 placeholder-gray-400 outline-none focus:border-[#001A23] focus:ring-4 focus:ring-[#001A23]/10"
-                  />
-                </div>
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  autoComplete="current-password"
+                  required
+                  className="w-full rounded-lg border border-gray-200 px-3.5 py-2.5 text-sm text-gray-700 placeholder-gray-400 outline-none focus:border-[#001A23] focus:ring-4 focus:ring-[#001A23]/10"
+                />
               </div>
+
+              {error && <p className="text-sm text-red-600">{error}</p>}
 
               <button
                 type="submit"
-                className="mt-1 rounded-lg bg-[#001A23] py-3 text-sm font-semibold text-white transition hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#001A23]"
+                disabled={submitting}
+                className="mt-1 rounded-lg bg-[#001A23] py-3 text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50"
               >
-                Sign in
+                {submitting ? 'Signing in…' : 'Sign in'}
               </button>
             </form>
 
