@@ -24,9 +24,7 @@ import type {
 } from '@/types/mtech';
 
 function itemLabel(item: MtechSpecializationItemRow): string {
-  return item.kind === 'course'
-    ? item.course.title
-    : (item.basket.name ?? 'Untitled basket');
+  return item.kind === 'course' ? item.course.title : (item.basket.name ?? 'Untitled basket');
 }
 
 export default function SpecializationRequirementsModal({
@@ -100,7 +98,8 @@ export default function SpecializationRequirementsModal({
   };
 
   const handleRemoveItem = async (item: MtechSpecializationItemRow) => {
-    if (!confirm(`Remove "${itemLabel(item)}" from this specialization's requirement list?`)) return;
+    if (!confirm(`Remove "${itemLabel(item)}" from this specialization's requirement list?`))
+      return;
 
     setBusy(true);
     const ok = await removeSpecializationItem(item.id);
@@ -115,10 +114,14 @@ export default function SpecializationRequirementsModal({
   };
 
   const usedCourseIds = new Set(
-    (items ?? []).filter((i) => i.kind === 'course').map((i) => (i as { course: MtechCourse }).course.id)
+    (items ?? [])
+      .filter((i) => i.kind === 'course')
+      .map((i) => (i as { course: MtechCourse }).course.id)
   );
   const usedBasketIds = new Set(
-    (items ?? []).filter((i) => i.kind === 'basket').map((i) => (i as { basket: MtechBasket }).basket.id)
+    (items ?? [])
+      .filter((i) => i.kind === 'basket')
+      .map((i) => (i as { basket: MtechBasket }).basket.id)
   );
 
   const query = itemSearch.trim().toLowerCase();
@@ -126,7 +129,9 @@ export default function SpecializationRequirementsModal({
     .filter((c) => !usedCourseIds.has(c.id))
     .filter((c) =>
       query
-        ? [c.code, c.title].filter((v): v is string => !!v).some((v) => v.toLowerCase().includes(query))
+        ? [c.code, c.title]
+            .filter((v): v is string => !!v)
+            .some((v) => v.toLowerCase().includes(query))
         : true
     );
   const availableBaskets = allBaskets
@@ -144,7 +149,10 @@ export default function SpecializationRequirementsModal({
       toast.error('Failed to add a constraint. Check the console for details.');
       return;
     }
-    setConstraints((prev) => [...(prev ?? []), { id: result.id, max_courses: result.max_courses, baskets: [] }]);
+    setConstraints((prev) => [
+      ...(prev ?? []),
+      { id: result.id, max_courses: result.max_courses, baskets: [] },
+    ]);
     toast.success('Constraint added.');
   };
 
@@ -166,7 +174,7 @@ export default function SpecializationRequirementsModal({
   };
 
   const handleDeleteConstraint = async (constraint: MtechSpecializationConstraintRow) => {
-    if (!confirm('Delete this eligibility constraint? This can\'t be undone.')) return;
+    if (!confirm("Delete this eligibility constraint? This can't be undone.")) return;
 
     setBusy(true);
     const ok = await deleteSpecializationConstraint(constraint.id);
@@ -180,7 +188,10 @@ export default function SpecializationRequirementsModal({
     toast.success('Constraint deleted.');
   };
 
-  const handleAddBasketToConstraint = async (constraint: MtechSpecializationConstraintRow, basket: MtechBasket) => {
+  const handleAddBasketToConstraint = async (
+    constraint: MtechSpecializationConstraintRow,
+    basket: MtechBasket
+  ) => {
     setBusy(true);
     const result = await addBasketToConstraint(constraint.id, basket.id, constraint.baskets.length);
     setBusy(false);
@@ -323,12 +334,19 @@ export default function SpecializationRequirementsModal({
             </div>
 
             <div className="relative mt-2">
-              <Search size={14} className="absolute top-1/2 left-2.5 -translate-y-1/2 text-stone-400" />
+              <Search
+                size={14}
+                className="absolute top-1/2 left-2.5 -translate-y-1/2 text-stone-400"
+              />
               <input
                 type="text"
                 value={itemSearch}
                 onChange={(e) => setItemSearch(e.target.value)}
-                placeholder={addMode === 'course' ? 'Search courses by title or code' : 'Search baskets by name'}
+                placeholder={
+                  addMode === 'course'
+                    ? 'Search courses by title or code'
+                    : 'Search baskets by name'
+                }
                 className="w-full rounded border border-stone-300 py-1.5 pr-3 pl-8 text-sm"
               />
             </div>
@@ -336,7 +354,9 @@ export default function SpecializationRequirementsModal({
             <ul className="mt-2 max-h-40 divide-y divide-stone-100 overflow-y-auto rounded border border-stone-200">
               {addMode === 'course' &&
                 (availableCourses.length === 0 ? (
-                  <li className="px-3 py-4 text-center text-sm text-stone-400">No matching courses.</li>
+                  <li className="px-3 py-4 text-center text-sm text-stone-400">
+                    No matching courses.
+                  </li>
                 ) : (
                   availableCourses.map((c) => (
                     <li key={c.id} className="flex items-center justify-between gap-3 px-3 py-2">
@@ -357,7 +377,9 @@ export default function SpecializationRequirementsModal({
                 ))}
               {addMode === 'basket' &&
                 (availableBaskets.length === 0 ? (
-                  <li className="px-3 py-4 text-center text-sm text-stone-400">No matching baskets.</li>
+                  <li className="px-3 py-4 text-center text-sm text-stone-400">
+                    No matching baskets.
+                  </li>
                 ) : (
                   availableBaskets.map((b) => (
                     <li key={b.id} className="flex items-center justify-between gap-3 px-3 py-2">
@@ -407,9 +429,7 @@ export default function SpecializationRequirementsModal({
                         onChange={(e) =>
                           handleMaxCoursesInput(constraint.id, Number(e.target.value))
                         }
-                        onBlur={(e) =>
-                          handleMaxCoursesBlur(constraint.id, Number(e.target.value))
-                        }
+                        onBlur={(e) => handleMaxCoursesBlur(constraint.id, Number(e.target.value))}
                         className="w-14 rounded border border-stone-300 px-2 py-1 text-sm"
                       />
                       <span>course(s) in total from:</span>

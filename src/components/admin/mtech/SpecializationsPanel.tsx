@@ -58,7 +58,9 @@ export default function SpecializationsPanel() {
   const canReorder = !query;
 
   const persistOrder = async (ordered: MtechCard[]) => {
-    const results = await Promise.all(ordered.map((r, i) => updateMtechSpecializationOrder(r.id, i)));
+    const results = await Promise.all(
+      ordered.map((r, i) => updateMtechSpecializationOrder(r.id, i))
+    );
     if (results.every(Boolean)) {
       toast.success('Order updated.');
     } else {
@@ -189,7 +191,7 @@ export default function SpecializationsPanel() {
                   </td>
                   <td className="px-4 py-3 font-semibold text-stone-900">{row.title}</td>
                   <td className="max-w-sm truncate px-4 py-3 text-gray-500">{row.description}</td>
-                  <td className="whitespace-nowrap px-4 py-3">
+                  <td className="px-4 py-3 whitespace-nowrap">
                     <div className="flex gap-2">
                       <button
                         type="button"

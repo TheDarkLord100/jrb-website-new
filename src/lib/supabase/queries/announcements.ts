@@ -44,10 +44,6 @@ export async function getAllAnnouncements(): Promise<Announcement[]> {
   return (data ?? []) as Announcement[];
 }
 
-
-
-
-
 export async function createAnnouncement(
   payload: Omit<Announcement, 'id'>
 ): Promise<Announcement | null> {
@@ -58,11 +54,7 @@ export async function createAnnouncement(
     return null;
   }
 
-  const { data, error } = await supabase
-    .from('announcements')
-    .insert(payload)
-    .select()
-    .single();
+  const { data, error } = await supabase.from('announcements').insert(payload).select().single();
 
   if (error) {
     console.error('Error creating announcement:', error);

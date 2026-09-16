@@ -67,9 +67,8 @@ export default function BasketFormModal({
               className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
             />
             <p className="mt-1.5 text-xs text-stone-400">
-              Only shown in eligibility-rule sentences and here in the dashboard. Leave blank for
-              an in-list &quot;choose one of the following&quot; basket that doesn&apos;t need a
-              name.
+              Only shown in eligibility-rule sentences and here in the dashboard. Leave blank for an
+              in-list &quot;choose one of the following&quot; basket that doesn&apos;t need a name.
             </p>
           </div>
 

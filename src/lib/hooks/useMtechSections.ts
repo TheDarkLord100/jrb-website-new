@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getAllMtechBasketCourses } from '@/lib/supabase/queries';
-import type { MtechBasketCourseRow } from '@/types/mtech';
+import { getMtechSections } from '@/lib/supabase/queries';
+import type { MtechSection } from '@/types/mtech';
 
-export function useMtechBasketCourses(initialItems: MtechBasketCourseRow[] = []) {
-  const [items, setItems] = useState<MtechBasketCourseRow[] | null>(
+export function useMtechSections(initialItems: MtechSection[] = []) {
+  const [items, setItems] = useState<MtechSection[] | null>(
     initialItems.length > 0 ? initialItems : null
   );
   const [error, setError] = useState<string | null>(null);
@@ -13,12 +13,12 @@ export function useMtechBasketCourses(initialItems: MtechBasketCourseRow[] = [])
   useEffect(() => {
     let cancelled = false;
 
-    getAllMtechBasketCourses()
+    getMtechSections()
       .then((data) => {
         if (!cancelled) setItems(data);
       })
       .catch((e) => {
-        if (!cancelled) setError(e instanceof Error ? e.message : 'Failed to load basket courses');
+        if (!cancelled) setError(e instanceof Error ? e.message : 'Failed to load sections');
       });
 
     return () => {

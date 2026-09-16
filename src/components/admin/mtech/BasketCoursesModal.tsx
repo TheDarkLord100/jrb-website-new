@@ -2,10 +2,7 @@
 
 import { useState } from 'react';
 import { Search, X } from 'lucide-react';
-import {
-  addCourseToBasket,
-  removeCourseFromBasket,
-} from '@/lib/supabase/queries';
+import { addCourseToBasket, removeCourseFromBasket } from '@/lib/supabase/queries';
 import { useToast } from '@/components/admin/Toast';
 import type { MtechBasket, MtechBasketCourseRow, MtechCourse } from '@/types/mtech';
 
@@ -37,7 +34,9 @@ export default function BasketCoursesModal({
     .filter((c) => !memberCourseIds.has(c.id))
     .filter((c) =>
       query
-        ? [c.code, c.title].filter((v): v is string => !!v).some((v) => v.toLowerCase().includes(query))
+        ? [c.code, c.title]
+            .filter((v): v is string => !!v)
+            .some((v) => v.toLowerCase().includes(query))
         : true
     );
 
@@ -104,9 +103,7 @@ export default function BasketCoursesModal({
               {members.map((m) => (
                 <li key={m.id} className="flex items-center gap-3 px-3 py-2">
                   <div className="min-w-0 flex-1">
-                    <span className="font-mono text-xs text-stone-500">
-                      {m.course.code ?? '—'}
-                    </span>{' '}
+                    <span className="font-mono text-xs text-stone-500">{m.course.code ?? '—'}</span>{' '}
                     <span className="text-sm text-stone-800">{m.course.title}</span>
                   </div>
                   <button
@@ -126,7 +123,10 @@ export default function BasketCoursesModal({
             Add a course
           </h3>
           <div className="relative mt-2">
-            <Search size={14} className="absolute top-1/2 left-2.5 -translate-y-1/2 text-stone-400" />
+            <Search
+              size={14}
+              className="absolute top-1/2 left-2.5 -translate-y-1/2 text-stone-400"
+            />
             <input
               type="text"
               value={search}

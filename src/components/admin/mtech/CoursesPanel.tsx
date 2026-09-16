@@ -210,12 +210,10 @@ export default function CoursesPanel() {
                 <td className="px-4 py-3 text-gray-600 capitalize">
                   {row.category.replace(/_/g, ' ')}
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap text-gray-500">
-                  {row.semester ?? '—'}
-                </td>
+                <td className="px-4 py-3 whitespace-nowrap text-gray-500">{row.semester ?? '—'}</td>
                 <td className="px-4 py-3 whitespace-nowrap text-gray-600">{formatLTP(row)}</td>
                 <td className="px-4 py-3 text-gray-600">{row.credits}</td>
-                <td className="whitespace-nowrap px-4 py-3">
+                <td className="px-4 py-3 whitespace-nowrap">
                   <div className="flex gap-2">
                     <button
                       type="button"

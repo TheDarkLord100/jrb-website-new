@@ -54,7 +54,10 @@ export default function AdminPage() {
               </div>
 
               <div>
-                <label htmlFor="password" className="mb-1.5 block text-sm font-semibold text-gray-700">
+                <label
+                  htmlFor="password"
+                  className="mb-1.5 block text-sm font-semibold text-gray-700"
+                >
                   Password
                 </label>
                 <input

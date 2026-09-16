@@ -320,7 +320,9 @@ export async function getMtechSpecializations(): Promise<MtechSpecializationFull
   const [itemsRes, constraintsRes] = await Promise.all([
     supabase
       .from('mtech_specialization_items')
-      .select('id, specialization_id, bucket_id, course_id, display_order, course:mtech_courses(*), basket:mtech_baskets(*)')
+      .select(
+        'id, specialization_id, bucket_id, course_id, display_order, course:mtech_courses(*), basket:mtech_baskets(*)'
+      )
       .in('specialization_id', specializationIds)
       .order('display_order', { ascending: true }),
     supabase
@@ -353,7 +355,10 @@ export async function getMtechSpecializations(): Promise<MtechSpecializationFull
       .order('display_order', { ascending: true });
 
     if (constraintBasketsError) {
-      console.error('Error fetching mtech specialization constraint baskets:', constraintBasketsError);
+      console.error(
+        'Error fetching mtech specialization constraint baskets:',
+        constraintBasketsError
+      );
     }
     constraintBasketRows = (data ?? []) as unknown as RawConstraintBasketRow[];
   }
@@ -634,7 +639,11 @@ export async function addSpecializationCourseItem(
 
   const { data, error } = await supabase
     .from('mtech_specialization_items')
-    .insert({ specialization_id: specializationId, course_id: courseId, display_order: displayOrder })
+    .insert({
+      specialization_id: specializationId,
+      course_id: courseId,
+      display_order: displayOrder,
+    })
     .select('id')
     .single();
 
@@ -659,7 +668,11 @@ export async function addSpecializationBasketItem(
 
   const { data, error } = await supabase
     .from('mtech_specialization_items')
-    .insert({ specialization_id: specializationId, bucket_id: bucketId, display_order: displayOrder })
+    .insert({
+      specialization_id: specializationId,
+      bucket_id: bucketId,
+      display_order: displayOrder,
+    })
     .select('id')
     .single();
 
@@ -871,6 +884,136 @@ export async function removeBasketFromConstraint(linkId: string): Promise<boolea
 
   if (error) {
     console.error('Error removing basket from constraint:', error);
+    return false;
+  }
+  return true;
+}
+
+// --- Page content: sections (admin CRUD) ---
+
+export async function createMtechSection(
+  payload: Omit<MtechSection, 'id'>
+): Promise<MtechSection | null> {
+  if (!supabase) {
+    console.error(
+      'Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.'
+    );
+    return null;
+  }
+
+  const { data, error } = await supabase.from('mtech_sections').insert(payload).select().single();
+
+  if (error) {
+    console.error('Error creating mtech section:', error);
+    return null;
+  }
+  return data as MtechSection;
+}
+
+export async function updateMtechSection(
+  id: string,
+  payload: Partial<Omit<MtechSection, 'id'>>
+): Promise<MtechSection | null> {
+  if (!supabase) {
+    console.error(
+      'Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.'
+    );
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from('mtech_sections')
+    .update(payload)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error updating mtech section:', error);
+    return null;
+  }
+  return data as MtechSection;
+}
+
+export async function deleteMtechSection(id: string): Promise<boolean> {
+  if (!supabase) {
+    console.error(
+      'Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.'
+    );
+    return false;
+  }
+
+  const { error } = await supabase.from('mtech_sections').delete().eq('id', id);
+
+  if (error) {
+    console.error('Error deleting mtech section:', error);
+    return false;
+  }
+  return true;
+}
+
+// --- Page content: credit categories (admin CRUD) ---
+
+export async function createMtechCreditCategory(
+  payload: Omit<MtechCreditCategory, 'id'>
+): Promise<MtechCreditCategory | null> {
+  if (!supabase) {
+    console.error(
+      'Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.'
+    );
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from('mtech_credit_categories')
+    .insert(payload)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error creating mtech credit category:', error);
+    return null;
+  }
+  return data as MtechCreditCategory;
+}
+
+export async function updateMtechCreditCategory(
+  id: string,
+  payload: Partial<Omit<MtechCreditCategory, 'id'>>
+): Promise<MtechCreditCategory | null> {
+  if (!supabase) {
+    console.error(
+      'Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.'
+    );
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from('mtech_credit_categories')
+    .update(payload)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error updating mtech credit category:', error);
+    return null;
+  }
+  return data as MtechCreditCategory;
+}
+
+export async function deleteMtechCreditCategory(id: string): Promise<boolean> {
+  if (!supabase) {
+    console.error(
+      'Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.'
+    );
+    return false;
+  }
+
+  const { error } = await supabase.from('mtech_credit_categories').delete().eq('id', id);
+
+  if (error) {
+    console.error('Error deleting mtech credit category:', error);
     return false;
   }
   return true;

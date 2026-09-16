@@ -222,7 +222,7 @@ export default function BasketsPanel() {
                   <td className="max-w-xs truncate px-4 py-3 text-xs text-gray-500">
                     {preview.length > 0 ? preview.join(' / ') : '—'}
                   </td>
-                  <td className="whitespace-nowrap px-4 py-3">
+                  <td className="px-4 py-3 whitespace-nowrap">
                     <div className="flex gap-2">
                       <button
                         type="button"

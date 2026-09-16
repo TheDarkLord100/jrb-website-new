@@ -132,10 +132,7 @@ function SpecializationCard({
       <p className="mt-2 text-sm leading-relaxed text-gray-600">{specialization.description}</p>
       <span className="mt-3 flex items-center gap-1 text-xs font-semibold text-amber-700 group-hover:text-amber-800">
         {isOpen ? 'Hide eligible courses' : 'View eligible courses'}
-        <ChevronDown
-          size={14}
-          className={`transition-transform ${isOpen ? 'rotate-180' : ''}`}
-        />
+        <ChevronDown size={14} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </span>
     </button>
   );
@@ -257,7 +254,11 @@ function ConstraintSentence({
       {`At most ${numberWord(max_courses)} ${courseWord} in total from the `}
       {baskets.map(({ basket, courses }, i) => (
         <span key={basket.id}>
-          <BasketPill basket={basket} courses={courses} onOpen={() => onOpenBasket(basket, courses)} />
+          <BasketPill
+            basket={basket}
+            courses={courses}
+            onOpen={() => onOpenBasket(basket, courses)}
+          />
           {basketConnector(i, baskets.length)}
         </span>
       ))}
@@ -356,9 +357,10 @@ export default function MtechContent({
 }) {
   const { data, error } = useMtechContent(initialData);
 
-  const [openBasket, setOpenBasket] = useState<{ basket: MtechBasket; courses: MtechCourse[] } | null>(
-    null
-  );
+  const [openBasket, setOpenBasket] = useState<{
+    basket: MtechBasket;
+    courses: MtechCourse[];
+  } | null>(null);
 
   // Nothing shown by default. Toggling a card adds/removes its id here, so
   // any number of specializations' tables can be open side by side.
@@ -582,7 +584,7 @@ export default function MtechContent({
                 For the complete list of Programme Electives and Specializations, refer to the{' '}
                 <a
                   href={PE_LIST_PDF_URL}
-                  target='_blank'
+                  target="_blank"
                   className="font-semibold text-amber-700 underline underline-offset-2 hover:text-amber-800"
                 >
                   Programme Electives and Specializations list
@@ -604,9 +606,15 @@ export default function MtechContent({
           <div className="mt-5 border-t-2 border-amber-400 bg-white p-5 shadow-sm ring-1 ring-gray-100">
             <h4 className="text-sm font-semibold text-[#001A23]">Eligibility</h4>
             <ul className="mt-2 flex flex-col gap-1.5 text-sm text-gray-600">
-              <li>Complete at least 6 PE/OC credits (typically two courses) from the approved course list of the chosen specialization</li>
+              <li>
+                Complete at least 6 PE/OC credits (typically two courses) from the approved course
+                list of the chosen specialization
+              </li>
               <li>Complete both MTP–I and MTP–II in the chosen specialization</li>
-              <li>Submit an application to the PEC specifying the chosen specialization, for final approval at graduation</li>
+              <li>
+                Submit an application to the PEC specifying the chosen specialization, for final
+                approval at graduation
+              </li>
             </ul>
           </div>
 
