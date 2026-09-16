@@ -7,13 +7,18 @@ import {
   getMtechCourses,
   getMtechSpecializations,
 } from '@/lib/supabase/queries';
-import type { MtechSection, MtechCreditCategory, MtechCourse, MtechCard } from '@/types/mtech';
+import type {
+  MtechSection,
+  MtechCreditCategory,
+  MtechCourse,
+  MtechSpecializationFull,
+} from '@/types/mtech';
 
 type MtechContent = {
   sections: MtechSection[];
   creditCategories: MtechCreditCategory[];
   courses: MtechCourse[];
-  specializations: MtechCard[];
+  specializations: MtechSpecializationFull[];
 };
 
 export function useMtechContent(initialData: MtechContent | null = null) {

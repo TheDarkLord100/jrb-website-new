@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAdminAuth } from '@/lib/hooks/useAdminAuth';
 import DashboardSidebar from '@/components/admin/DashboardSidebar';
 import DashboardTopBar from '@/components/admin/DashboardTopBar';
+import { ToastProvider } from '@/components/admin/Toast';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const router = useRouter();
@@ -29,12 +30,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     }
 
     return (
-        <div className="flex min-h-screen">
-            <DashboardSidebar />
-            <div className="flex flex-1 flex-col bg-stone-50">
-                <DashboardTopBar />
-                <div className="flex flex-1 flex-col">{children}</div>
+        <ToastProvider>
+            <div className="flex min-h-screen">
+                <DashboardSidebar />
+                <div className="flex flex-1 flex-col bg-stone-50">
+                    <DashboardTopBar />
+                    <div className="flex flex-1 flex-col">{children}</div>
+                </div>
             </div>
-        </div>
+        </ToastProvider>
     );
 }

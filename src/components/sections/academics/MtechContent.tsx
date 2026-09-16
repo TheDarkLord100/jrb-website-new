@@ -1,13 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Accordion from '@/components/ui/Accordion';
 import { SectionTitle, TextSkeleton, TableSkeleton } from '@/components/ui/ContentBlocks';
 import Markdown from '@/components/ui/Markdown';
 import TocNav, { type TocSection } from '@/components/ui/TocNav';
 import { useMtechContent } from '@/lib/hooks/useMtechContent';
 import { getLucideIcon } from '@/lib/lucideIconMap';
-import type { MtechSection, MtechCreditCategory, MtechCourse, MtechCard } from '@/types/mtech';
+import { ChevronDown, Layers } from 'lucide-react';
+import type {
+  MtechSection,
+  MtechCreditCategory,
+  MtechCourse,
+  MtechBasket,
+  MtechSpecializationFull,
+  MtechSpecializationConstraint,
+} from '@/types/mtech';
 
 const SECTIONS: TocSection[] = [
   { id: 'overview', label: 'Overview' },
@@ -33,111 +41,29 @@ const SEMESTER_ORDER = [
 // TODO: point this at the hosted PDF once it's uploaded to the site (e.g. /documents/...).
 const PE_LIST_PDF_URL = '/Assets/PE_List_JRB.pdf';
 
-// Specializations are hardcoded on the frontend for now. When the backend schema is
-// extended to include specialization course lists, this can move back to `data`.
-type Specialization = {
-  id: string;
-  icon: string;
-  title: string;
-  description: string;
-  constraint: string;
-  courses: string[];
-};
+const NUMBER_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five'];
 
-const SPECIALIZATIONS: Specialization[] = [
-  {
-    id: 'collaborative-robotics',
-    icon: 'Users',
-    title: 'Collaborative Robotics',
-    description:
-      'Robots designed to work safely alongside people in shared workspaces — combining human flexibility with robotic precision, often with minimal programming and reduced safety barriers.',
-    constraint: 'At most one course in total from the Advanced Control or Autonomy basket.',
-    courses: [
-      'ELL7122 Control of Networked & Complex Systems',
-      'AIL8027 Advanced Reinforcement Learning',
-      'MEL7115 Network Models for Public Systems',
-      'MTL7763 Introduction to Game Theory / COL7155 Algorithmic Game Theory',
-      'COL7151 Algorithmic Graph Theory',
-      'AIL7023 Graph Machine Learning / COL7560 Machine Learning for Networked Systems',
-      'CTL7013 Connected and Autonomous Vehicles',
-      'COL7655 Foundations of Visual Computing',
-    ],
-  },
-  {
-    id: 'soft-bio-inspired-robotics',
-    icon: 'Leaf',
-    title: 'Soft and Bio-Inspired Robotics',
-    description:
-      'Flexible, adaptive robots built from compliant materials and inspired by biological movement — well suited to delicate tasks and unstructured environments.',
-    constraint: 'At most one course in total from the Advanced Control or Computer Vision basket.',
-    courses: [
-      'AML7630 Soft Robotics',
-      'BML7700 Fundamentals of Biomechanics / MEL7234 Principles of Human Movement / AML7620 Advanced Biomechanics / BML8700 Mechanics of Biological Systems',
-      'SBV7050 Bioinspiration and Biomimetics',
-      'JRL7999 Wearable Robotics',
-      'BML8800 Healthcare Wearables: Design and Applications',
-      'AML7800 Deep Learning for Mechanics / AML7810 Probabilistic Machine Learning for Mechanics / MEL7216 Machine Learning for Computational Design',
-      'ELL8120 Model Reduction for Control',
-    ],
-  },
-  {
-    id: 'industrial-robotics',
-    icon: 'Factory',
-    title: 'Industrial Robotics',
-    description:
-      'Automated, programmable robots for high-speed, high-precision manufacturing tasks — widely used across automotive, electronics, and packaging.',
-    constraint:
-      'At most one course in total from the Advanced Control, Reinforcement Learning or Computer Vision basket.',
-    courses: [
-      'MEL7202 Mechanical System Design',
-      'MEL7307 Smart Manufacturing',
-      'MEL7225 Design Principles for Precision',
-      'AML7090 Systems Engineering and Design / DDP7121 Introduction to DIY Prototyping',
-      'BML7730 Industrial Manufacturing for Healthcare',
-      'AML7830 Digital Twins',
-      'MEL7103 Operations Planning and Control',
-      'ELL7283 Embedded Systems',
-      'DSL7711 Sensors and Transducers',
-      'DSL7757 Generative AI for Cyber-Physical Systems',
-    ],
-  },
-  {
-    id: 'rehabilitation-medical-robotics',
-    icon: 'HeartPulse',
-    title: 'Rehabilitation and Medical Robotics',
-    description:
-      'Robotic systems that support patient recovery and clinical care — assisting physical therapy, surgery, and personalized treatment with greater precision and consistency.',
-    constraint: 'At most one course in total from the Advanced Control or Computer Vision basket.',
-    courses: [
-      'JRL7999 Wearable Robotics',
-      'MEL7225 Design Principles for Precision',
-      'BML8300 Biosensor Technology',
-      'BML7400 Biomedical Instrumentation',
-      'BML7410 Medical Device Design',
-      'BML8800 Healthcare Wearables: Design and Applications',
-      'BML7700 Fundamentals of Biomechanics / MEL7234 Principles of Human Movement / AML7620 Advanced Biomechanics / BML7140 Advanced Neuromechanics',
-      'BML7381 Deep Learning for Medical Image Analysis',
-      'BML7500 Point of Care Medical Diagnostic Devices',
-      'BML7350 Biomedical Signal and Image Processing',
-      'BMP7460 Biomechanics, Rehabilitation Engineering and Haptics Lab',
-      'SIL7020 Accessible Computing & Assistive Technologies',
-    ],
-  },
-  {
-    id: 'autonomous-intelligent-vehicles',
-    icon: 'Car',
-    title: 'Autonomous and Intelligent Vehicles',
-    description:
-      'Self-driving systems built on advanced sensing, AI, and control — aiming to improve safety, efficiency, and convenience across transportation.',
-    constraint:
-      'At most one course in total from the Computer Vision, Advanced Control, Reinforcement Learning, or Autonomy basket.',
-    courses: [
-      'JRL8730 Aerial Robotics',
-      'CTL7013 Connected and Autonomous Vehicles',
-      'CTL7003 Introduction to Electric Vehicles / CTL7005 Engineering of Electric Vehicles / ELL7505 Electric Vehicle Systems / CTL7008 Design and Control of EV Powertrain / CTL7032 Vehicle Propulsion and Transmissions / CTL7049 Digital Control Design for EV Applications / CTL7020 Vehicle System Dynamics and Control',
-    ],
-  },
-];
+function numberWord(n: number): string {
+  return NUMBER_WORDS[n] ?? String(n);
+}
+
+// Trailing connector text to render right after the basket pill at `index`
+// (out of `total`), or '' after the last one -- produces the same
+// "X, Y, or Z" / "X or Y" pattern as a plain-text join, but per-pill so
+// JSX (the clickable basket pills) can be interleaved between the words.
+function basketConnector(index: number, total: number): string {
+  if (index === total - 1) return '';
+  if (total === 2) return ' or';
+  return index === total - 2 ? ', or' : ',';
+}
+
+function formatLTP(course: MtechCourse): string {
+  return `${course.l ?? '—'}-${course.t ?? '—'}-${course.p ?? '—'}`;
+}
+
+function specializationAnchorId(specializationId: string): string {
+  return `spec-${specializationId}`;
+}
 
 function CourseTable({
   rows,
@@ -183,17 +109,20 @@ function CourseTable({
 
 function SpecializationCard({
   specialization,
-  onExpand,
+  isOpen,
+  onToggle,
 }: {
-  specialization: Specialization;
-  onExpand: () => void;
+  specialization: MtechSpecializationFull;
+  isOpen: boolean;
+  onToggle: () => void;
 }) {
   const Icon = getLucideIcon(specialization.icon);
+
   return (
     <button
       type="button"
-      onClick={onExpand}
-      aria-haspopup="dialog"
+      onClick={onToggle}
+      aria-expanded={isOpen}
       className="group flex flex-col items-start border-t-2 border-amber-400 bg-white p-5 text-left shadow-sm ring-1 ring-gray-100 transition-colors hover:bg-amber-50/30"
     >
       <div className="flex h-10 w-10 items-center justify-center border border-amber-200 bg-amber-50/60">
@@ -201,27 +130,34 @@ function SpecializationCard({
       </div>
       <h4 className="mt-3 text-sm font-semibold text-[#001A23]">{specialization.title}</h4>
       <p className="mt-2 text-sm leading-relaxed text-gray-600">{specialization.description}</p>
-      <span className="mt-3 text-xs font-semibold text-amber-700 group-hover:text-amber-800">
-        View eligible courses
+      <span className="mt-3 flex items-center gap-1 text-xs font-semibold text-amber-700 group-hover:text-amber-800">
+        {isOpen ? 'Hide eligible courses' : 'View eligible courses'}
+        <ChevronDown
+          size={14}
+          className={`transition-transform ${isOpen ? 'rotate-180' : ''}`}
+        />
       </span>
     </button>
   );
 }
 
-function SpecializationDialog({
-  specialization,
+// Opens on clicking a basket row -- shows the full set of interchangeable
+// courses that count as satisfying that one basket slot.
+function BasketDialog({
+  basket,
+  courses,
   onClose,
 }: {
-  specialization: Specialization;
+  basket: MtechBasket;
+  courses: MtechCourse[];
   onClose: () => void;
 }) {
-  const Icon = getLucideIcon(specialization.icon);
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="specialization-dialog-title"
+      aria-labelledby="basket-dialog-title"
       onClick={onClose}
     >
       <div
@@ -231,13 +167,10 @@ function SpecializationDialog({
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-amber-200 bg-amber-50/60">
-              <Icon size={18} className="text-amber-700" strokeWidth={1.75} />
+              <Layers size={18} className="text-amber-700" strokeWidth={1.75} />
             </div>
-            <h3
-              id="specialization-dialog-title"
-              className="font-serif text-lg font-bold text-[#001A23]"
-            >
-              {specialization.title}
+            <h3 id="basket-dialog-title" className="font-serif text-lg font-bold text-[#001A23]">
+              {basket.name ?? 'Choose one of the following'}
             </h3>
           </div>
           <button
@@ -250,17 +183,162 @@ function SpecializationDialog({
           </button>
         </div>
 
-        <p className="mt-4 text-sm leading-relaxed text-gray-600">{specialization.description}</p>
+        <p className="mt-2 text-xs text-gray-500">Counts as one course -- pick any one below.</p>
 
-        <div className="mt-5">
-          <h4 className="text-sm font-semibold text-[#001A23]">Approved courses</h4>
-          <p className="mt-1 text-xs text-gray-500">{specialization.constraint}</p>
-          <ul className="mt-2 flex flex-col gap-1.5 text-sm text-gray-600">
-            {specialization.courses.map((course) => (
-              <li key={course}>{course}</li>
-            ))}
-          </ul>
+        <div className="mt-5 overflow-x-auto">
+          <table className="w-full min-w-[420px] text-left text-sm">
+            <thead>
+              <tr className="border-b border-gray-200 text-gray-500">
+                <th className="py-2 pr-3 font-semibold">Code</th>
+                <th className="py-2 pr-4 font-semibold">Course</th>
+                <th className="px-2 py-2 font-semibold">L-T-P</th>
+                <th className="px-2 py-2 font-semibold">Credits</th>
+              </tr>
+            </thead>
+            <tbody>
+              {courses.map((course) => (
+                <tr key={course.id} className="border-b border-gray-100">
+                  <td className="py-2 pr-3 text-xs whitespace-nowrap text-gray-500">
+                    {course.code ?? '—'}
+                  </td>
+                  <td className="py-2 pr-4 text-gray-700">{course.title}</td>
+                  <td className="px-2 py-2 whitespace-nowrap text-gray-600">{formatLTP(course)}</td>
+                  <td className="px-2 py-2 text-gray-600">{course.credits}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// A single basket name inline in a constraint sentence -- highlighted as a
+// pill and clickable to open the same BasketDialog used for in-list
+// baskets in the table below.
+function BasketPill({
+  basket,
+  courses,
+  onOpen,
+}: {
+  basket: MtechBasket;
+  courses: MtechCourse[];
+  onOpen: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      className="mx-0.5 inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 align-middle text-xs font-semibold text-amber-800 transition-colors hover:bg-amber-200"
+    >
+      <Layers size={11} strokeWidth={1.75} />
+      {basket.name ?? 'Untitled basket'}
+    </button>
+  );
+}
+
+// Renders "At most one course in total from the [Advanced Control] or
+// [Autonomy] basket." with each basket name as a clickable BasketPill,
+// built from structured data instead of a typed-out string.
+function ConstraintSentence({
+  constraint,
+  onOpenBasket,
+}: {
+  constraint: MtechSpecializationConstraint;
+  onOpenBasket: (basket: MtechBasket, courses: MtechCourse[]) => void;
+}) {
+  const { max_courses, baskets } = constraint;
+  const courseWord = max_courses === 1 ? 'course' : 'courses';
+  const basketWord = baskets.length > 1 ? 'baskets' : 'basket';
+
+  return (
+    <p className="mt-1 text-xs leading-6 text-gray-500">
+      {`At most ${numberWord(max_courses)} ${courseWord} in total from the `}
+      {baskets.map(({ basket, courses }, i) => (
+        <span key={basket.id}>
+          <BasketPill basket={basket} courses={courses} onOpen={() => onOpenBasket(basket, courses)} />
+          {basketConnector(i, baskets.length)}
+        </span>
+      ))}
+      {` ${basketWord}.`}
+    </p>
+  );
+}
+
+// The "<Specialization> -- Eligible Courses" table. Baskets are listed
+// first (each as one clickable row opening BasketDialog), followed by
+// standalone courses.
+function EligibleCoursesSection({
+  specialization,
+  onOpenBasket,
+}: {
+  specialization: MtechSpecializationFull;
+  onOpenBasket: (basket: MtechBasket, courses: MtechCourse[]) => void;
+}) {
+  const basketItems = specialization.items.filter((i) => i.kind === 'basket');
+  const courseItems = specialization.items.filter((i) => i.kind === 'course');
+
+  return (
+    <div id={specializationAnchorId(specialization.id)} className="scroll-mt-24">
+      <h3 className="font-serif text-lg font-bold text-[#001A23]">
+        {specialization.title} — Eligible Courses
+      </h3>
+
+      {specialization.constraints.map((c) => (
+        <ConstraintSentence key={c.id} constraint={c} onOpenBasket={onOpenBasket} />
+      ))}
+
+      <div className="mt-4 overflow-x-auto border-t-2 border-amber-400 shadow-sm ring-1 ring-gray-100">
+        <table className="w-full min-w-[560px] text-left text-sm">
+          <thead>
+            <tr className="border-b border-gray-200 bg-gray-50 text-gray-500">
+              <th className="py-2 pr-3 pl-4 font-semibold">Code</th>
+              <th className="py-2 pr-4 font-semibold">Course</th>
+              <th className="px-2 py-2 font-semibold">L-T-P</th>
+              <th className="px-2 py-2 pr-4 font-semibold">Credits</th>
+            </tr>
+          </thead>
+          <tbody>
+            {basketItems.map((item, i) =>
+              item.kind === 'basket' ? (
+                <tr
+                  key={`basket-${item.basket.id}-${i}`}
+                  onClick={() => onOpenBasket(item.basket, item.courses)}
+                  className="cursor-pointer border-b border-gray-100 bg-amber-50/40 transition-colors hover:bg-amber-50"
+                >
+                  <td className="py-2 pr-3 pl-4 text-gray-400">—</td>
+                  <td className="py-2 pr-4 text-gray-700">
+                    <span className="flex items-center gap-2">
+                      <Layers size={14} className="text-amber-600" strokeWidth={1.75} />
+                      {item.basket.name ?? 'Choose one of the following'}
+                      <span className="text-xs text-amber-700 underline underline-offset-2">
+                        View {item.courses.length} options
+                      </span>
+                    </span>
+                  </td>
+                  <td className="px-2 py-2 text-gray-400">—</td>
+                  <td className="px-2 py-2 pr-4 text-gray-400">—</td>
+                </tr>
+              ) : null
+            )}
+
+            {courseItems.map((item) =>
+              item.kind === 'course' ? (
+                <tr key={`course-${item.course.id}`} className="border-b border-gray-100">
+                  <td className="py-2 pr-3 pl-4 text-xs whitespace-nowrap text-gray-500">
+                    {item.course.code ?? '—'}
+                  </td>
+                  <td className="py-2 pr-4 text-gray-700">{item.course.title}</td>
+                  <td className="px-2 py-2 whitespace-nowrap text-gray-600">
+                    {formatLTP(item.course)}
+                  </td>
+                  <td className="px-2 py-2 pr-4 text-gray-600">{item.course.credits}</td>
+                </tr>
+              ) : null
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );
@@ -273,13 +351,42 @@ export default function MtechContent({
     sections: MtechSection[];
     creditCategories: MtechCreditCategory[];
     courses: MtechCourse[];
-    specializations: MtechCard[];
+    specializations: MtechSpecializationFull[];
   } | null;
 }) {
   const { data, error } = useMtechContent(initialData);
 
-  const [openSpecializationId, setOpenSpecializationId] = useState<string | null>(null);
-  const openSpecialization = SPECIALIZATIONS.find((s) => s.id === openSpecializationId) ?? null;
+  const [openBasket, setOpenBasket] = useState<{ basket: MtechBasket; courses: MtechCourse[] } | null>(
+    null
+  );
+
+  // Nothing shown by default. Toggling a card adds/removes its id here, so
+  // any number of specializations' tables can be open side by side.
+  const [openSpecializationIds, setOpenSpecializationIds] = useState<Set<string>>(new Set());
+  // Set only when a card is opened (not when closed) -- triggers the
+  // scroll-into-view below without re-scrolling every time the set changes.
+  const [justOpenedId, setJustOpenedId] = useState<string | null>(null);
+
+  const toggleSpecialization = (id: string) => {
+    setOpenSpecializationIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+        setJustOpenedId(id);
+      }
+      return next;
+    });
+  };
+
+  useEffect(() => {
+    if (!justOpenedId) return;
+    document
+      .getElementById(specializationAnchorId(justOpenedId))
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setJustOpenedId(null);
+  }, [justOpenedId]);
 
   if (error) {
     return (
@@ -503,22 +610,46 @@ export default function MtechContent({
             </ul>
           </div>
 
-          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {SPECIALIZATIONS.map((s) => (
-              <SpecializationCard
-                key={s.id}
-                specialization={s}
-                onExpand={() => setOpenSpecializationId(s.id)}
-              />
-            ))}
-          </div>
+          {data === null ? (
+            <div className="mt-6">
+              <TextSkeleton lines={3} />
+            </div>
+          ) : (
+            <>
+              <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {data.specializations.map((s) => (
+                  <SpecializationCard
+                    key={s.id}
+                    specialization={s}
+                    isOpen={openSpecializationIds.has(s.id)}
+                    onToggle={() => toggleSpecialization(s.id)}
+                  />
+                ))}
+              </div>
+
+              {openSpecializationIds.size > 0 && (
+                <div className="mt-10 flex flex-col gap-12">
+                  {data.specializations
+                    .filter((s) => openSpecializationIds.has(s.id))
+                    .map((s) => (
+                      <EligibleCoursesSection
+                        key={s.id}
+                        specialization={s}
+                        onOpenBasket={(basket, courses) => setOpenBasket({ basket, courses })}
+                      />
+                    ))}
+                </div>
+              )}
+            </>
+          )}
         </section>
       </div>
 
-      {openSpecialization && (
-        <SpecializationDialog
-          specialization={openSpecialization}
-          onClose={() => setOpenSpecializationId(null)}
+      {openBasket && (
+        <BasketDialog
+          basket={openBasket.basket}
+          courses={openBasket.courses}
+          onClose={() => setOpenBasket(null)}
         />
       )}
     </div>
