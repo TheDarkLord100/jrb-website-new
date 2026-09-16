@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { createMtechCourse, updateMtechCourse } from '@/lib/supabase/queries';
 import { useToast } from '@/components/admin/Toast';
+import Modal from '@/components/admin/Modal';
 import type { MtechCourse } from '@/types/mtech';
 
 const CATEGORIES: MtechCourse['category'][] = [
@@ -50,6 +51,8 @@ function fromInputValue(raw: string): number | null {
   const n = Number(raw);
   return Number.isNaN(n) ? null : n;
 }
+
+const FORM_ID = 'course-form';
 
 export default function CourseFormModal({
   initial,
@@ -100,143 +103,133 @@ export default function CourseFormModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg bg-white p-6 shadow-xl">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-stone-900">
-            {initial ? 'Edit course' : 'New course'}
-          </h2>
+    <Modal
+      title={initial ? 'Edit course' : 'New course'}
+      onClose={onClose}
+      maxWidth="max-w-lg"
+      footer={
+        <>
           <button
             type="button"
             onClick={onClose}
-            className="text-stone-400 hover:text-stone-600"
-            aria-label="Close"
+            className="rounded px-4 py-2 text-sm font-semibold text-stone-600 hover:bg-stone-100"
           >
-            ✕
+            Cancel
           </button>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <Field label="Code">
-              <input
-                type="text"
-                value={form.code ?? ''}
-                onChange={(e) => set('code', e.target.value)}
-                placeholder="e.g. ELL7122"
-                className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
-              />
-            </Field>
-
-            <Field label="Category">
-              <select
-                value={form.category}
-                onChange={(e) => set('category', e.target.value as MtechCourse['category'])}
-                className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
-              >
-                {CATEGORIES.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat.replace(/_/g, ' ')}
-                  </option>
-                ))}
-              </select>
-            </Field>
-          </div>
-
-          <Field label="Title">
+          <button
+            type="submit"
+            form={FORM_ID}
+            disabled={saving}
+            className="rounded bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-50"
+          >
+            {saving ? 'Saving…' : initial ? 'Save changes' : 'Create'}
+          </button>
+        </>
+      }
+    >
+      <form id={FORM_ID} onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
+          <Field label="Code">
             <input
               type="text"
-              required
-              value={form.title}
-              onChange={(e) => set('title', e.target.value)}
+              value={form.code ?? ''}
+              onChange={(e) => set('code', e.target.value)}
+              placeholder="e.g. ELL7122"
               className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
             />
           </Field>
 
-          <Field label="Semester">
+          <Field label="Category">
             <select
-              value={form.semester ?? ''}
-              onChange={(e) => set('semester', e.target.value || null)}
+              value={form.category}
+              onChange={(e) => set('category', e.target.value as MtechCourse['category'])}
               className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
             >
-              <option value="">— Not tied to a semester —</option>
-              {SEMESTERS.map((sem) => (
-                <option key={sem} value={sem}>
-                  {sem}
+              {CATEGORIES.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat.replace(/_/g, ' ')}
                 </option>
               ))}
             </select>
           </Field>
+        </div>
 
-          <div className="grid grid-cols-4 gap-4">
-            <Field label="L">
-              <input
-                type="number"
-                min={0}
-                value={toInputValue(form.l)}
-                onChange={(e) => set('l', fromInputValue(e.target.value))}
-                className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
-              />
-            </Field>
-            <Field label="T">
-              <input
-                type="number"
-                min={0}
-                value={toInputValue(form.t)}
-                onChange={(e) => set('t', fromInputValue(e.target.value))}
-                className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
-              />
-            </Field>
-            <Field label="P">
-              <input
-                type="number"
-                min={0}
-                value={toInputValue(form.p)}
-                onChange={(e) => set('p', fromInputValue(e.target.value))}
-                className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
-              />
-            </Field>
-            <Field label="Credits">
-              <input
-                type="number"
-                min={0}
-                required
-                value={form.credits}
-                onChange={(e) => set('credits', Number(e.target.value))}
-                className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
-              />
-            </Field>
-          </div>
+        <Field label="Title">
+          <input
+            type="text"
+            required
+            value={form.title}
+            onChange={(e) => set('title', e.target.value)}
+            className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
+          />
+        </Field>
 
-          <Field label="Display order">
+        <Field label="Semester">
+          <select
+            value={form.semester ?? ''}
+            onChange={(e) => set('semester', e.target.value || null)}
+            className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
+          >
+            <option value="">— Not tied to a semester —</option>
+            {SEMESTERS.map((sem) => (
+              <option key={sem} value={sem}>
+                {sem}
+              </option>
+            ))}
+          </select>
+        </Field>
+
+        <div className="grid grid-cols-4 gap-4">
+          <Field label="L">
             <input
               type="number"
-              value={toInputValue(form.display_order)}
-              onChange={(e) => set('display_order', fromInputValue(e.target.value))}
-              placeholder="Lower shows first"
+              min={0}
+              value={toInputValue(form.l)}
+              onChange={(e) => set('l', fromInputValue(e.target.value))}
               className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
             />
           </Field>
+          <Field label="T">
+            <input
+              type="number"
+              min={0}
+              value={toInputValue(form.t)}
+              onChange={(e) => set('t', fromInputValue(e.target.value))}
+              className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
+            />
+          </Field>
+          <Field label="P">
+            <input
+              type="number"
+              min={0}
+              value={toInputValue(form.p)}
+              onChange={(e) => set('p', fromInputValue(e.target.value))}
+              className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
+            />
+          </Field>
+          <Field label="Credits">
+            <input
+              type="number"
+              min={0}
+              required
+              value={form.credits}
+              onChange={(e) => set('credits', Number(e.target.value))}
+              className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
+            />
+          </Field>
+        </div>
 
-          <div className="flex justify-end gap-2 border-t border-stone-100 pt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded px-4 py-2 text-sm font-semibold text-stone-600 hover:bg-stone-100"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={saving}
-              className="rounded bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-50"
-            >
-              {saving ? 'Saving…' : initial ? 'Save changes' : 'Create'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <Field label="Display order">
+          <input
+            type="number"
+            value={toInputValue(form.display_order)}
+            onChange={(e) => set('display_order', fromInputValue(e.target.value))}
+            placeholder="Lower shows first"
+            className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
+          />
+        </Field>
+      </form>
+    </Modal>
   );
 }
 

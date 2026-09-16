@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { createMtechCreditCategory, updateMtechCreditCategory } from '@/lib/supabase/queries';
 import { useToast } from '@/components/admin/Toast';
+import Modal from '@/components/admin/Modal';
 import type { MtechCreditCategory } from '@/types/mtech';
 
 const EMPTY_FORM: Omit<MtechCreditCategory, 'id'> = {
@@ -11,6 +12,8 @@ const EMPTY_FORM: Omit<MtechCreditCategory, 'id'> = {
   credits: 0,
   display_order: null,
 };
+
+const FORM_ID = 'credit-category-form';
 
 export default function CreditCategoryFormModal({
   initial,
@@ -51,98 +54,88 @@ export default function CreditCategoryFormModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-xl">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-stone-900">
-            {initial ? 'Edit credit category' : 'New credit category'}
-          </h2>
+    <Modal
+      title={initial ? 'Edit credit category' : 'New credit category'}
+      onClose={onClose}
+      maxWidth="max-w-md"
+      footer={
+        <>
           <button
             type="button"
             onClick={onClose}
-            className="text-stone-400 hover:text-stone-600"
-            aria-label="Close"
+            className="rounded px-4 py-2 text-sm font-semibold text-stone-600 hover:bg-stone-100"
           >
-            ✕
+            Cancel
           </button>
+          <button
+            type="submit"
+            form={FORM_ID}
+            disabled={saving}
+            className="rounded bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-50"
+          >
+            {saving ? 'Saving…' : initial ? 'Save changes' : 'Create'}
+          </button>
+        </>
+      }
+    >
+      <form id={FORM_ID} onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="mb-1 block text-xs font-semibold tracking-wide text-stone-500 uppercase">
+            Category
+          </label>
+          <input
+            type="text"
+            required
+            value={form.category}
+            onChange={(e) => set('category', e.target.value)}
+            placeholder="e.g. Programme Core"
+            className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
+          />
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="mb-1 block text-xs font-semibold tracking-wide text-stone-500 uppercase">
+            Description
+          </label>
+          <input
+            type="text"
+            required
+            value={form.description}
+            onChange={(e) => set('description', e.target.value)}
+            className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="mb-1 block text-xs font-semibold tracking-wide text-stone-500 uppercase">
-              Category
+              Credits
             </label>
             <input
-              type="text"
+              type="number"
+              min={0}
               required
-              value={form.category}
-              onChange={(e) => set('category', e.target.value)}
-              placeholder="e.g. Programme Core"
+              value={form.credits}
+              onChange={(e) => set('credits', Number(e.target.value))}
               className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
             />
           </div>
-
           <div>
             <label className="mb-1 block text-xs font-semibold tracking-wide text-stone-500 uppercase">
-              Description
+              Display order
             </label>
             <input
-              type="text"
-              required
-              value={form.description}
-              onChange={(e) => set('description', e.target.value)}
+              type="number"
+              value={form.display_order ?? ''}
+              onChange={(e) =>
+                set('display_order', e.target.value.trim() === '' ? null : Number(e.target.value))
+              }
+              placeholder="Lower shows first"
               className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
             />
           </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="mb-1 block text-xs font-semibold tracking-wide text-stone-500 uppercase">
-                Credits
-              </label>
-              <input
-                type="number"
-                min={0}
-                required
-                value={form.credits}
-                onChange={(e) => set('credits', Number(e.target.value))}
-                className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
-              />
-            </div>
-            <div>
-              <label className="mb-1 block text-xs font-semibold tracking-wide text-stone-500 uppercase">
-                Display order
-              </label>
-              <input
-                type="number"
-                value={form.display_order ?? ''}
-                onChange={(e) =>
-                  set('display_order', e.target.value.trim() === '' ? null : Number(e.target.value))
-                }
-                placeholder="Lower shows first"
-                className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-end gap-2 border-t border-stone-100 pt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded px-4 py-2 text-sm font-semibold text-stone-600 hover:bg-stone-100"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={saving}
-              className="rounded bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-50"
-            >
-              {saving ? 'Saving…' : initial ? 'Save changes' : 'Create'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        </div>
+      </form>
+    </Modal>
   );
 }

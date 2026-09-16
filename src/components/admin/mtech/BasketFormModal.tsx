@@ -3,7 +3,10 @@
 import { useState } from 'react';
 import { createMtechBasket, updateMtechBasket } from '@/lib/supabase/queries';
 import { useToast } from '@/components/admin/Toast';
+import Modal from '@/components/admin/Modal';
 import type { MtechBasket } from '@/types/mtech';
+
+const FORM_ID = 'basket-form';
 
 export default function BasketFormModal({
   initial,
@@ -38,58 +41,47 @@ export default function BasketFormModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
-      <div className="w-full max-w-sm rounded-lg bg-white p-6 shadow-xl">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-stone-900">
-            {initial ? 'Edit basket' : 'New basket'}
-          </h2>
+    <Modal
+      title={initial ? 'Edit basket' : 'New basket'}
+      onClose={onClose}
+      maxWidth="max-w-sm"
+      footer={
+        <>
           <button
             type="button"
             onClick={onClose}
-            className="text-stone-400 hover:text-stone-600"
-            aria-label="Close"
+            className="rounded px-4 py-2 text-sm font-semibold text-stone-600 hover:bg-stone-100"
           >
-            ✕
+            Cancel
           </button>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="mb-1 block text-xs font-semibold tracking-wide text-stone-500 uppercase">
-              Name
-            </label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Advanced Control"
-              className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
-            />
-            <p className="mt-1.5 text-xs text-stone-400">
-              Only shown in eligibility-rule sentences and here in the dashboard. Leave blank for an
-              in-list &quot;choose one of the following&quot; basket that doesn&apos;t need a name.
-            </p>
-          </div>
-
-          <div className="flex justify-end gap-2 border-t border-stone-100 pt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded px-4 py-2 text-sm font-semibold text-stone-600 hover:bg-stone-100"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={saving}
-              className="rounded bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-50"
-            >
-              {saving ? 'Saving…' : initial ? 'Save changes' : 'Create'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+          <button
+            type="submit"
+            form={FORM_ID}
+            disabled={saving}
+            className="rounded bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-50"
+          >
+            {saving ? 'Saving…' : initial ? 'Save changes' : 'Create'}
+          </button>
+        </>
+      }
+    >
+      <form id={FORM_ID} onSubmit={handleSubmit}>
+        <label className="mb-1 block text-xs font-semibold tracking-wide text-stone-500 uppercase">
+          Name
+        </label>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="e.g. Advanced Control"
+          className="w-full rounded border border-stone-300 px-3 py-2 text-sm"
+        />
+        <p className="mt-1.5 text-xs text-stone-400">
+          Only shown in eligibility-rule sentences and here in the dashboard. Leave blank for
+          an in-list &quot;choose one of the following&quot; basket that doesn&apos;t need a
+          name.
+        </p>
+      </form>
+    </Modal>
   );
 }
