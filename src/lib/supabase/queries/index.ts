@@ -7,3 +7,4 @@ export * from './mtech';
 export * from './idsr';
 export * from './industry';
 export * from './projects';
+export * from './media';

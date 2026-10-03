@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import {
   Bold,
+  FileText,
   Heading2,
   Italic,
   Link2,
@@ -12,6 +13,8 @@ import {
   Strikethrough,
 } from 'lucide-react';
 import Markdown from '@/components/ui/Markdown';
+import MediaPicker from '@/components/admin/media/MediaPicker';
+import { displayName } from '@/lib/supabase/queries';
 
 // Wraps the current selection in `before`/`after` (or inserts `placeholder`
 // between them if nothing is selected), then restores focus with the
@@ -97,6 +100,30 @@ function insertText(
   });
 }
 
+// Inserts a Markdown link over the range [start, end) -- the selection as it
+// was when the document picker opened, since focus moves into the picker
+// and the live selection can't be trusted by the time a file is chosen.
+// Selected text becomes the link text; otherwise `fallbackText` is used.
+function insertLinkAt(
+  textarea: HTMLTextAreaElement,
+  start: number,
+  end: number,
+  url: string,
+  fallbackText: string,
+  onChange: (value: string) => void
+) {
+  const { value } = textarea;
+  const text = value.slice(start, end).trim() || fallbackText;
+  const link = `[${text}](${url})`;
+  onChange(value.slice(0, start) + link + value.slice(end));
+
+  requestAnimationFrame(() => {
+    textarea.focus();
+    const pos = start + link.length;
+    textarea.setSelectionRange(pos, pos);
+  });
+}
+
 function ToolbarButton({
   label,
   onClick,
@@ -129,14 +156,26 @@ export default function MarkdownEditor({
   onChange,
   rows = 6,
   placeholder,
+  documentFolder = 'general',
 }: {
   value: string;
   onChange: (value: string) => void;
   rows?: number;
   placeholder?: string;
+  // Folder in the `documents` bucket the "Add document" picker opens in.
+  documentFolder?: string;
 }) {
   const [mode, setMode] = useState<'write' | 'preview'>('write');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [docPickerOpen, setDocPickerOpen] = useState(false);
+  const savedSelection = useRef({ start: 0, end: 0 });
+
+  const openDocPicker = () => {
+    const el = textareaRef.current;
+    if (!el) return;
+    savedSelection.current = { start: el.selectionStart, end: el.selectionEnd };
+    setDocPickerOpen(true);
+  };
 
   const withTextarea = (fn: (el: HTMLTextAreaElement) => void) => {
     if (textareaRef.current) fn(textareaRef.current);
@@ -204,6 +243,9 @@ export default function MarkdownEditor({
           >
             <Link2 size={14} />
           </ToolbarButton>
+          <ToolbarButton label="Add document" onClick={openDocPicker}>
+            <FileText size={14} />
+          </ToolbarButton>
           <ToolbarButton
             label="Paragraph break"
             onClick={() => withTextarea((el) => insertText(el, '\n\n', onChange))}
@@ -247,6 +289,21 @@ export default function MarkdownEditor({
             <p className="text-sm text-stone-400 italic">Nothing to preview yet.</p>
           )}
         </div>
+      )}
+
+      {docPickerOpen && (
+        <MediaPicker
+          bucket="documents"
+          initialFolder={documentFolder}
+          onSelect={(file) => {
+            setDocPickerOpen(false);
+            const { start, end } = savedSelection.current;
+            withTextarea((el) =>
+              insertLinkAt(el, start, end, file.url, displayName(file.name), onChange)
+            );
+          }}
+          onClose={() => setDocPickerOpen(false)}
+        />
       )}
     </div>
   );

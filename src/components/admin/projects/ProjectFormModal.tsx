@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { ImageIcon } from 'lucide-react';
 import { createProject, updateProject } from '@/lib/supabase/queries';
 import { RESEARCH_THEMES, type ThemeSlug } from '@/lib/researchThemes';
 import { slugify } from '@/lib/slugify';
 import { useToast } from '@/components/admin/Toast';
 import Modal from '@/components/admin/Modal';
 import MarkdownEditor from '@/components/admin/MarkdownEditor';
+import MediaField from '@/components/admin/media/MediaField';
 import type { Project, ProjectInput } from '@/types/project';
 
 // Form state differs from ProjectInput in one place: a new project starts
@@ -103,6 +103,7 @@ export default function ProjectFormModal({
       short_description: blankToNull(form.short_description),
       description: blankToNull(form.description),
       github_url: blankToNull(form.github_url),
+      media_alt: form.media_url ? blankToNull(form.media_alt) : null,
       featured_order: form.is_featured ? form.featured_order : null,
     };
 
@@ -226,24 +227,27 @@ export default function ProjectFormModal({
           />
         </Field>
 
-        {/* Placeholder until the media picker exists. Existing media values
-            pass through the form untouched. */}
-        <Field label="Media">
-          <div className="flex items-center gap-3 rounded border border-dashed border-stone-300 px-3 py-3">
-            <button
-              type="button"
-              disabled
-              className="flex items-center gap-1.5 rounded bg-stone-100 px-3 py-1.5 text-xs font-semibold text-stone-400"
-            >
-              <ImageIcon size={13} />
-              Choose media
-            </button>
-            <span className="truncate text-xs text-stone-400">
-              {form.media_url
-                ? `Current ${form.media_type}: ${form.media_url}`
-                : 'Media picker coming soon.'}
-            </span>
-          </div>
+        <Field label="Media" hint="Shown in the featured carousel and on the theme page.">
+          <MediaField
+            folder="projects"
+            allowVideo
+            value={
+              form.media_url && form.media_type
+                ? { url: form.media_url, type: form.media_type }
+                : null
+            }
+            onChange={(media) =>
+              setForm((prev) => ({
+                ...prev,
+                media_url: media?.url ?? null,
+                media_type: media?.type ?? null,
+                // Alt text describes one specific image, so it goes with it.
+                media_alt: media ? prev.media_alt : null,
+              }))
+            }
+            alt={form.media_alt}
+            onAltChange={(alt) => set('media_alt', alt)}
+          />
         </Field>
 
         <div className="grid grid-cols-2 gap-4">
