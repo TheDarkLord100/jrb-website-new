@@ -18,6 +18,46 @@ export async function getAllProjects(): Promise<Project[]> {
   return (data ?? []) as Project[];
 }
 
+// Public read: one theme's published projects, in display order. The
+// explicit is_published filter matters even though RLS hides unpublished
+// rows from visitors -- an admin who's logged in while browsing the public
+// site would otherwise see hidden projects too.
+export async function getThemeProjects(themeSlug: string): Promise<Project[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from('projects')
+    .select('*')
+    .eq('theme_slug', themeSlug)
+    .eq('is_published', true)
+    .order('display_order', { ascending: true })
+    .order('title', { ascending: true });
+  if (error) {
+    console.error('Error fetching theme projects:', error);
+    return [];
+  }
+  return (data ?? []) as Project[];
+}
+
+// Public read: the featured carousel -- published, featured projects that
+// have media (a slide without an image or video has nothing to show), in
+// featured_order with unordered ones last.
+export async function getFeaturedProjects(): Promise<Project[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from('projects')
+    .select('*')
+    .eq('is_featured', true)
+    .eq('is_published', true)
+    .not('media_url', 'is', null)
+    .order('featured_order', { ascending: true, nullsFirst: false })
+    .order('title', { ascending: true });
+  if (error) {
+    console.error('Error fetching featured projects:', error);
+    return [];
+  }
+  return (data ?? []) as Project[];
+}
+
 export async function createProject(payload: ProjectInput): Promise<Project | null> {
   if (!supabase) {
     console.error(

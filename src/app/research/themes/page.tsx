@@ -2,11 +2,11 @@ import Link from 'next/link';
 import PageHeading from '@/components/ui/PageHeading';
 import SectionHeading from '@/components/ui/SectionHeading';
 import StaticPointCloud from '@/components/sections/research/StaticPointCloud';
-import FeaturedProjectsCarousel from '@/components/sections/FeaturedProjectsCarousel';
+import FeaturedProjects from '@/components/sections/FeaturedProjects';
 import GitHubIcon from '@/components/ui/GitHubIcon';
+import { getFeaturedProjects } from '@/lib/supabase/queries';
+
 import { buildMetadata } from '@/lib/metadata';
-
-
 
 export const metadata = buildMetadata({
   title: 'Research Themes',
@@ -42,7 +42,9 @@ const verticals = [
   },
 ];
 
-export default function ResearchThemesPage() {
+export default async function ResearchThemesPage() {
+  const featuredProjects = await getFeaturedProjects();
+
   return (
     <div>
       <PageHeading eyebrow="Research" title="Research Themes" />
@@ -138,11 +140,8 @@ export default function ResearchThemesPage() {
           </a>
         </div>
 
-        {/* Featured Projects */}
-        <div className="mt-16">
-          <SectionHeading title="Featured Projects" />
-          <FeaturedProjectsCarousel />
-        </div>
+        {/* Featured Projects -- hides itself when nothing is featured */}
+        <FeaturedProjects initialProjects={featuredProjects} className="mt-16" />
       </div>
     </div>
   );

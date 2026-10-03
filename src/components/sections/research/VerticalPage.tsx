@@ -3,9 +3,8 @@
 import Link from 'next/link';
 import { User, FlaskConical } from 'lucide-react';
 import PageHeading from '@/components/ui/PageHeading';
-import { useThemeAssociations } from '@/lib/hooks/useThemeAssociations';
-import { Person } from '@/types/person';
-import { Lab } from '@/types/lab';
+import { useThemeAssociations, type ThemeAssociations } from '@/lib/hooks/useThemeAssociations';
+import ThemeProjects from './ThemeProjects';
 
 function ChipsSkeleton() {
   return (
@@ -21,6 +20,20 @@ function ChipsSkeleton() {
   );
 }
 
+function ProjectsSkeleton() {
+  return (
+    <div className="mt-16 animate-pulse">
+      <div className="h-6 w-32 rounded bg-gray-200" />
+      <div className="mt-1 h-0.5 w-12 bg-gray-200" />
+      <div className="mt-5 space-y-3">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <div key={i} className="h-12 w-full bg-gray-100" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function VerticalPage({
   themeSlug,
   title,
@@ -30,7 +43,7 @@ export default function VerticalPage({
   themeSlug: string;
   title: string;
   intro: string;
-  initialData?: { faculty: Person[]; labs: Lab[] } | null;
+  initialData?: ThemeAssociations | null;
 }) {
   const { data, error } = useThemeAssociations(themeSlug, initialData);
   return (
@@ -42,7 +55,7 @@ export default function VerticalPage({
 
         {error && (
           <p className="mt-16 text-center text-gray-500">
-            Couldn&apos;t load faculty and lab information right now.
+            Couldn&apos;t load faculty, lab and project information right now.
           </p>
         )}
 
@@ -50,6 +63,7 @@ export default function VerticalPage({
           <>
             <ChipsSkeleton />
             <ChipsSkeleton />
+            <ProjectsSkeleton />
           </>
         )}
 
@@ -103,16 +117,14 @@ export default function VerticalPage({
                 </div>
               )}
             </section>
+
+            <section className="mt-16">
+              <h2 className="font-serif text-xl font-bold text-[#001A23]">Projects</h2>
+              <div className="mt-2 h-0.5 w-12 bg-amber-400" />
+              <ThemeProjects projects={data.projects} />
+            </section>
           </>
         )}
-
-        <section className="mt-16">
-          <h2 className="font-serif text-xl font-bold text-[#001A23]">Projects</h2>
-          <div className="mt-2 h-0.5 w-12 bg-amber-400" />
-          <p className="mt-5 border-t-2 border-amber-400 bg-white p-10 text-center text-gray-500 shadow-sm ring-1 ring-gray-100">
-            Coming soon.
-          </p>
-        </section>
       </div>
     </div>
   );

@@ -6,7 +6,9 @@ export default function Accordion({
   children,
   accent = false,
 }: {
-  title: string;
+  // Usually plain text; can be richer markup (e.g. a thumbnail beside the
+  // text) when a list needs more than a label in its collapsed state.
+  title: ReactNode;
   children: ReactNode;
   accent?: boolean;
 }) {
@@ -17,14 +19,14 @@ export default function Accordion({
       }`}
     >
       <summary
-        className={`flex cursor-pointer list-none items-center justify-between px-5 py-3 font-semibold ${
+        className={`flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-3 font-semibold ${
           accent ? 'text-amber-700' : 'text-[#001A23]'
         }`}
       >
         {title}
         <ChevronDown
           size={18}
-          className="text-gray-400 transition-transform group-open:rotate-180"
+          className="shrink-0 text-gray-400 transition-transform group-open:rotate-180"
         />
       </summary>
       <div className="border-t border-gray-100 px-5 py-4">{children}</div>
