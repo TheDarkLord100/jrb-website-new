@@ -6,3 +6,4 @@ export * from './announcements';
 export * from './mtech';
 export * from './idsr';
 export * from './industry';
+export * from './projects';
