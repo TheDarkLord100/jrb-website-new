@@ -15,11 +15,13 @@ export type Publication = {
   is_published: boolean;
   created_at: string;
   updated_at: string;
-  // Centre faculty linked through publication_people.
+  // Centre faculty linked through publication_people, and their names (used
+  // to highlight them in the author list on the public site).
   person_ids: string[];
+  faculty_names: string[];
 };
 
 export type PublicationInput = Omit<
   Publication,
-  'id' | 'created_at' | 'updated_at' | 'person_ids'
+  'id' | 'created_at' | 'updated_at' | 'person_ids' | 'faculty_names'
 >;

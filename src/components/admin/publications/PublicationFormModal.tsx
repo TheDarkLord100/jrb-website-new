@@ -59,8 +59,10 @@ export default function PublicationFormModal({
 }) {
   const [form, setForm] = useState<FormState>(() => {
     if (!initial) return { ...EMPTY_FORM };
+    // Everything that isn't a writable column stays out of the form state,
+    // since the form state is what gets sent back on save.
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { id, created_at, updated_at, person_ids, ...rest } = initial;
+    const { id, created_at, updated_at, person_ids, faculty_names, ...rest } = initial;
     return { ...rest };
   });
   const [personIds, setPersonIds] = useState<string[]>(initial?.person_ids ?? []);

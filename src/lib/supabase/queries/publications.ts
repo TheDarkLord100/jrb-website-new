@@ -4,16 +4,21 @@ import type { Publication, PublicationInput } from '@/types/publication';
 const NOT_CONFIGURED =
   'Supabase is not configured — missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.';
 
-// Publications come back with their faculty links embedded, flattened here
-// to a plain list of person ids.
-const SELECT = '*, publication_people(person_id)';
+// Publications come back with their faculty links (and those faculty's
+// names) embedded, flattened here to plain lists.
+const SELECT = '*, publication_people(person_id, people(name))';
 
-type Row = Omit<Publication, 'person_ids'> & {
-  publication_people: { person_id: string }[] | null;
+type Row = Omit<Publication, 'person_ids' | 'faculty_names'> & {
+  publication_people: { person_id: string; people: { name: string } | null }[] | null;
 };
 
 function fromRow({ publication_people, ...rest }: Row): Publication {
-  return { ...rest, person_ids: (publication_people ?? []).map((l) => l.person_id) };
+  const links = publication_people ?? [];
+  return {
+    ...rest,
+    person_ids: links.map((l) => l.person_id),
+    faculty_names: links.map((l) => l.people?.name).filter((n): n is string => !!n),
+  };
 }
 
 // Admin read: everything, newest first. RLS only returns hidden rows to an
@@ -100,16 +105,19 @@ export async function createPublications(
   }
 
   // Inserted rows come back in the same order they were sent.
-  const rows = data as Omit<Publication, 'person_ids'>[];
+  const rows = data as Omit<Publication, 'person_ids' | 'faculty_names'>[];
   const links = rows.flatMap((row, i) =>
     [...new Set(items[i].personIds)].map((person_id) => ({ publication_id: row.id, person_id }))
   );
   const linksOk = await insertLinks(links);
 
   return {
+    // faculty_names is only needed on the public site, which reads fresh
+    // from the database, so the admin can leave it empty here.
     created: rows.map((row, i) => ({
       ...row,
       person_ids: linksOk ? [...new Set(items[i].personIds)] : [],
+      faculty_names: [],
     })),
     linksFailed: !linksOk,
   };
@@ -149,7 +157,11 @@ export async function updatePublication(
   const linksOk = await insertLinks(unique.map((person_id) => ({ publication_id: id, person_id })));
   if (!linksOk) return null;
 
-  return { ...(data as Omit<Publication, 'person_ids'>), person_ids: unique };
+  return {
+    ...(data as Omit<Publication, 'person_ids' | 'faculty_names'>),
+    person_ids: unique,
+    faculty_names: [],
+  };
 }
 
 // Its faculty links go with it (the foreign key cascades).

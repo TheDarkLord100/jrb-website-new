@@ -5,6 +5,7 @@ import { User, FlaskConical } from 'lucide-react';
 import PageHeading from '@/components/ui/PageHeading';
 import { useThemeAssociations, type ThemeAssociations } from '@/lib/hooks/useThemeAssociations';
 import ThemeProjects from './ThemeProjects';
+import ThemePublications from './ThemePublications';
 
 function ChipsSkeleton() {
   return (
@@ -55,7 +56,7 @@ export default function VerticalPage({
 
         {error && (
           <p className="mt-16 text-center text-gray-500">
-            Couldn&apos;t load faculty, lab and project information right now.
+            Couldn&apos;t load this theme&apos;s faculty, labs, projects and publications right now.
           </p>
         )}
 
@@ -63,6 +64,7 @@ export default function VerticalPage({
           <>
             <ChipsSkeleton />
             <ChipsSkeleton />
+            <ProjectsSkeleton />
             <ProjectsSkeleton />
           </>
         )}
@@ -122,6 +124,12 @@ export default function VerticalPage({
               <h2 className="font-serif text-xl font-bold text-[#001A23]">Projects</h2>
               <div className="mt-2 h-0.5 w-12 bg-amber-400" />
               <ThemeProjects projects={data.projects} />
+            </section>
+
+            <section className="mt-16">
+              <h2 className="font-serif text-xl font-bold text-[#001A23]">Publications</h2>
+              <div className="mt-2 h-0.5 w-12 bg-amber-400" />
+              <ThemePublications publications={data.publications} />
             </section>
           </>
         )}
