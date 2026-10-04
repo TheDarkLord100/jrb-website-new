@@ -8,3 +8,4 @@ export * from './idsr';
 export * from './industry';
 export * from './projects';
 export * from './media';
+export * from './peopleTags';

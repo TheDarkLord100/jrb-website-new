@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { getPeople } from '@/lib/supabase/queries';
 import type { Person } from '@/types/person';
 
+// Also returns setPeople so the admin panel can apply its own edits locally
+// instead of refetching. The public directory just ignores it.
 export function usePeople(initialPeople: Person[] = []) {
   const [people, setPeople] = useState<Person[] | null>(
     initialPeople.length > 0 ? initialPeople : null
@@ -26,5 +28,5 @@ export function usePeople(initialPeople: Person[] = []) {
     };
   }, []);
 
-  return { people, error };
+  return { people, setPeople, error };
 }

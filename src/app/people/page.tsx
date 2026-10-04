@@ -1,6 +1,6 @@
 import PageHeading from '@/components/ui/PageHeading';
 import PeopleDirectory from '@/components/sections/people/PeopleDirectory';
-import { getPeople } from '@/lib/supabase/queries';
+import { getPeople, getPeopleTags } from '@/lib/supabase/queries';
 import { buildMetadata } from '@/lib/metadata';
 
 export const metadata = buildMetadata({
@@ -11,13 +11,13 @@ export const metadata = buildMetadata({
 });
 
 export default async function PeoplePage() {
-  const initialPeople = await getPeople();
+  const [initialPeople, initialTags] = await Promise.all([getPeople(), getPeopleTags()]);
 
   return (
     <div>
       <PageHeading eyebrow="People" title="Members" />
       <div className="mx-auto max-w-[90rem] px-5 pb-16">
-        <PeopleDirectory initialPeople={initialPeople} />
+        <PeopleDirectory initialPeople={initialPeople} initialTags={initialTags} />
       </div>
     </div>
   );

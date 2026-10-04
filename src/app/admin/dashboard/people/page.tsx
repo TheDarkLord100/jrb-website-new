@@ -1,13 +1,15 @@
 import PageHeading from '@/components/ui/PageHeading';
+import PeopleAdminPanel from '@/components/admin/people/PeopleAdminPanel';
 
 export default function Page() {
   return (
-    <div className="flex flex-1 items-center justify-center p-16">
-      <div className="max-w-[340px] text-center">
-        <PageHeading title="People" />
-        <p className="mt-2 text-sm leading-relaxed text-stone-400">
-          This page is blank. Select another section from the sidebar to switch pages.
-        </p>
+    <div className="p-8">
+      <PageHeading
+        title="People"
+        subtitle="Manage faculty, students, post docs and alumni, and the Faculty filter tags."
+      />
+      <div className="mt-6">
+        <PeopleAdminPanel />
       </div>
     </div>
   );

@@ -2,11 +2,15 @@
 
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
-import { Mail, Phone, Link as LinkIcon, ChevronDown } from 'lucide-react';
+import { Mail, Phone, Link as LinkIcon, ChevronDown, GraduationCap } from 'lucide-react';
 import { usePeople } from '@/lib/hooks/usePeople';
+import { usePeopleTags } from '@/lib/hooks/usePeopleTags';
+import { batchesInUse, formatBatch } from '@/lib/batches';
+import { DEPARTMENTS } from '@/lib/departments';
 import { Pill } from '@/components/ui/Pill';
 import PeopleSkeleton from '@/components/sections/people/PeopleSkeleton';
 import type { Person } from '@/types/person';
+import type { PeopleTag } from '@/types/peopleTag';
 
 const TABS = [
   { key: 'faculty', label: 'Faculty' },
@@ -15,35 +19,9 @@ const TABS = [
   { key: 'alumni', label: 'Alumni' },
 ] as const;
 
-const DEPARTMENTS = [
+const DEPARTMENT_FILTERS = [
   { key: 'all', label: 'All' },
-  { key: 'Electrical Engineering', label: 'Electrical' },
-  { key: 'Mechanical Engineering', label: 'Mechanical' },
-  { key: 'Computer Science and Engineering', label: 'Computer Science' },
-  { key: 'Applied Mechanics', label: 'Applied Mechanics' },
-  { key: 'Center for Automotive Research and Tribology', label: 'C.A.R.T.' },
-  { key: 'School of AI', label: 'School of AI' },
-];
-
-const TAGS = [
-  { key: 'ai', label: 'AI' },
-  { key: 'robotics', label: 'Robotics' },
-  { key: 'control', label: 'Control' },
-  { key: 'biomechanics', label: 'Biomechanics' },
-  { key: 'vision', label: 'Computer Vision' },
-  { key: 'embedded', label: 'Embedded' },
-];
-
-const STUDENT_BATCHES = [
-  { key: 'all', label: 'All' },
-  { key: '2025-27', label: '2025–27' },
-  { key: '2026-28', label: '2026–28' },
-];
-
-const ALUMNI_BATCHES = [
-  { key: 'all', label: 'All' },
-  { key: '2023-25', label: '2023–25' },
-  { key: '2024-26', label: '2024–26' },
+  ...DEPARTMENTS.map((d) => ({ key: d.value, label: d.label })),
 ];
 
 // Lower priority number shows first; people with no priority set sort to
@@ -57,15 +35,19 @@ function sortByPriority(list: Person[]): Person[] {
   });
 }
 
+// `linkOnly` hides phone and email (used on student/alumni cards); web
+// links -- personal page and Google Scholar -- show whenever they're set.
 function ContactIcons({
   webmail,
   office_contact,
   link,
+  googleScholarUrl,
   linkOnly,
 }: {
   webmail: string | null;
   office_contact: string | null;
   link: string | null;
+  googleScholarUrl?: string | null;
   linkOnly?: boolean;
 }) {
   return (
@@ -91,6 +73,18 @@ function ContactIcons({
           <LinkIcon size={17} />
         </a>
       )}
+      {googleScholarUrl && (
+        <a
+          href={googleScholarUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Google Scholar"
+          title="Google Scholar"
+          className="hover:text-amber-600"
+        >
+          <GraduationCap size={17} />
+        </a>
+      )}
     </div>
   );
 }
@@ -106,18 +100,36 @@ function MemberCard({ p }: { p: Person }) {
         <p className="mt-0.5 text-xs font-semibold text-amber-600">{p.special_designation}</p>
       )}
       <p className="mt-1 text-xs text-gray-500">
-        {p.role === 'student' || p.role === 'alumni' ? `M.Tech Robotics (${p.year})` : p.year}
+        {p.role === 'student' || p.role === 'alumni'
+          ? `M.Tech Robotics (${p.year ? formatBatch(p.year) : '—'})`
+          : p.year}
       </p>
-      <ContactIcons webmail={p.webmail} office_contact={p.office_contact} link={p.link} linkOnly />
+      <ContactIcons
+        webmail={p.webmail}
+        office_contact={p.office_contact}
+        link={p.link}
+        googleScholarUrl={p.google_scholar_url}
+        linkOnly
+      />
     </div>
   );
 }
 
-export default function PeopleDirectory({ initialPeople = [] }: { initialPeople?: Person[] }) {
+export default function PeopleDirectory({
+  initialPeople = [],
+  initialTags = [],
+}: {
+  initialPeople?: Person[];
+  initialTags?: PeopleTag[];
+}) {
   const { people, error } = usePeople(initialPeople);
+  // Filter tags live in the people_tags table, managed from the admin panel.
+  const { tags } = usePeopleTags(initialTags);
 
   const [tab, setTab] = useState<(typeof TABS)[number]['key']>('faculty');
   const [dept, setDept] = useState('all');
+  // The selected tag's keyword ('' = none). Matched as a substring of a
+  // faculty member's focus keywords.
   const [tag, setTag] = useState('');
   const [search, setSearch] = useState(() => {
     if (typeof window === 'undefined') return '';
@@ -155,7 +167,7 @@ export default function PeopleDirectory({ initialPeople = [] }: { initialPeople?
         const matchesSearch = q
           ? nameText.includes(q) || interestText.includes(q) || focusText.includes(q)
           : true;
-        const matchesTag = tag ? focusText.includes(tag) : true;
+        const matchesTag = tag ? focusText.includes(tag.toLowerCase()) : true;
         const matchesDept = dept === 'all' || p.department === dept;
         return matchesSearch && matchesTag && matchesDept;
       });
@@ -171,6 +183,11 @@ export default function PeopleDirectory({ initialPeople = [] }: { initialPeople?
   }, [people, batch]);
 
   const postdocs = sortByPriority(people?.filter((p) => p.role === 'postdoc') ?? []);
+
+  // Batch filters come from the batches that actually exist in the data, so
+  // a new intake (or a batch promoted to alumni) needs no code change.
+  const studentBatches = useMemo(() => batchesInUse(people ?? [], 'student'), [people]);
+  const alumniBatches = useMemo(() => batchesInUse(people ?? [], 'alumni'), [people]);
 
   const alumni = useMemo(() => {
     if (!people) return [];
@@ -215,7 +232,7 @@ export default function PeopleDirectory({ initialPeople = [] }: { initialPeople?
                 <h4 className="hidden text-sm font-bold tracking-wide text-[#001A23] uppercase lg:block">
                   Departments
                 </h4>
-                {DEPARTMENTS.map((d) => (
+                {DEPARTMENT_FILTERS.map((d) => (
                   <button
                     key={d.key}
                     onClick={() => setDept(d.key)}
@@ -239,17 +256,19 @@ export default function PeopleDirectory({ initialPeople = [] }: { initialPeople?
                   className="w-full border border-gray-300 px-4 py-2 text-sm focus:border-amber-400 focus:outline-none"
                 />
 
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {TAGS.map((t) => (
-                    <Pill
-                      key={t.key}
-                      active={tag === t.key}
-                      onClick={() => setTag(tag === t.key ? '' : t.key)}
-                    >
-                      {t.label}
-                    </Pill>
-                  ))}
-                </div>
+                {tags.length > 0 && (
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {tags.map((t) => (
+                      <Pill
+                        key={t.id}
+                        active={tag === t.keyword}
+                        onClick={() => setTag(tag === t.keyword ? '' : t.keyword)}
+                      >
+                        {t.label}
+                      </Pill>
+                    ))}
+                  </div>
+                )}
 
                 <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
                   {faculty.map((p) => {
@@ -304,6 +323,7 @@ export default function PeopleDirectory({ initialPeople = [] }: { initialPeople?
                             webmail={p.webmail}
                             office_contact={p.office_contact}
                             link={p.link}
+                            googleScholarUrl={p.google_scholar_url}
                           />
                         </div>
                       </div>
@@ -321,10 +341,13 @@ export default function PeopleDirectory({ initialPeople = [] }: { initialPeople?
 
           {tab === 'student' && (
             <div>
-              <div className="mb-6 flex justify-center gap-3">
-                {STUDENT_BATCHES.map((b) => (
-                  <Pill key={b.key} active={batch === b.key} onClick={() => setBatch(b.key)}>
-                    {b.label}
+              <div className="mb-6 flex flex-wrap justify-center gap-3">
+                <Pill active={batch === 'all'} onClick={() => setBatch('all')}>
+                  All
+                </Pill>
+                {studentBatches.map((b) => (
+                  <Pill key={b} active={batch === b} onClick={() => setBatch(b)}>
+                    {formatBatch(b)}
                   </Pill>
                 ))}
               </div>
@@ -347,14 +370,13 @@ export default function PeopleDirectory({ initialPeople = [] }: { initialPeople?
 
           {tab === 'alumni' && (
             <div>
-              <div className="mb-6 flex justify-center gap-3">
-                {ALUMNI_BATCHES.map((b) => (
-                  <Pill
-                    key={b.key}
-                    active={alumniBatch === b.key}
-                    onClick={() => setAlumniBatch(b.key)}
-                  >
-                    {b.label}
+              <div className="mb-6 flex flex-wrap justify-center gap-3">
+                <Pill active={alumniBatch === 'all'} onClick={() => setAlumniBatch('all')}>
+                  All
+                </Pill>
+                {alumniBatches.map((b) => (
+                  <Pill key={b} active={alumniBatch === b} onClick={() => setAlumniBatch(b)}>
+                    {formatBatch(b)}
                   </Pill>
                 ))}
               </div>
