@@ -26,6 +26,7 @@ function toForm(person: Person | undefined, role: PersonRole): PersonInput {
     webmail: person?.webmail ?? '',
     link: person?.link ?? '',
     google_scholar_url: person?.google_scholar_url ?? '',
+    openalex_author_id: person?.openalex_author_id ?? '',
     role: person?.role ?? role,
     year: person?.year ?? '',
     department: person?.department ?? '',
@@ -53,6 +54,7 @@ function toPayload(form: PersonInput): PersonInput {
     webmail: blankToNull(form.webmail),
     link: blankToNull(form.link),
     google_scholar_url: blankToNull(form.google_scholar_url),
+    openalex_author_id: blankToNull(form.openalex_author_id),
     role: form.role,
     year: isFaculty ? null : blankToNull(form.year),
     department: isFaculty ? blankToNull(form.department) : null,
@@ -257,6 +259,19 @@ export default function PersonFormModal({
                 value={form.focus}
                 onChange={(focus) => set('focus', focus)}
                 suggestions={focusSuggestions}
+              />
+            </Field>
+                        <Field
+              label="OpenAlex author ID"
+              hint="Set by the publications import. Edit only to fix a wrong match."
+            >
+              <input
+                type="text"
+                pattern="A[0-9]+"
+                value={form.openalex_author_id ?? ''}
+                onChange={(e) => set('openalex_author_id', e.target.value.trim())}
+                placeholder="A5023888391"
+                className="w-full rounded border border-stone-300 px-3 py-2 font-mono text-sm"
               />
             </Field>
           </>

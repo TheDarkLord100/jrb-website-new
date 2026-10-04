@@ -9,3 +9,4 @@ export * from './industry';
 export * from './projects';
 export * from './media';
 export * from './peopleTags';
+export * from './publications';

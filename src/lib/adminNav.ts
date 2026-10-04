@@ -22,6 +22,7 @@ export const ADMIN_NAV: NavNode[] = [
     children: [
       { id: 'facilities', label: 'facilities', href: '/admin/dashboard/research/facilities' },
       { id: 'projects', label: 'projects', href: '/admin/dashboard/research/projects' },
+      { id: 'publications', label: 'publications', href: '/admin/dashboard/research/publications', },
       { id: 'themes', label: 'themes', href: '/admin/dashboard/research/themes' },
     ],
   },

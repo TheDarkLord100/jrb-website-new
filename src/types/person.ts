@@ -8,6 +8,7 @@ export type Person = {
   webmail: string | null;
   link: string | null;
   google_scholar_url: string | null; // faculty, mainly -- shown wherever it's set
+  openalex_author_id: string | null; // e.g. "A5023888391" -- for the publications import
   role: PersonRole;
   year: string | null; // student/alumni: batch "YYYY-YY" (see lib/batches); postdoc: free text
   department: string | null; // faculty
@@ -27,6 +28,7 @@ export type PersonInput = {
   webmail: string | null;
   link: string | null;
   google_scholar_url: string | null;
+  openalex_author_id: string | null;
   role: PersonRole;
   year: string | null;
   department: string | null;
