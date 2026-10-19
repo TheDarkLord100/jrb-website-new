@@ -85,7 +85,11 @@ export async function addSpecializationCourseItem(
 
   const { data, error } = await supabase
     .from('mtech_specialization_items')
-    .insert({ specialization_id: specializationId, course_id: courseId, display_order: displayOrder })
+    .insert({
+      specialization_id: specializationId,
+      course_id: courseId,
+      display_order: displayOrder,
+    })
     .select('id')
     .single();
 
@@ -110,7 +114,11 @@ export async function addSpecializationBasketItem(
 
   const { data, error } = await supabase
     .from('mtech_specialization_items')
-    .insert({ specialization_id: specializationId, bucket_id: bucketId, display_order: displayOrder })
+    .insert({
+      specialization_id: specializationId,
+      bucket_id: bucketId,
+      display_order: displayOrder,
+    })
     .select('id')
     .single();
 

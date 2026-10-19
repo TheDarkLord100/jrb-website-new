@@ -133,7 +133,10 @@ export default function SectionFormModal({
 
         <div>
           <label className="mb-1 block text-xs font-semibold tracking-wide text-stone-500 uppercase">
-            Title <span className="normal-case text-stone-400">(optional — only shown for multi-block sections like Why Choose JRB@IITD)</span>
+            Title{' '}
+            <span className="text-stone-400 normal-case">
+              (optional — only shown for multi-block sections like Why Choose JRB@IITD)
+            </span>
           </label>
           <input
             type="text"

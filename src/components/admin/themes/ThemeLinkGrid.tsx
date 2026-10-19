@@ -86,7 +86,10 @@ export default function ThemeLinkGrid({
           <tbody className="divide-y divide-gray-100">
             {visibleRows.length === 0 && (
               <tr>
-                <td colSpan={RESEARCH_THEMES.length + 1} className="py-16 text-center text-gray-400">
+                <td
+                  colSpan={RESEARCH_THEMES.length + 1}
+                  className="py-16 text-center text-gray-400"
+                >
                   {rows.length === 0
                     ? `No ${itemLabel} yet.`
                     : `No ${itemLabel} match the current search or filter.`}

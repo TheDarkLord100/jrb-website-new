@@ -1,9 +1,5 @@
 import VerticalPage from '@/components/sections/research/VerticalPage';
-import {
-  getThemeLabs,
-  getThemeProjects,
-  getThemePublications,
-} from '@/lib/supabase/queries';
+import { getThemeLabs, getThemeProjects, getThemePublications } from '@/lib/supabase/queries';
 import { buildMetadata } from '@/lib/metadata';
 
 export const metadata = buildMetadata({

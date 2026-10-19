@@ -261,7 +261,7 @@ export default function PersonFormModal({
                 suggestions={focusSuggestions}
               />
             </Field>
-                        <Field
+            <Field
               label="OpenAlex author ID"
               hint="Set by the publications import. Edit only to fix a wrong match."
             >

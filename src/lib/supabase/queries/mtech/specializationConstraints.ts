@@ -98,7 +98,6 @@ export async function updateSpecializationConstraintMaxCourses(
   return true;
 }
 
-
 // Cascades (ON DELETE CASCADE) to its own constraint_baskets rows.
 export async function deleteSpecializationConstraint(constraintId: string): Promise<boolean> {
   if (!supabase) {

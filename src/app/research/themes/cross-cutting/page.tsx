@@ -1,9 +1,5 @@
 import VerticalPage from '@/components/sections/research/VerticalPage';
-import {
-  getThemeLabs,
-  getThemeProjects,
-  getThemePublications,
-} from '@/lib/supabase/queries';
+import { getThemeLabs, getThemeProjects, getThemePublications } from '@/lib/supabase/queries';
 import { buildMetadata } from '@/lib/metadata';
 
 export const metadata = buildMetadata({
@@ -14,10 +10,10 @@ export const metadata = buildMetadata({
 });
 
 export default async function Page() {
-  const [ labs, projects, publications] = await Promise.all([
+  const [labs, projects, publications] = await Promise.all([
     getThemeLabs('cross-cutting'),
     getThemeProjects('cross-cutting'),
-    getThemePublications('cross-cutting')
+    getThemePublications('cross-cutting'),
   ]);
 
   return (

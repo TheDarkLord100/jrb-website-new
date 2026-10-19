@@ -19,7 +19,6 @@ type RawSpecializationItemRow = {
   basket: MtechBasket | null;
 };
 
-
 type RawConstraintRow = {
   id: string;
   specialization_id: string;
@@ -49,7 +48,9 @@ export async function getMtechSpecializations(): Promise<MtechSpecializationFull
   const [itemsRes, constraintsRes] = await Promise.all([
     supabase
       .from('mtech_specialization_items')
-      .select('id, specialization_id, bucket_id, course_id, display_order, course:mtech_courses(*), basket:mtech_baskets(*)')
+      .select(
+        'id, specialization_id, bucket_id, course_id, display_order, course:mtech_courses(*), basket:mtech_baskets(*)'
+      )
       .in('specialization_id', specializationIds)
       .order('display_order', { ascending: true }),
     supabase
@@ -82,7 +83,10 @@ export async function getMtechSpecializations(): Promise<MtechSpecializationFull
       .order('display_order', { ascending: true });
 
     if (constraintBasketsError) {
-      console.error('Error fetching mtech specialization constraint baskets:', constraintBasketsError);
+      console.error(
+        'Error fetching mtech specialization constraint baskets:',
+        constraintBasketsError
+      );
     }
     constraintBasketRows = (data ?? []) as unknown as RawConstraintBasketRow[];
   }
