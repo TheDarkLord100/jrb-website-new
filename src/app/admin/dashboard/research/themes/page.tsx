@@ -6,7 +6,7 @@ export default function Page() {
     <div className="p-8">
       <PageHeading
         title="Research Themes"
-        subtitle="Choose which faculty and labs appear on each research theme page."
+        subtitle="Choose which labs appear on each research theme page."
       />
       <div className="mt-6">
         <ThemeLinksPanel />

@@ -48,7 +48,7 @@ export default function PeopleAdminPanel() {
 
   const handleDelete = async (person: Person) => {
     const extra =
-      person.role === 'faculty' ? ' They will also be removed from any research themes.' : '';
+      person.role === 'faculty' ? ' They will also be unlinked from their publications.' : '';
     if (!confirm(`Delete ${person.name}? This can't be undone.${extra}`)) return;
 
     const ok = await deletePerson(person.id);

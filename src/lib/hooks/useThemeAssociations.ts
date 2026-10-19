@@ -1,19 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {
-  getThemeFaculty,
-  getThemeLabs,
-  getThemeProjects,
-  getThemePublications,
-} from '@/lib/supabase/queries';
-import type { Person } from '@/types/person';
+import { getThemeLabs, getThemeProjects, getThemePublications } from '@/lib/supabase/queries';
 import type { Lab } from '@/types/lab';
 import type { Project } from '@/types/project';
 import type { Publication } from '@/types/publication';
 
 export type ThemeAssociations = {
-  faculty: Person[];
   labs: Lab[];
   projects: Project[];
   publications: Publication[];
@@ -30,13 +23,12 @@ export function useThemeAssociations(
     let cancelled = false;
 
     Promise.all([
-      getThemeFaculty(themeSlug),
       getThemeLabs(themeSlug),
       getThemeProjects(themeSlug),
       getThemePublications(themeSlug),
     ])
-      .then(([faculty, labs, projects, publications]) => {
-        if (!cancelled) setData({ faculty, labs, projects, publications });
+      .then(([labs, projects, publications]) => {
+        if (!cancelled) setData({ labs, projects, publications });
       })
       .catch((e) => {
         if (!cancelled) {

@@ -56,21 +56,6 @@ export async function getThemePublications(themeSlug: string): Promise<Publicati
   return ((data ?? []) as Row[]).map(fromRow);
 }
 
-// The research themes a person is linked to -- used to pre-select the theme
-// when importing their papers.
-export async function getPersonThemes(personId: string): Promise<string[]> {
-  if (!supabase) return [];
-  const { data, error } = await supabase
-    .from('theme_faculty')
-    .select('theme_slug')
-    .eq('person_id', personId);
-  if (error) {
-    console.error('Error fetching person themes:', error);
-    return [];
-  }
-  return (data ?? []).map((row) => row.theme_slug as string);
-}
-
 async function insertLinks(links: { publication_id: string; person_id: string }[]) {
   if (links.length === 0) return true;
   const { error } = await supabase!.from('publication_people').insert(links);

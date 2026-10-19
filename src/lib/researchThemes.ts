@@ -1,6 +1,6 @@
 // The four research themes, in the order the public site presents them.
 // There's no themes table yet -- these slugs must match the theme_slug
-// check constraint on `projects`, `theme_faculty` and `theme_labs`, so
+// check constraint on `projects`, `publications` and `theme_labs`, so
 // adding or renaming a theme means updating all three constraints and this
 // list together.
 export const RESEARCH_THEMES = [

@@ -131,16 +131,7 @@ export default function PeopleDirectory({
   // The selected tag's keyword ('' = none). Matched as a substring of a
   // faculty member's focus keywords.
   const [tag, setTag] = useState('');
-  const [search, setSearch] = useState(() => {
-    if (typeof window === 'undefined') return '';
-    // One-time handoff from a research theme page's faculty link -- read
-    // once and clear immediately, so refreshing (or visiting /people
-    // directly) always starts from the full list, and the URL never
-    // carries this as a param.
-    const prefill = sessionStorage.getItem('peopleSearchPrefill');
-    if (prefill) sessionStorage.removeItem('peopleSearchPrefill');
-    return prefill ?? '';
-  });
+  const [search, setSearch] = useState('');
   const [batch, setBatch] = useState('all');
   const [alumniBatch, setAlumniBatch] = useState('all');
   const [expandedFaculty, setExpandedFaculty] = useState<Set<string>>(new Set());

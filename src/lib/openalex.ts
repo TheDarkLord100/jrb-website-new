@@ -24,6 +24,7 @@ export type OpenAlexWork = {
   type: string | null; // "article", "book-chapter", "preprint", …
   citedByCount: number;
   authors: { id: string; name: string }[];
+  topics: string[];
 };
 
 export type OpenAlexWorksPage = {

@@ -9,6 +9,7 @@ export type Person = {
   link: string | null;
   google_scholar_url: string | null; // faculty, mainly -- shown wherever it's set
   openalex_author_id: string | null; // e.g. "A5023888391" -- for the publications import
+  publications_reviewed_at?: string | null; // when their OpenAlex papers were last gone through
   role: PersonRole;
   year: string | null; // student/alumni: batch "YYYY-YY" (see lib/batches); postdoc: free text
   department: string | null; // faculty

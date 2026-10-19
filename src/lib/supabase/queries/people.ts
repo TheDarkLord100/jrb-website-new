@@ -100,3 +100,22 @@ export async function promoteBatchToAlumni(batch: string): Promise<string[] | nu
   }
   return (data ?? []).map((row) => row.id as string);
 }
+
+// Records that this person's OpenAlex papers have just been gone through in
+// the publications import. Set only from there, never from the people form.
+export async function markPublicationsReviewed(id: string): Promise<Person | null> {
+  if (!supabase) return null;
+
+  const { data, error } = await supabase
+    .from('people')
+    .update({ publications_reviewed_at: new Date().toISOString() })
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error marking publications reviewed:', error);
+    return null;
+  }
+  return data as Person;
+}
