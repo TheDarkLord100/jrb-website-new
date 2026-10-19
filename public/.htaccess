@@ -1,5 +1,11 @@
 RewriteEngine On
 
+# 0) Loop guard: if this request is already the result of an internal
+# rewrite (or an ErrorDocument redirect), don't rewrite it again.
+# Works on Apache 2.2 and 2.4.
+RewriteCond %{ENV:REDIRECT_STATUS} !^$
+RewriteRule ^ - [L]
+
 # Explicit fixes for the two routes that are BOTH a real page AND a real
 # directory (they have child routes: /research/facilities/[slug],
 # /research/themes/[theme]) — matches with or without trailing slash,
@@ -11,9 +17,13 @@ RewriteRule ^research/themes/?$ /research/themes.html [L]
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^ - [L]
 
-# 2) Clean URLs for everything else
-RewriteCond %{REQUEST_FILENAME}.html -f
-RewriteRule ^(.+)$ $1.html [L]
+# 2) Clean URLs: /foo/bar -> /foo/bar.html, only if that EXACT file exists.
+# Checks the full URL path (not REQUEST_FILENAME, which Apache truncates
+# to the longest existing prefix — that caused the 500 loop on e.g.
+# /events/test or /research/themes/<valid-theme>/junk).
+RewriteCond %{REQUEST_URI} ^/(.+?)/?$
+RewriteCond %{DOCUMENT_ROOT}/%1.html -f
+RewriteRule ^ /%1.html [L]
 
 # 3) Genuine content directories with no .html sibling (Assets, pointclouds, academics/*, research/facilities/*, research/themes/*)
 RewriteCond %{REQUEST_FILENAME} -d
