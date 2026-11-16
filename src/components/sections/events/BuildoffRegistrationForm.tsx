@@ -103,7 +103,6 @@ export default function BuildoffRegistrationForm() {
         { name: '', entryNumber: '' },
         { name: '', entryNumber: '' },
       ]);
-
     } catch (error: any) {
       console.error('Registration error:', error.message);
       alert('Registration failed: ' + error.message);

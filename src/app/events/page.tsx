@@ -28,53 +28,49 @@ export default async function EventsPage() {
         <div className="grid gap-10 lg:grid-cols-[1fr_320px]">
           {/* Main Events Column */}
           <div className="flex flex-col gap-10">
-
-            {/* --- Promoted Banners Section --- */}
+            {/* Featured: BuildOff 2026 */}
             <div>
-              <div className="mb-5">
-                <SectionHeading title="Upcoming Events" />
-              </div>
-
+              <SectionHeading title="Featured Event" />
               <Link
                 href="/events/buildoff"
-                className="group relative flex overflow-hidden rounded-2xl bg-gradient-to-br from-[#001A23] via-[#002836] to-slate-900 px-7 py-8 text-white shadow-xl transition-transform hover:-translate-y-1 hover:shadow-2xl sm:px-10"
+                className="group relative grid grid-cols-[1fr_auto] overflow-hidden border-t-4 border-[#FFC433] bg-[#FAF7EF] shadow-sm ring-1 ring-[#E4DFD2] transition-shadow hover:shadow-md sm:grid-cols-[1fr_300px]"
               >
-                <div className="relative z-10 flex w-full flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="sm:w-2/3">
-                    <span className="mb-3 inline-block rounded-full bg-amber-400 px-3 py-1 text-xs font-extrabold tracking-wider text-[#001A23] uppercase">
-                      Registration Opens Dec 2026
-                    </span>
-                    <h3 className="font-serif text-2xl font-bold sm:text-3xl text-white">
-                      BuildOff 2026: Autonomous Garbage-Collecting Robot
-                    </h3>
-                    <p className="mt-3 text-sm text-gray-300 sm:text-base">
-                      Autonomy for a Better Tomorrow. Join CoE-BIRD IIT Delhi’s flagship five-month robotics buildathon. Participate, simulate, and build!
-                    </p>
-                    <div className="mt-6 shrink-0">
-                      <span className="inline-flex items-center justify-center rounded-lg bg-amber-400 px-6 py-3 text-sm font-bold text-[#001A23] transition-colors group-hover:bg-amber-300">
-                        View Challenge Details →
-                      </span>
-                    </div>
-                  </div>
+                <img
+                  src="/Assets/buildoff/buildoff-circuit-pattern.svg"
+                  alt=""
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -top-6 -right-10 hidden w-[420px] sm:block"
+                />
 
-                  {/* Reusable SVG Asset positioned on the right */}
-                  <div className="flex shrink-0 justify-center sm:w-1/3 sm:justify-end">
-                    <div className="w-48 opacity-90 transition-opacity duration-300 group-hover:opacity-100 sm:w-full sm:max-w-[200px]">
-                      <BuildoffRobotSvg className="h-auto w-full drop-shadow-2xl" />
-                    </div>
+                <div className="relative flex flex-col justify-center p-5 sm:p-8">
+                  <img
+                    src="/Assets/buildoff/buildoff-logo.svg"
+                    alt="BuildOff 2026"
+                    className="h-10 w-auto self-start sm:h-14"
+                  />
+                  <div className="mt-5 flex flex-col items-start gap-2 sm:mt-6 sm:flex-row sm:items-center sm:gap-4">
+                    <span className="inline-block bg-[#23232A] px-5 py-2.5 text-sm font-semibold text-white transition-colors group-hover:bg-black sm:px-6">
+                      View details <span className="text-[#FFC433]">→</span>
+                    </span>
+                    <span className="text-[11px] font-semibold tracking-wide text-gray-500 uppercase sm:text-xs">
+                      Registration opens Dec 2026
+                    </span>
                   </div>
                 </div>
 
-                {/* Subtle background glow */}
-                <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-amber-400/5 blur-3xl transition-colors duration-500 group-hover:bg-amber-400/10" />
+                <div className="relative flex items-end justify-center pt-5 pr-4 pb-5 sm:px-6 sm:pt-8 sm:pb-6">
+                  <img
+                    src="/Assets/buildoff/buildoff-robot.svg"
+                    alt=""
+                    aria-hidden="true"
+                    className="h-auto w-[110px] sm:w-full sm:max-w-[220px]"
+                  />
+                </div>
               </Link>
             </div>
-            {/* ----------------------------- */}
 
             {/* Dynamic Events List (Past Events) */}
-            <div className="mt-4">
-              <EventsList initialItems={events} />
-            </div>
+            <EventsList initialItems={events} />
           </div>
 
           {/* Sidebar */}

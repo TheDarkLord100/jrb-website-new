@@ -109,6 +109,7 @@ export default function AnnouncementFormModal({
               <option value="news">news</option>
               <option value="event">event</option>
               <option value="admission">admission</option>
+              <option value="buildoff">buildoff</option>
             </select>
           </Field>
 

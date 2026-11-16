@@ -9,7 +9,15 @@ import type { Announcement } from '@/types/announcement';
 const VISIBLE_COLUMNS: (keyof Announcement)[] = ['title', 'date', 'type', 'is_visible'];
 
 export default function EventsTable() {
-  const { items, error } = useAnnouncementsByType('event');
+  const { items: eventItems, error: eventError } = useAnnouncementsByType('event');
+  const { items: buildoffItems, error: buildoffError } = useAnnouncementsByType('buildoff');
+  const error = eventError ?? buildoffError;
+  const items =
+    eventItems && buildoffItems
+      ? [...eventItems, ...buildoffItems].sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        )
+      : null;
   const [rows, setRows] = useState<Announcement[] | null>(null);
   const [editingRow, setEditingRow] = useState<Announcement | null>(null); // null = closed
   const [isCreating, setIsCreating] = useState(false);

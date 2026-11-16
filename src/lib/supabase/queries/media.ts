@@ -18,7 +18,7 @@ export const BUCKETS = {
   },
   documents: {
     label: 'Documents',
-    folders: ['general', 'admissions', 'academics'],
+    folders: ['general', 'admissions', 'academics', 'events'],
     accept: ['application/pdf'],
     maxBytes: 10 * 1024 * 1024,
   },

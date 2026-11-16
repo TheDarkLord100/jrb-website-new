@@ -114,10 +114,8 @@ function cubicBezier(
   const x = uuu * p0[0] + 3 * uu * t * p1[0] + 3 * u * tt * p2[0] + ttt * p3[0];
   const y = uuu * p0[1] + 3 * uu * t * p1[1] + 3 * u * tt * p2[1] + ttt * p3[1];
 
-  const dx =
-    3 * uu * (p1[0] - p0[0]) + 6 * u * t * (p2[0] - p1[0]) + 3 * tt * (p3[0] - p2[0]);
-  const dy =
-    3 * uu * (p1[1] - p0[1]) + 6 * u * t * (p2[1] - p1[1]) + 3 * tt * (p3[1] - p2[1]);
+  const dx = 3 * uu * (p1[0] - p0[0]) + 6 * u * t * (p2[0] - p1[0]) + 3 * tt * (p3[0] - p2[0]);
+  const dy = 3 * uu * (p1[1] - p0[1]) + 6 * u * t * (p2[1] - p1[1]) + 3 * tt * (p3[1] - p2[1]);
 
   const angle = (Math.atan2(dy, dx) * 180) / Math.PI;
   const speed = Math.hypot(dx, dy);
@@ -129,23 +127,12 @@ function lerpAngle(a: number, b: number, t: number) {
   return a + diff * t;
 }
 
-function solveIK(
-  sx: number,
-  sy: number,
-  tx: number,
-  ty: number,
-  L1: number,
-  L2: number
-) {
+function solveIK(sx: number, sy: number, tx: number, ty: number, L1: number, L2: number) {
   const dx = tx - sx;
   const dy = ty - sy;
   const dist = clamp(Math.hypot(dx, dy), Math.abs(L1 - L2) + 0.1, L1 + L2 - 0.1);
   const baseAngle = Math.atan2(dy, dx);
-  const cosAlpha = clamp(
-    (dist * dist + L1 * L1 - L2 * L2) / (2 * dist * L1),
-    -1,
-    1
-  );
+  const cosAlpha = clamp((dist * dist + L1 * L1 - L2 * L2) / (2 * dist * L1), -1, 1);
   const alpha = Math.acos(cosAlpha);
   const theta1 = baseAngle - alpha;
   const ex = sx + L1 * Math.cos(theta1);
@@ -183,7 +170,9 @@ export default function BuildoffArenaAnimation() {
   }, [isPlaying, speed]);
 
   if (!isMounted) {
-    return <div className="min-h-[450px] w-full animate-pulse rounded-3xl border border-slate-800 bg-[#00141B] shadow-2xl" />;
+    return (
+      <div className="min-h-[450px] w-full animate-pulse rounded-3xl border border-slate-800 bg-[#00141B] shadow-2xl" />
+    );
   }
 
   // --- 1. MOVING OBSTACLE TRAJECTORY ---
@@ -264,7 +253,8 @@ export default function BuildoffArenaAnimation() {
     odomDist = 915;
     deckElevation = 34;
     phaseName = '2. Pick on Raised Ground — Bin 100% Full!';
-    phaseDetail = 'Bottle #3 stowed on raised platform. 10 L onboard bin has reached 100% capacity!';
+    phaseDetail =
+      'Bottle #3 stowed on raised platform. 10 L onboard bin has reached 100% capacity!';
   } else if (time < 24.0) {
     const s = smoothstep(20.5, 24.0, time);
     const pos = cubicBezier([598, 98], [545, 245], [370, 335], [122, 335], s);
@@ -427,24 +417,15 @@ export default function BuildoffArenaAnimation() {
   if (time >= 24.1 && time <= 26.1) {
     const p = (time - 24.1) / 2.0;
     binTiltDeg =
-      p < 0.35
-        ? smoothstep(0, 0.35, p) * 68
-        : p < 0.75
-          ? 68
-          : (1 - smoothstep(0.75, 1.0, p)) * 68;
+      p < 0.35 ? smoothstep(0, 0.35, p) * 68 : p < 0.75 ? 68 : (1 - smoothstep(0.75, 1.0, p)) * 68;
   } else if (time >= 32.4 && time <= 33.6) {
     const p = (time - 32.4) / 1.2;
     binTiltDeg =
-      p < 0.4
-        ? smoothstep(0, 0.4, p) * 68
-        : p < 0.75
-          ? 68
-          : (1 - smoothstep(0.75, 1.0, p)) * 68;
+      p < 0.4 ? smoothstep(0, 0.4, p) * 68 : p < 0.75 ? 68 : (1 - smoothstep(0.75, 1.0, p)) * 68;
   }
 
   const itemsInRobotBin = GARBAGE.filter(
-    (g) =>
-      time >= g.pickStart + (g.pickEnd - g.pickStart) * 0.78 && time < g.dumpTime
+    (g) => time >= g.pickStart + (g.pickEnd - g.pickStart) * 0.78 && time < g.dumpTime
   );
   const itemsInStationBin = GARBAGE.filter((g) => time >= g.dumpTime);
   const binLitres = Math.min(10, Number((itemsInRobotBin.length * 3.34).toFixed(1)));
@@ -488,7 +469,7 @@ export default function BuildoffArenaAnimation() {
     };
   });
 
-  const groundScrollOffset = ((odomDist * 1.4) % 40 + 40) % 40;
+  const groundScrollOffset = (((odomDist * 1.4) % 40) + 40) % 40;
   const wheelRotDeg = odomDist * 2.6;
 
   return (
@@ -572,18 +553,68 @@ export default function BuildoffArenaAnimation() {
               </pattern>
             </defs>
             <rect width="740" height="400" fill="url(#floorGrid)" />
-            <rect x="6" y="6" width="728" height="388" rx="14" fill="none" stroke="#1E293B" strokeWidth="3" />
+            <rect
+              x="6"
+              y="6"
+              width="728"
+              height="388"
+              rx="14"
+              fill="none"
+              stroke="#1E293B"
+              strokeWidth="3"
+            />
 
             <g>
-              <rect x="500" y="20" width="220" height="165" rx="10" fill="#EAE5D9" stroke="#94A3B8" strokeWidth="2.5" />
-              <text x="610" y="42" textAnchor="middle" fill="#64748B" fontSize="10" fontWeight="bold">
+              <rect
+                x="500"
+                y="20"
+                width="220"
+                height="165"
+                rx="10"
+                fill="#EAE5D9"
+                stroke="#94A3B8"
+                strokeWidth="2.5"
+              />
+              <text
+                x="610"
+                y="42"
+                textAnchor="middle"
+                fill="#64748B"
+                fontSize="10"
+                fontWeight="bold"
+              >
                 RAISED PLATFORM (+15 CM)
               </text>
-              <rect x="518" y="185" width="76" height="68" fill="#F2EFE9" stroke="#94A3B8" strokeWidth="2" />
+              <rect
+                x="518"
+                y="185"
+                width="76"
+                height="68"
+                fill="#F2EFE9"
+                stroke="#94A3B8"
+                strokeWidth="2"
+              />
               {[198, 211, 224, 237].map((yLine) => (
-                <line key={yLine} x1="518" y1={yLine} x2="594" y2={yLine} stroke="#CBD5E1" strokeWidth="2" />
+                <line
+                  key={yLine}
+                  x1="518"
+                  y1={yLine}
+                  x2="594"
+                  y2={yLine}
+                  stroke="#CBD5E1"
+                  strokeWidth="2"
+                />
               ))}
-              <text x="556" y="266" textAnchor="middle" fill="#64748B" fontSize="9" fontWeight="bold">RAMP</text>
+              <text
+                x="556"
+                y="266"
+                textAnchor="middle"
+                fill="#64748B"
+                fontSize="9"
+                fontWeight="bold"
+              >
+                RAMP
+              </text>
             </g>
 
             <path
@@ -597,19 +628,70 @@ export default function BuildoffArenaAnimation() {
 
             {time >= 7.0 && time <= 11.2 && (
               <g>
-                <line x1="206" y1="72" x2="326" y2="295" stroke="#EF4444" strokeWidth="2" strokeDasharray="4 4" opacity="0.7" />
-                <path d="M 206 72 C 355 72, 385 200, 326 295" fill="none" stroke="#16A34A" strokeWidth="3.5" />
+                <line
+                  x1="206"
+                  y1="72"
+                  x2="326"
+                  y2="295"
+                  stroke="#EF4444"
+                  strokeWidth="2"
+                  strokeDasharray="4 4"
+                  opacity="0.7"
+                />
+                <path
+                  d="M 206 72 C 355 72, 385 200, 326 295"
+                  fill="none"
+                  stroke="#16A34A"
+                  strokeWidth="3.5"
+                />
                 <rect x="308" y="118" width="116" height="18" rx="4" fill="#16A34A" />
-                <text x="366" y="130" textAnchor="middle" fill="#FFF" fontSize="8.5" fontWeight="bold">✓ REPLANNED DETOUR</text>
+                <text
+                  x="366"
+                  y="130"
+                  textAnchor="middle"
+                  fill="#FFF"
+                  fontSize="8.5"
+                  fontWeight="bold"
+                >
+                  ✓ REPLANNED DETOUR
+                </text>
               </g>
             )}
 
             <g transform="translate(22, 280)">
-              <rect x="0" y="0" width="92" height="100" rx="10" fill="#0F172A" stroke="#334155" strokeWidth="2.5" />
-              <rect x="14" y="16" width="64" height="56" rx="6" fill="#FBBF24" stroke="#D97706" strokeWidth="2" />
-              <text x="46" y="88" textAnchor="middle" fill="#F8FAFC" fontSize="9" fontWeight="bold">STATION BIN</text>
+              <rect
+                x="0"
+                y="0"
+                width="92"
+                height="100"
+                rx="10"
+                fill="#0F172A"
+                stroke="#334155"
+                strokeWidth="2.5"
+              />
+              <rect
+                x="14"
+                y="16"
+                width="64"
+                height="56"
+                rx="6"
+                fill="#FBBF24"
+                stroke="#D97706"
+                strokeWidth="2"
+              />
+              <text x="46" y="88" textAnchor="middle" fill="#F8FAFC" fontSize="9" fontWeight="bold">
+                STATION BIN
+              </text>
               {itemsInStationBin.map((item, idx) => (
-                <circle key={item.id} cx={28 + (idx % 2) * 24} cy={34 + Math.floor(idx / 2) * 20} r="7" fill={item.color} stroke="#FFF" strokeWidth="1.5" />
+                <circle
+                  key={item.id}
+                  cx={28 + (idx % 2) * 24}
+                  cy={34 + Math.floor(idx / 2) * 20}
+                  r="7"
+                  fill={item.color}
+                  stroke="#FFF"
+                  strokeWidth="1.5"
+                />
               ))}
             </g>
 
@@ -618,11 +700,28 @@ export default function BuildoffArenaAnimation() {
               const isNear = dist < 105;
               return (
                 <g key={plant.id} transform={`translate(${plant.x}, ${plant.y})`}>
-                  <circle cx="0" cy="0" r={plant.r + 18} fill={isNear ? 'rgba(239, 68, 68, 0.12)' : 'rgba(16, 185, 129, 0.05)'} stroke={isNear ? '#EF4444' : '#94A3B8'} strokeWidth={isNear ? '2' : '1'} strokeDasharray="4 4" />
+                  <circle
+                    cx="0"
+                    cy="0"
+                    r={plant.r + 18}
+                    fill={isNear ? 'rgba(239, 68, 68, 0.12)' : 'rgba(16, 185, 129, 0.05)'}
+                    stroke={isNear ? '#EF4444' : '#94A3B8'}
+                    strokeWidth={isNear ? '2' : '1'}
+                    strokeDasharray="4 4"
+                  />
                   <circle cx="0" cy="0" r={plant.r} fill="#15803D" />
                   <circle cx="-5" cy="-5" r={plant.r * 0.65} fill="#22C55E" />
                   <circle cx="-9" cy="-9" r={plant.r * 0.28} fill="#86EFAC" />
-                  <text x="0" y={plant.r + 13} textAnchor="middle" fill={isNear ? '#DC2626' : '#166534'} fontSize="9" fontWeight="bold">{isNear ? '⚠ AVOIDING PLANT' : plant.label}</text>
+                  <text
+                    x="0"
+                    y={plant.r + 13}
+                    textAnchor="middle"
+                    fill={isNear ? '#DC2626' : '#166534'}
+                    fontSize="9"
+                    fontWeight="bold"
+                  >
+                    {isNear ? '⚠ AVOIDING PLANT' : plant.label}
+                  </text>
                 </g>
               );
             })}
@@ -632,10 +731,27 @@ export default function BuildoffArenaAnimation() {
               const isAvoidingMov = distToMov < 125;
               return (
                 <g transform={`translate(${movObsX}, ${movObsY})`}>
-                  <circle cx="0" cy="0" r="30" fill={isAvoidingMov ? 'rgba(239, 68, 68, 0.16)' : 'rgba(245, 158, 11, 0.12)'} stroke={isAvoidingMov ? '#EF4444' : '#F59E0B'} strokeWidth={isAvoidingMov ? '2' : '1.5'} strokeDasharray="4 3" />
+                  <circle
+                    cx="0"
+                    cy="0"
+                    r="30"
+                    fill={isAvoidingMov ? 'rgba(239, 68, 68, 0.16)' : 'rgba(245, 158, 11, 0.12)'}
+                    stroke={isAvoidingMov ? '#EF4444' : '#F59E0B'}
+                    strokeWidth={isAvoidingMov ? '2' : '1.5'}
+                    strokeDasharray="4 3"
+                  />
                   <circle cx="0" cy="0" r="13" fill="#334155" stroke="#0F172A" strokeWidth="2" />
                   <circle cx="0" cy="0" r="5" fill="#F59E0B" />
-                  <text x="0" y="-34" textAnchor="middle" fill={isAvoidingMov ? '#DC2626' : '#475569'} fontSize="8.5" fontWeight="bold">{isAvoidingMov ? '⚠ AVOIDING DYNAMIC OBS' : 'MOVING OBSTACLE'}</text>
+                  <text
+                    x="0"
+                    y="-34"
+                    textAnchor="middle"
+                    fill={isAvoidingMov ? '#DC2626' : '#475569'}
+                    fontSize="8.5"
+                    fontWeight="bold"
+                  >
+                    {isAvoidingMov ? '⚠ AVOIDING DYNAMIC OBS' : 'MOVING OBSTACLE'}
+                  </text>
                 </g>
               );
             })()}
@@ -649,14 +765,49 @@ export default function BuildoffArenaAnimation() {
                 <g key={item.id} transform={`translate(${item.x}, ${item.y})`}>
                   {isBeingTargeted && (
                     <g>
-                      <rect x="-16" y="-16" width="32" height="32" rx="4" fill="none" stroke="#0284C7" strokeWidth="1.5" strokeDasharray="4 2" />
-                      <text x="0" y="-20" textAnchor="middle" fill="#0284C7" fontSize="8.5" fontWeight="bold">TARGET LOCKED</text>
+                      <rect
+                        x="-16"
+                        y="-16"
+                        width="32"
+                        height="32"
+                        rx="4"
+                        fill="none"
+                        stroke="#0284C7"
+                        strokeWidth="1.5"
+                        strokeDasharray="4 2"
+                      />
+                      <text
+                        x="0"
+                        y="-20"
+                        textAnchor="middle"
+                        fill="#0284C7"
+                        fontSize="8.5"
+                        fontWeight="bold"
+                      >
+                        TARGET LOCKED
+                      </text>
                     </g>
                   )}
                   {item.shape === 'bottle' ? (
-                    <rect x="-8" y="-8" width="16" height="16" rx="3" fill={item.color} stroke="#FFF" strokeWidth="1.5" />
+                    <rect
+                      x="-8"
+                      y="-8"
+                      width="16"
+                      height="16"
+                      rx="3"
+                      fill={item.color}
+                      stroke="#FFF"
+                      strokeWidth="1.5"
+                    />
                   ) : (
-                    <circle cx="0" cy="0" r="8.5" fill={item.color} stroke="#FFF" strokeWidth="1.5" />
+                    <circle
+                      cx="0"
+                      cy="0"
+                      r="8.5"
+                      fill={item.color}
+                      stroke="#FFF"
+                      strokeWidth="1.5"
+                    />
                   )}
                 </g>
               );
@@ -665,25 +816,75 @@ export default function BuildoffArenaAnimation() {
             <g transform={`translate(${rx}, ${ry}) rotate(${rAngle})`}>
               {lidarRays.map((ray, i) => (
                 <g key={i}>
-                  <line x1="0" y1="0" x2={ray.x2} y2={ray.y2} stroke={ray.hitObstacle ? '#EF4444' : '#0284C7'} strokeWidth={ray.hitObstacle ? '1.2' : '0.6'} opacity={ray.hitObstacle ? '0.65' : '0.22'} />
+                  <line
+                    x1="0"
+                    y1="0"
+                    x2={ray.x2}
+                    y2={ray.y2}
+                    stroke={ray.hitObstacle ? '#EF4444' : '#0284C7'}
+                    strokeWidth={ray.hitObstacle ? '1.2' : '0.6'}
+                    opacity={ray.hitObstacle ? '0.65' : '0.22'}
+                  />
                   {ray.hitObstacle && <circle cx={ray.x2} cy={ray.y2} r="2" fill="#EF4444" />}
                 </g>
               ))}
 
               <rect x="-22" y="-22" width="44" height="6" rx="2" fill="#0F172A" />
               <rect x="-22" y="16" width="44" height="6" rx="2" fill="#0F172A" />
-              <rect x="-24" y="-17" width="48" height="34" rx="6" fill="#FBBF24" stroke="#0F172A" strokeWidth="2" />
+              <rect
+                x="-24"
+                y="-17"
+                width="48"
+                height="34"
+                rx="6"
+                fill="#FBBF24"
+                stroke="#0F172A"
+                strokeWidth="2"
+              />
 
               <g transform={`translate(${-binTiltDeg * 0.15}, 0)`}>
-                <rect x="-21" y="-13" width="22" height="26" rx="3" fill="#1E293B" stroke="#475569" strokeWidth="1.5" />
+                <rect
+                  x="-21"
+                  y="-13"
+                  width="22"
+                  height="26"
+                  rx="3"
+                  fill="#1E293B"
+                  stroke="#475569"
+                  strokeWidth="1.5"
+                />
                 {itemsInRobotBin.map((it, idx) => (
-                  <circle key={it.id} cx={-14 + (idx % 2) * 8 - binTiltDeg * 0.2} cy={-6 + Math.floor(idx / 2) * 11} r="4" fill={it.color} stroke="#FFF" strokeWidth="0.8" />
+                  <circle
+                    key={it.id}
+                    cx={-14 + (idx % 2) * 8 - binTiltDeg * 0.2}
+                    cy={-6 + Math.floor(idx / 2) * 11}
+                    r="4"
+                    fill={it.color}
+                    stroke="#FFF"
+                    strokeWidth="0.8"
+                  />
                 ))}
               </g>
 
               <g transform={`translate(10, 0) rotate(${turretAngle})`}>
-                <line x1="0" y1="0" x2={topDownReach} y2="0" stroke="#0F172A" strokeWidth="5" strokeLinecap="round" />
-                <line x1="0" y1="0" x2={topDownReach} y2="0" stroke="#F59E0B" strokeWidth="2.5" strokeLinecap="round" />
+                <line
+                  x1="0"
+                  y1="0"
+                  x2={topDownReach}
+                  y2="0"
+                  stroke="#0F172A"
+                  strokeWidth="5"
+                  strokeLinecap="round"
+                />
+                <line
+                  x1="0"
+                  y1="0"
+                  x2={topDownReach}
+                  y2="0"
+                  stroke="#F59E0B"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                />
                 <path
                   d={
                     jawSpread < 8
@@ -695,9 +896,17 @@ export default function BuildoffArenaAnimation() {
                   strokeLinecap="round"
                   fill="none"
                 />
-                {(itemState === 'in_gripper' || itemState === 'falling_in_bin') && activePickItem && (
-                  <circle cx={topDownReach + 5} cy="0" r="5.5" fill={activePickItem.color} stroke="#FFF" strokeWidth="1.2" />
-                )}
+                {(itemState === 'in_gripper' || itemState === 'falling_in_bin') &&
+                  activePickItem && (
+                    <circle
+                      cx={topDownReach + 5}
+                      cy="0"
+                      r="5.5"
+                      fill={activePickItem.color}
+                      stroke="#FFF"
+                      strokeWidth="1.2"
+                    />
+                  )}
                 <circle cx="0" cy="0" r="5.5" fill="#1E293B" stroke="#FBBF24" strokeWidth="1.5" />
               </g>
             </g>
@@ -735,7 +944,15 @@ export default function BuildoffArenaAnimation() {
                 patternUnits="userSpaceOnUse"
                 patternTransform={`translate(${-groundScrollOffset}, 0)`}
               >
-                <line x1="0" y1="0" x2="20" y2="0" stroke="#38BDF8" strokeWidth="2" opacity="0.35" />
+                <line
+                  x1="0"
+                  y1="0"
+                  x2="20"
+                  y2="0"
+                  stroke="#38BDF8"
+                  strokeWidth="2"
+                  opacity="0.35"
+                />
                 <line x1="12" y1="3" x2="4" y2="15" stroke="#334155" strokeWidth="2" />
                 <line x1="32" y1="3" x2="24" y2="15" stroke="#334155" strokeWidth="2" />
               </pattern>
@@ -763,7 +980,14 @@ export default function BuildoffArenaAnimation() {
                   strokeDasharray="14 12"
                   strokeDashoffset={groundScrollOffset}
                 />
-                <text x="215" y={226 - deckElevation} textAnchor="middle" fill="#FBBF24" fontSize="8.5" fontWeight="bold">
+                <text
+                  x="215"
+                  y={226 - deckElevation}
+                  textAnchor="middle"
+                  fill="#FBBF24"
+                  fontSize="8.5"
+                  fontWeight="bold"
+                >
                   ▲ RAISED PLATFORM (+15 CM ELEVATION)
                 </text>
               </g>
@@ -771,47 +995,170 @@ export default function BuildoffArenaAnimation() {
 
             {(time >= 23.4 && time <= 26.5) || time >= 32.0 ? (
               <g transform="translate(6, 134)">
-                <rect x="0" y="0" width="56" height="76" rx="5" fill="#1E293B" stroke="#FBBF24" strokeWidth="2.5" />
+                <rect
+                  x="0"
+                  y="0"
+                  width="56"
+                  height="76"
+                  rx="5"
+                  fill="#1E293B"
+                  stroke="#FBBF24"
+                  strokeWidth="2.5"
+                />
                 <rect x="6" y="8" width="44" height="52" rx="3" fill="#0F172A" />
                 {itemsInStationBin.map((it, idx) => (
-                  <rect key={it.id} x={12 + (idx % 2) * 18} y={40 - Math.floor(idx / 2) * 16} width="13" height="14" rx="2" fill={it.color} stroke="#FFF" strokeWidth="1" />
+                  <rect
+                    key={it.id}
+                    x={12 + (idx % 2) * 18}
+                    y={40 - Math.floor(idx / 2) * 16}
+                    width="13"
+                    height="14"
+                    rx="2"
+                    fill={it.color}
+                    stroke="#FFF"
+                    strokeWidth="1"
+                  />
                 ))}
-                <text x="28" y="71" textAnchor="middle" fill="#FBBF24" fontSize="7.5" fontWeight="bold">STATION BIN</text>
+                <text
+                  x="28"
+                  y="71"
+                  textAnchor="middle"
+                  fill="#FBBF24"
+                  fontSize="7.5"
+                  fontWeight="bold"
+                >
+                  STATION BIN
+                </text>
               </g>
             ) : null}
 
             {approachingItem && (
               <g transform={`translate(${258 + approachOffset}, ${201 - deckElevation})`}>
-                <rect x="-9" y="-11" width="18" height="22" rx="3" fill={approachingItem.color} stroke="#FFF" strokeWidth="1.5" />
-                <text x="0" y="-15" textAnchor="middle" fill="#38BDF8" fontSize="8" fontWeight="bold">{approachingItem.label}</text>
+                <rect
+                  x="-9"
+                  y="-11"
+                  width="18"
+                  height="22"
+                  rx="3"
+                  fill={approachingItem.color}
+                  stroke="#FFF"
+                  strokeWidth="1.5"
+                />
+                <text
+                  x="0"
+                  y="-15"
+                  textAnchor="middle"
+                  fill="#38BDF8"
+                  fontSize="8"
+                  fontWeight="bold"
+                >
+                  {approachingItem.label}
+                </text>
               </g>
             )}
 
             <g transform={`translate(0, ${-deckElevation}) rotate(${chassisPitch}, 152, 190)`}>
               {binTiltDeg > 1 && (
-                <line x1="125" y1="142" x2={125 - Math.sin((binTiltDeg * Math.PI) / 180) * 35} y2={136 - Math.cos((binTiltDeg * Math.PI) / 180) * 38} stroke="#94A3B8" strokeWidth="5" strokeLinecap="round" />
+                <line
+                  x1="125"
+                  y1="142"
+                  x2={125 - Math.sin((binTiltDeg * Math.PI) / 180) * 35}
+                  y2={136 - Math.cos((binTiltDeg * Math.PI) / 180) * 38}
+                  stroke="#94A3B8"
+                  strokeWidth="5"
+                  strokeLinecap="round"
+                />
               )}
 
               <g transform={`rotate(${-binTiltDeg}, 80, 140)`}>
-                <rect x="80" y="84" width="68" height="56" rx="4" fill="#0F172A" stroke="#64748B" strokeWidth="2" />
-                <line x1="84" y1="98" x2="144" y2="98" stroke="#334155" strokeWidth="1" strokeDasharray="2 2" />
-                <line x1="84" y1="112" x2="144" y2="112" stroke="#334155" strokeWidth="1" strokeDasharray="2 2" />
-                <line x1="84" y1="126" x2="144" y2="126" stroke="#334155" strokeWidth="1" strokeDasharray="2 2" />
+                <rect
+                  x="80"
+                  y="84"
+                  width="68"
+                  height="56"
+                  rx="4"
+                  fill="#0F172A"
+                  stroke="#64748B"
+                  strokeWidth="2"
+                />
+                <line
+                  x1="84"
+                  y1="98"
+                  x2="144"
+                  y2="98"
+                  stroke="#334155"
+                  strokeWidth="1"
+                  strokeDasharray="2 2"
+                />
+                <line
+                  x1="84"
+                  y1="112"
+                  x2="144"
+                  y2="112"
+                  stroke="#334155"
+                  strokeWidth="1"
+                  strokeDasharray="2 2"
+                />
+                <line
+                  x1="84"
+                  y1="126"
+                  x2="144"
+                  y2="126"
+                  stroke="#334155"
+                  strokeWidth="1"
+                  strokeDasharray="2 2"
+                />
 
                 {itemsInRobotBin.map((it, idx) => {
                   const slideOut = binTiltDeg > 28 ? (binTiltDeg - 28) * 1.65 : 0;
                   return (
-                    <rect key={it.id} x={88 + idx * 19 - slideOut} y={114 - slideOut * 0.35} width="15" height="21" rx="2.5" fill={it.color} stroke="#FFF" strokeWidth="1.2" />
+                    <rect
+                      key={it.id}
+                      x={88 + idx * 19 - slideOut}
+                      y={114 - slideOut * 0.35}
+                      width="15"
+                      height="21"
+                      rx="2.5"
+                      fill={it.color}
+                      stroke="#FFF"
+                      strokeWidth="1.2"
+                    />
                   );
                 })}
 
-                <line x1="80" y1="84" x2={80 - Math.sin((binTiltDeg - 1.1 * Math.PI) / 180) * 52} y2={84 + Math.cos((binTiltDeg - 1.1 * Math.PI) / 180) * 52} stroke="#F59E0B" strokeWidth="3.5" strokeLinecap="round" />
+                <line
+                  x1="80"
+                  y1="84"
+                  x2={80 - Math.sin((binTiltDeg - 1.1 * Math.PI) / 180) * 52}
+                  y2={84 + Math.cos((binTiltDeg - 1.1 * Math.PI) / 180) * 52}
+                  stroke="#F59E0B"
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                />
                 <rect x="77" y="80" width="74" height="6" rx="2" fill="#334155" />
-                <text x="114" y="95" textAnchor="middle" fill="#38BDF8" fontSize="8" fontWeight="bold">10 L BIN ({binPercent}%)</text>
+                <text
+                  x="114"
+                  y="95"
+                  textAnchor="middle"
+                  fill="#38BDF8"
+                  fontSize="8"
+                  fontWeight="bold"
+                >
+                  10 L BIN ({binPercent}%)
+                </text>
               </g>
 
               <rect x="155" y="96" width="6" height="46" fill="#0F172A" />
-              <rect x="146" y="84" width="24" height="14" rx="3.5" fill="#1E293B" stroke="#38BDF8" strokeWidth="1.5" />
+              <rect
+                x="146"
+                y="84"
+                width="24"
+                height="14"
+                rx="3.5"
+                fill="#1E293B"
+                stroke="#38BDF8"
+                strokeWidth="1.5"
+              />
               <circle cx="163" cy="91" r="3" fill="#38BDF8" />
 
               {/* FIX: Vision Detection Ray now perfectly tracks the height of the item on the floor */}
@@ -825,14 +1172,56 @@ export default function BuildoffArenaAnimation() {
                 />
               )}
 
-              <rect x="74" y="140" width="154" height="46" rx="8" fill="#F59E0B" stroke="#0F172A" strokeWidth="2" />
-              <line x1="125" y1="154" x2="133" y2="171" stroke="#0F172A" strokeWidth="3.5" strokeLinecap="round" />
-              <line x1="137" y1="154" x2="145" y2="171" stroke="#0F172A" strokeWidth="3.5" strokeLinecap="round" />
-              <line x1="149" y1="154" x2="157" y2="171" stroke="#0F172A" strokeWidth="3.5" strokeLinecap="round" />
+              <rect
+                x="74"
+                y="140"
+                width="154"
+                height="46"
+                rx="8"
+                fill="#F59E0B"
+                stroke="#0F172A"
+                strokeWidth="2"
+              />
+              <line
+                x1="125"
+                y1="154"
+                x2="133"
+                y2="171"
+                stroke="#0F172A"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+              />
+              <line
+                x1="137"
+                y1="154"
+                x2="145"
+                y2="171"
+                stroke="#0F172A"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+              />
+              <line
+                x1="149"
+                y1="154"
+                x2="157"
+                y2="171"
+                stroke="#0F172A"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+              />
 
               {activePickItem && itemState !== 'stowed' && (
                 <g transform={`translate(${itemSideX}, ${itemSideY}) rotate(${itemSideRot})`}>
-                  <rect x="-9" y="-11" width="18" height="22" rx="3" fill={activePickItem.color} stroke="#FFF" strokeWidth="1.5" />
+                  <rect
+                    x="-9"
+                    y="-11"
+                    width="18"
+                    height="22"
+                    rx="3"
+                    fill={activePickItem.color}
+                    stroke="#FFF"
+                    strokeWidth="1.5"
+                  />
                   {itemState === 'falling_in_bin' && (
                     <g stroke="#38BDF8" strokeWidth="1.5" strokeLinecap="round">
                       <line x1="-5" y1="-15" x2="-5" y2="-24" />
@@ -843,26 +1232,103 @@ export default function BuildoffArenaAnimation() {
                 </g>
               )}
 
-              <line x1={shoulderX} y1={shoulderY} x2={ik.ex} y2={ik.ey} stroke="#0F172A" strokeWidth="13" strokeLinecap="round" />
-              <line x1={shoulderX} y1={shoulderY} x2={ik.ex} y2={ik.ey} stroke="#FBBF24" strokeWidth="9" strokeLinecap="round" />
-              <line x1={ik.ex} y1={ik.ey} x2={ik.wx} y2={ik.wy} stroke="#0F172A" strokeWidth="11" strokeLinecap="round" />
-              <line x1={ik.ex} y1={ik.ey} x2={ik.wx} y2={ik.wy} stroke="#FBBF24" strokeWidth="7" strokeLinecap="round" />
+              <line
+                x1={shoulderX}
+                y1={shoulderY}
+                x2={ik.ex}
+                y2={ik.ey}
+                stroke="#0F172A"
+                strokeWidth="13"
+                strokeLinecap="round"
+              />
+              <line
+                x1={shoulderX}
+                y1={shoulderY}
+                x2={ik.ex}
+                y2={ik.ey}
+                stroke="#FBBF24"
+                strokeWidth="9"
+                strokeLinecap="round"
+              />
+              <line
+                x1={ik.ex}
+                y1={ik.ey}
+                x2={ik.wx}
+                y2={ik.wy}
+                stroke="#0F172A"
+                strokeWidth="11"
+                strokeLinecap="round"
+              />
+              <line
+                x1={ik.ex}
+                y1={ik.ey}
+                x2={ik.wx}
+                y2={ik.wy}
+                stroke="#FBBF24"
+                strokeWidth="7"
+                strokeLinecap="round"
+              />
 
               <g transform={`translate(${ik.wx}, ${ik.wy}) rotate(${gripperAngleDeg - 90})`}>
-                <rect x="-12" y="0" width="24" height="6" rx="2" fill="#1E293B" stroke="#FBBF24" strokeWidth="1.2" />
-                <path d={`M ${-jawSpread} 6 L ${-jawSpread} 20 L ${-jawSpread + 3} 23`} stroke="#F8FAFC" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-                <path d={`M ${jawSpread} 6 L ${jawSpread} 20 L ${jawSpread - 3} 23`} stroke="#F8FAFC" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                <rect
+                  x="-12"
+                  y="0"
+                  width="24"
+                  height="6"
+                  rx="2"
+                  fill="#1E293B"
+                  stroke="#FBBF24"
+                  strokeWidth="1.2"
+                />
+                <path
+                  d={`M ${-jawSpread} 6 L ${-jawSpread} 20 L ${-jawSpread + 3} 23`}
+                  stroke="#F8FAFC"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+                <path
+                  d={`M ${jawSpread} 6 L ${jawSpread} 20 L ${jawSpread - 3} 23`}
+                  stroke="#F8FAFC"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
               </g>
 
-              <circle cx={shoulderX} cy={shoulderY} r="9" fill="#1E293B" stroke="#FBBF24" strokeWidth="2.5" />
-              <circle cx={ik.ex} cy={ik.ey} r="7.5" fill="#1E293B" stroke="#FBBF24" strokeWidth="2.5" />
+              <circle
+                cx={shoulderX}
+                cy={shoulderY}
+                r="9"
+                fill="#1E293B"
+                stroke="#FBBF24"
+                strokeWidth="2.5"
+              />
+              <circle
+                cx={ik.ex}
+                cy={ik.ey}
+                r="7.5"
+                fill="#1E293B"
+                stroke="#FBBF24"
+                strokeWidth="2.5"
+              />
               <circle cx={ik.wx} cy={ik.wy} r="6" fill="#1E293B" stroke="#38BDF8" strokeWidth="2" />
 
               {[106, 196].map((wheelX) => (
                 <g key={wheelX} transform={`translate(${wheelX}, 188) rotate(${wheelRotDeg})`}>
                   <circle cx="0" cy="0" r="21" fill="#0F172A" stroke="#334155" strokeWidth="3.5" />
                   {[0, 60, 120].map((ang) => (
-                    <line key={ang} x1={-16 * Math.cos((ang * Math.PI) / 180)} y1={-16 * Math.sin((ang * Math.PI) / 180)} x2={16 * Math.cos((ang * Math.PI) / 180)} y2={16 * Math.sin((ang * Math.PI) / 180)} stroke="#475569" strokeWidth="2.5" />
+                    <line
+                      key={ang}
+                      x1={-16 * Math.cos((ang * Math.PI) / 180)}
+                      y1={-16 * Math.sin((ang * Math.PI) / 180)}
+                      x2={16 * Math.cos((ang * Math.PI) / 180)}
+                      y2={16 * Math.sin((ang * Math.PI) / 180)}
+                      stroke="#475569"
+                      strokeWidth="2.5"
+                    />
                   ))}
                   <circle cx="0" cy="0" r="8" fill="#F59E0B" />
                   <circle cx="0" cy="0" r="3" fill="#0F172A" />
@@ -873,13 +1339,22 @@ export default function BuildoffArenaAnimation() {
 
           <div className="grid grid-cols-5 gap-1.5 border-t border-white/10 pt-3 text-center text-[10px]">
             {[
-              { id: '1. Find', active: Boolean(approachingItem) || (activePickItem && pickProgress < 0.25) },
+              {
+                id: '1. Find',
+                active: Boolean(approachingItem) || (activePickItem && pickProgress < 0.25),
+              },
               { id: '2. Pick & Bin', active: Boolean(activePickItem) },
-              { id: '3. Avoid Obs', active: (time >= 1.0 && time < 4.5) || (time >= 7.5 && time < 11.0) },
+              {
+                id: '3. Avoid Obs',
+                active: (time >= 1.0 && time < 4.5) || (time >= 7.5 && time < 11.0),
+              },
               { id: '4. Empty Bin', active: binTiltDeg > 2 },
               { id: '5. Park Clear', active: time >= 32.5 },
             ].map((rule, i) => (
-              <div key={i} className={`rounded-md py-1 px-1 font-bold transition ${rule.active ? 'bg-amber-400 text-[#001A23]' : 'bg-white/5 text-gray-400'}`}>
+              <div
+                key={i}
+                className={`rounded-md px-1 py-1 font-bold transition ${rule.active ? 'bg-amber-400 text-[#001A23]' : 'bg-white/5 text-gray-400'}`}
+              >
                 {rule.id}
               </div>
             ))}

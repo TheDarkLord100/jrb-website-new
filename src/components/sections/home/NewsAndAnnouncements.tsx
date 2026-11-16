@@ -15,6 +15,7 @@ const TYPE_LABELS: Record<Announcement['type'], string> = {
   news: 'News',
   event: 'Event',
   admission: 'Admissions',
+  buildoff: 'Buildoff',
 };
 
 function NewsSkeleton() {
