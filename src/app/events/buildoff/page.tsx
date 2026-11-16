@@ -161,7 +161,7 @@ export default async function BuildoffPage() {
               Autonomy for a better tomorrow
             </p>
             <p className="mt-4 max-w-md text-sm leading-relaxed text-gray-600 sm:text-base">
-              Form a team, build an autonomous robot and prove it in simulation. This year&apos;s
+              Form a team, build an autonomous robot and prove it in simulation, and deploy it in real world. This year&apos;s
               challenge: a robot that keeps public spaces clean by finding and collecting litter on
               its own.
             </p>
